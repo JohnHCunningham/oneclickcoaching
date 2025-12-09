@@ -482,11 +482,11 @@
         const SUPABASE_URL = 'https://qwqlsbccwnwrdpcaccjz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3cWxzYmNjd253cmRwY2FjY2p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzMTA1MDQsImV4cCI6MjA4MDg4NjUwNH0.yWzSV2Nid_T1XiDE0RrskFob9mRUc-m6MbeIiT7huC4';
 
-        let supabase;
+        let supabaseClient;
 
         // Initialize Supabase client
         try {
-            supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         } catch (error) {
             console.error('Supabase initialization error:', error);
             showAlert('Please configure your Supabase credentials in the code.', 'error');
@@ -569,7 +569,7 @@
             const today = new Date().toISOString().split('T')[0];
 
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Daily_Tracker')
                     .upsert({
                         date: today,
@@ -610,7 +610,7 @@
             const today = new Date().toISOString().split('T')[0];
 
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Sales')
                     .insert({
                         date: today,
@@ -653,7 +653,7 @@
         // Load conversion funnel data
         async function loadConversionFunnel() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Conversion_Funnel')
                     .select('*')
                     .single();
@@ -699,7 +699,7 @@
         // Load revenue summary
         async function loadRevenueSummary() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Sales')
                     .select('amount_cad');
 
@@ -721,7 +721,7 @@
         let weeklyChart = null;
         async function loadWeeklyChart() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Weekly_Performance')
                     .select('*')
                     .order('week_start', { ascending: true })
@@ -814,7 +814,7 @@
 
         async function loadCoachingInsights() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('Coaching_Insights')
                     .select('*')
                     .order('created_at', { ascending: false })
@@ -867,7 +867,7 @@
 
                 // Save insights to database
                 for (const insight of insights) {
-                    await supabase.from('Coaching_Insights').insert({
+                    await supabaseClient.from('Coaching_Insights').insert({
                         date: new Date().toISOString().split('T')[0],
                         insight_type: insight.type,
                         title: insight.title,
