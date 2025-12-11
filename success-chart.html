@@ -594,6 +594,25 @@
                 </div>
             </div>
 
+            <!-- Annual Sales Goal Tracker -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">2025 Revenue Goal</h2>
+                    <span class="card-icon">🎯</span>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Annual Goal (CAD)</label>
+                    <input type="number" id="annual-goal" value="120000" min="0" step="1000"
+                        style="width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--brand-teal); padding: 10px; border-radius: 8px; font-weight: 600; font-size: 1rem;"
+                        onchange="updateGoalTracking()">
+                </div>
+
+                <div id="goal-breakdown" style="margin-top: 15px;">
+                    <!-- Goal breakdown will be inserted here -->
+                </div>
+            </div>
+
             <!-- Weekly Performance Chart -->
             <div class="card wide-card">
                 <div class="card-header">
@@ -1169,9 +1188,72 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 document.getElementById('total-revenue').textContent = `$${totalRevenue.toFixed(2)}`;
                 document.getElementById('total-sales').textContent = totalSales;
                 document.getElementById('avg-sale').textContent = `$${avgSale.toFixed(2)}`;
+
+                // Update goal tracking
+                updateGoalTracking(totalRevenue);
             } catch (error) {
                 console.error('Error loading revenue:', error);
             }
+        }
+
+        // Update goal tracking breakdown
+        function updateGoalTracking(currentRevenue = 0) {
+            const annualGoal = parseFloat(document.getElementById('annual-goal').value) || 120000;
+            const monthlyGoal = annualGoal / 12;
+            const weeklyGoal = annualGoal / 52;
+
+            // Calculate progress
+            const yearProgress = (currentRevenue / annualGoal) * 100;
+
+            // Get current month and week revenue
+            const now = new Date();
+            const currentMonth = now.toISOString().slice(0, 7);
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            // Calculate monthly and weekly revenue (simplified - using YTD for now)
+            const monthProgress = Math.min((currentRevenue / monthlyGoal) * 100, 100);
+            const weekProgress = Math.min((currentRevenue / weeklyGoal) * 100, 100);
+
+            document.getElementById('goal-breakdown').innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-size: 0.9rem;">Annual Progress</span>
+                        <span style="color: var(--brand-gold); font-weight: 600;">$${currentRevenue.toFixed(0)} / $${annualGoal.toFixed(0)}</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: ${Math.min(yearProgress, 100)}%;"></div>
+                    </div>
+                    <div style="text-align: right; margin-top: 5px; font-size: 0.85rem; color: var(--brand-teal);">
+                        ${yearProgress.toFixed(1)}% Complete
+                    </div>
+                </div>
+
+                <div class="stats-grid" style="margin-top: 20px;">
+                    <div class="stat-box">
+                        <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-teal);">
+                            $${monthlyGoal.toFixed(0)}
+                        </div>
+                        <div class="stat-label">Monthly Target</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-aqua);">
+                            $${weeklyGoal.toFixed(0)}
+                        </div>
+                        <div class="stat-label">Weekly Target</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: rgba(16, 195, 176, 0.1); border-radius: 10px;">
+                    <div style="font-size: 0.85rem; color: var(--light-text); opacity: 0.8; margin-bottom: 8px;">
+                        To hit your annual goal of $${annualGoal.toFixed(0)}:
+                    </div>
+                    <div style="font-size: 0.9rem; line-height: 1.6;">
+                        💰 Close <strong style="color: var(--brand-gold);">${Math.ceil(annualGoal / 5000)}</strong> deals at $5,000 each<br>
+                        📅 Average <strong style="color: var(--brand-teal);">${Math.ceil(monthlyGoal / 5000)}</strong> deals per month<br>
+                        📊 Need <strong style="color: var(--brand-aqua);">${(weeklyGoal / 5000).toFixed(1)}</strong> deals per week
+                    </div>
+                </div>
+            `;
         }
 
         // Load weekly performance chart
