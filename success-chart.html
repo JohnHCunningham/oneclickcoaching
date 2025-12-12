@@ -507,6 +507,36 @@
                 <button class="btn-primary" onclick="saveDailyStats()">Save Today's Stats</button>
             </div>
 
+            <!-- Activity Goals Settings Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Activity Goals Settings</h2>
+                    <span class="card-icon">⚙️</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Dials Goal</label>
+                    <input type="number" id="goal-dials" min="1" value="15">
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Conversations Goal</label>
+                    <input type="number" id="goal-conversations" min="1" value="5">
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Meetings Goal</label>
+                    <input type="number" id="goal-meetings" min="1" value="2">
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Sales Goal</label>
+                    <input type="number" id="goal-sales" min="1" value="1">
+                </div>
+
+                <button class="btn-primary" onclick="saveActivityGoals()">Save Goals</button>
+            </div>
+
             <!-- Daily Goal Progress Card -->
             <div class="card wide-card">
                 <div class="card-header">
@@ -577,6 +607,20 @@
                 </div>
             </div>
 
+            <!-- Smart Goal Calculator Card -->
+            <div class="card wide-card">
+                <div class="card-header">
+                    <h2 class="card-title">Smart Activity Recommendations</h2>
+                    <span class="card-icon">🧠</span>
+                </div>
+
+                <p style="opacity: 0.9; margin-bottom: 20px;">Based on your historical conversion rates and sales quota, here's what you need to do:</p>
+
+                <div id="smart-recommendations">
+                    <div class="loading">Calculating recommendations...</div>
+                </div>
+            </div>
+
             <!-- Revenue Summary Card -->
             <div class="card">
                 <div class="card-header">
@@ -596,6 +640,29 @@
                         <div class="stat-value" id="avg-sale">$0</div>
                         <div class="stat-label">Avg Sale Value</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Sales Quota Tracking Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Sales Quota Tracking</h2>
+                    <span class="card-icon">🎯</span>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Monthly Sales Quota (CAD)</label>
+                    <input type="number" id="monthly-quota" value="10000" min="0" step="1000"
+                        style="width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--brand-teal); padding: 10px; border-radius: 8px; font-weight: 600; font-size: 1rem;"
+                        onchange="updateQuotaTracking()">
+                </div>
+
+                <div id="quota-tracking-mtd" style="margin-bottom: 25px;">
+                    <!-- MTD quota tracking will be inserted here -->
+                </div>
+
+                <div id="quota-tracking-ytd">
+                    <!-- YTD quota tracking will be inserted here -->
                 </div>
             </div>
 
@@ -980,7 +1047,8 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 loadGoalProgress(),
                 loadRevenueSummary(),
                 loadWeeklyChart(),
-                loadCoachingInsights()
+                loadCoachingInsights(),
+                calculateSmartRecommendations()
             ]);
         }
 
@@ -1103,16 +1171,51 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             }
         }
 
+        // Save activity goals to localStorage
+        function saveActivityGoals() {
+            const goals = {
+                dials: parseInt(document.getElementById('goal-dials').value) || 15,
+                conversations: parseInt(document.getElementById('goal-conversations').value) || 5,
+                meetings: parseInt(document.getElementById('goal-meetings').value) || 2,
+                sales: parseInt(document.getElementById('goal-sales').value) || 1
+            };
+
+            localStorage.setItem('activityGoals', JSON.stringify(goals));
+            showAlert('Activity goals saved successfully!', 'success');
+
+            // Refresh goal progress display
+            loadGoalProgress();
+            calculateSmartRecommendations();
+        }
+
+        // Get activity goals from localStorage
+        function getActivityGoals() {
+            const saved = localStorage.getItem('activityGoals');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return {
+                dials: 15,
+                conversations: 5,
+                meetings: 2,
+                sales: 1
+            };
+        }
+
+        // Load activity goals into form
+        function loadActivityGoalsForm() {
+            const goals = getActivityGoals();
+            document.getElementById('goal-dials').value = goals.dials;
+            document.getElementById('goal-conversations').value = goals.conversations;
+            document.getElementById('goal-meetings').value = goals.meetings;
+            document.getElementById('goal-sales').value = goals.sales;
+        }
+
         // Load goal progress circles
         async function loadGoalProgress() {
             try {
-                // Define daily goals
-                const goals = {
-                    dials: 15,
-                    conversations: 5,
-                    meetings: 2,
-                    sales: 1
-                };
+                // Get custom daily goals from localStorage
+                const goals = getActivityGoals();
 
                 // Get today's date
                 const today = new Date().toISOString().split('T')[0];
@@ -1182,7 +1285,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             try {
                 const { data, error } = await supabaseClient
                     .from('Sales')
-                    .select('amount_cad');
+                    .select('amount_cad, date');
 
                 if (error) throw error;
 
@@ -1194,10 +1297,94 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 document.getElementById('total-sales').textContent = totalSales;
                 document.getElementById('avg-sale').textContent = `$${avgSale.toFixed(2)}`;
 
-                // Update goal tracking
+                // Update goal tracking and quota tracking
                 updateGoalTracking(totalRevenue);
+                updateQuotaTracking(data);
             } catch (error) {
                 console.error('Error loading revenue:', error);
+            }
+        }
+
+        // Update quota tracking (MTD and YTD)
+        async function updateQuotaTracking(salesData = null) {
+            try {
+                // If salesData not provided, fetch it
+                if (!salesData) {
+                    const { data, error } = await supabaseClient
+                        .from('Sales')
+                        .select('amount_cad, date');
+
+                    if (error) throw error;
+                    salesData = data;
+                }
+
+                const now = new Date();
+                const currentMonth = now.toISOString().slice(0, 7); // YYYY-MM
+                const currentYear = now.getFullYear().toString();
+
+                // Get monthly quota from input or localStorage
+                const monthlyQuota = parseFloat(document.getElementById('monthly-quota').value) || 10000;
+                localStorage.setItem('monthlyQuota', monthlyQuota);
+
+                // Calculate MTD revenue
+                const mtdSales = salesData.filter(s => s.date.startsWith(currentMonth));
+                const mtdRevenue = mtdSales.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
+                const mtdProgress = (mtdRevenue / monthlyQuota) * 100;
+
+                // Calculate YTD revenue
+                const ytdSales = salesData.filter(s => s.date.startsWith(currentYear));
+                const ytdRevenue = ytdSales.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
+                const ytdQuota = monthlyQuota * now.getMonth() + monthlyQuota; // Quota for months passed + current month
+                const ytdProgress = (ytdRevenue / ytdQuota) * 100;
+
+                // Render MTD tracking
+                document.getElementById('quota-tracking-mtd').innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; color: var(--brand-aqua);">Month to Date</span>
+                            <span style="color: var(--brand-gold); font-weight: 600;">
+                                $${mtdRevenue.toFixed(0)} / $${monthlyQuota.toFixed(0)}
+                            </span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${Math.min(mtdProgress, 100)}%;"></div>
+                        </div>
+                        <div style="text-align: right; margin-top: 5px; font-size: 0.85rem; color: var(--brand-teal);">
+                            ${mtdProgress.toFixed(1)}% Complete
+                        </div>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(16, 195, 176, 0.1); border-radius: 8px; font-size: 0.9rem;">
+                            ${mtdProgress >= 100 ? '🎉 Monthly quota achieved!' :
+                              `🎯 $${(monthlyQuota - mtdRevenue).toFixed(0)} remaining to hit quota`}
+                        </div>
+                    </div>
+                `;
+
+                // Render YTD tracking
+                document.getElementById('quota-tracking-ytd').innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; color: var(--brand-aqua);">Year to Date</span>
+                            <span style="color: var(--brand-gold); font-weight: 600;">
+                                $${ytdRevenue.toFixed(0)} / $${ytdQuota.toFixed(0)}
+                            </span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${Math.min(ytdProgress, 100)}%;"></div>
+                        </div>
+                        <div style="text-align: right; margin-top: 5px; font-size: 0.85rem; color: var(--brand-teal);">
+                            ${ytdProgress.toFixed(1)}% Complete
+                        </div>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(244, 176, 58, 0.1); border-radius: 8px; font-size: 0.9rem;">
+                            📊 ${mtdSales.length} sales this month • ${ytdSales.length} sales YTD
+                        </div>
+                    </div>
+                `;
+
+                // Load smart recommendations after quota tracking is updated
+                calculateSmartRecommendations();
+
+            } catch (error) {
+                console.error('Error updating quota tracking:', error);
             }
         }
 
@@ -1259,6 +1446,193 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                     </div>
                 </div>
             `;
+        }
+
+        // Calculate smart activity recommendations based on historical conversion rates
+        async function calculateSmartRecommendations() {
+            try {
+                const now = new Date();
+                const currentMonth = now.toISOString().slice(0, 7);
+                const currentYear = now.getFullYear().toString();
+
+                // Fetch historical data
+                const { data: dailyData, error: dailyError } = await supabaseClient
+                    .from('Daily_Tracker')
+                    .select('*')
+                    .gte('date', `${currentYear}-01-01`);
+
+                if (dailyError) throw dailyError;
+
+                const { data: salesData, error: salesError } = await supabaseClient
+                    .from('Sales')
+                    .select('*')
+                    .gte('date', `${currentYear}-01-01`);
+
+                if (salesError) throw salesError;
+
+                // Calculate historical conversion rates
+                const totalDials = dailyData.reduce((sum, d) => sum + (d.dials || 0), 0);
+                const totalConversations = dailyData.reduce((sum, d) => sum + (d.conversations || 0), 0);
+                const totalMeetings = dailyData.reduce((sum, d) => sum + (d.discovery_meetings || 0), 0);
+                const totalSales = salesData.length;
+
+                // Calculate conversion rates (with minimum data validation)
+                const dialToConvRate = totalDials > 0 ? totalConversations / totalDials : 0.25; // default 25%
+                const convToMeetingRate = totalConversations > 0 ? totalMeetings / totalConversations : 0.30; // default 30%
+                const meetingToSaleRate = totalMeetings > 0 ? totalSales / totalMeetings : 0.25; // default 25%
+
+                // Get monthly quota and calculate average sale value
+                const monthlyQuota = parseFloat(document.getElementById('monthly-quota').value) || 10000;
+                const avgSaleValue = totalSales > 0 ? salesData.reduce((sum, s) => sum + parseFloat(s.amount_cad), 0) / totalSales : 5000;
+
+                // Calculate MTD sales
+                const mtdSales = salesData.filter(s => s.date.startsWith(currentMonth));
+                const mtdRevenue = mtdSales.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
+                const remainingQuota = monthlyQuota - mtdRevenue;
+
+                // Calculate days remaining in month
+                const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+                const daysRemaining = daysInMonth - now.getDate() + 1;
+
+                // Calculate what's needed
+                const salesNeeded = Math.ceil(remainingQuota / avgSaleValue);
+                const meetingsNeeded = Math.ceil(salesNeeded / meetingToSaleRate);
+                const conversationsNeeded = Math.ceil(meetingsNeeded / convToMeetingRate);
+                const dialsNeeded = Math.ceil(conversationsNeeded / dialToConvRate);
+
+                // Calculate daily requirements
+                const dailySalesNeeded = (salesNeeded / daysRemaining).toFixed(1);
+                const dailyMeetingsNeeded = Math.ceil(meetingsNeeded / daysRemaining);
+                const dailyConversationsNeeded = Math.ceil(conversationsNeeded / daysRemaining);
+                const dailyDialsNeeded = Math.ceil(dialsNeeded / daysRemaining);
+
+                // Render recommendations
+                const container = document.getElementById('smart-recommendations');
+
+                if (remainingQuota <= 0) {
+                    container.innerHTML = `
+                        <div style="padding: 20px; background: linear-gradient(135deg, rgba(16, 195, 176, 0.2), rgba(61, 224, 210, 0.1)); border-radius: 12px; text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+                            <h3 style="color: var(--brand-gold); font-size: 1.5rem; margin-bottom: 10px;">Monthly Quota Achieved!</h3>
+                            <p style="opacity: 0.9;">You've hit your monthly sales quota of $${monthlyQuota.toFixed(0)}. Keep up the great work!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div style="background: linear-gradient(135deg, rgba(244, 176, 58, 0.2), rgba(249, 200, 99, 0.1)); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="color: var(--brand-gold); font-size: 1.2rem; margin-bottom: 15px;">📊 Your Historical Conversion Rates</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-teal);">
+                                    ${(dialToConvRate * 100).toFixed(1)}%
+                                </div>
+                                <div class="stat-label">Dial → Conversation</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-aqua);">
+                                    ${(convToMeetingRate * 100).toFixed(1)}%
+                                </div>
+                                <div class="stat-label">Conversation → Meeting</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-gold);">
+                                    ${(meetingToSaleRate * 100).toFixed(1)}%
+                                </div>
+                                <div class="stat-label">Meeting → Sale</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-pink);">
+                                    $${avgSaleValue.toFixed(0)}
+                                </div>
+                                <div class="stat-label">Avg Sale Value</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(16, 195, 176, 0.2), rgba(61, 224, 210, 0.1)); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="color: var(--brand-aqua); font-size: 1.2rem; margin-bottom: 15px;">🎯 To Hit Your Monthly Quota</h3>
+                        <div style="margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                            <div style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 8px;">
+                                You need $${remainingQuota.toFixed(0)} more in the next ${daysRemaining} days
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: var(--brand-gold); font-size: 1.1rem;">Total Activities Needed (Rest of Month):</strong>
+                            <div class="stats-grid" style="margin-top: 10px;">
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-teal);">
+                                        ${dialsNeeded}
+                                    </div>
+                                    <div class="stat-label">Dials Needed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-aqua);">
+                                        ${conversationsNeeded}
+                                    </div>
+                                    <div class="stat-label">Conversations Needed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-gold);">
+                                        ${meetingsNeeded}
+                                    </div>
+                                    <div class="stat-label">Meetings Needed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-pink);">
+                                        ${salesNeeded}
+                                    </div>
+                                    <div class="stat-label">Sales Needed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(230, 69, 99, 0.2), rgba(244, 176, 58, 0.1)); padding: 20px; border-radius: 12px; border: 2px solid var(--brand-pink);">
+                        <h3 style="color: var(--brand-pink); font-size: 1.3rem; margin-bottom: 15px;">🚀 YOUR DAILY ACTION PLAN</h3>
+                        <p style="margin-bottom: 15px; font-size: 1.05rem; opacity: 0.9;">
+                            Based on your conversion rates, here's what you need to do EVERY DAY for the next ${daysRemaining} days:
+                        </p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-teal);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-teal);">
+                                    ${dailyDialsNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Dials/Day</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-aqua);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-aqua);">
+                                    ${dailyConversationsNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Conversations/Day</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-gold);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-gold);">
+                                    ${dailyMeetingsNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Meetings/Day</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-pink);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-pink);">
+                                    ${dailySalesNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Sales/Day</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px; padding: 15px; background: rgba(244, 176, 58, 0.2); border-radius: 8px; font-size: 0.95rem; line-height: 1.6;">
+                            💡 <strong>Pro Tip:</strong> These numbers are based on YOUR actual historical conversion rates. As you track more data, these recommendations will become even more accurate!
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error calculating recommendations:', error);
+                document.getElementById('smart-recommendations').innerHTML = `
+                    <p style="opacity: 0.7;">Start tracking your daily activities to see personalized recommendations based on your conversion rates!</p>
+                `;
+            }
         }
 
         // Load weekly performance chart
@@ -2119,6 +2493,16 @@ ONLY include observations you can PROVE from the transcript.
             if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
                 showAlert('⚠️ Please configure Supabase credentials in the code.', 'error');
             } else {
+                // Load saved settings
+                loadActivityGoalsForm();
+
+                // Load monthly quota from localStorage if exists
+                const savedQuota = localStorage.getItem('monthlyQuota');
+                if (savedQuota) {
+                    document.getElementById('monthly-quota').value = savedQuota;
+                }
+
+                // Load dashboard data
                 loadDashboardData();
                 loadConversationHistory();
             }
