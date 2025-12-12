@@ -442,6 +442,7 @@
         let supabaseClient;
         let currentTab = 'subject';
         let generatedEmails = {};
+        let currentVariations = [];
 
         // Initialize
         window.onload = function() {
@@ -761,7 +762,7 @@ Hamilton, ON
         }
 
         // Generate smart variations using different Sandler strategies
-        async function generateVariations() {
+        function generateVariations() {
             if (!generatedEmails.emailBody) {
                 showAlert('Please generate base emails first!', 'error');
                 return;
@@ -778,7 +779,7 @@ Hamilton, ON
             variationsOutput.innerHTML = '<div class="loading">Creating Sandler-based variations...</div>';
 
             // Create intelligent variations based on Sandler principles
-            const variations = [
+            currentVariations = [
                 {
                     title: "Variation 1: Negative Reverse Selling",
                     email: `Hi ${generatedEmails.firstName},
@@ -880,19 +881,28 @@ Hamilton, ON`
                 }
             ];
 
-            variationsOutput.innerHTML = `
-                <div class="variations-container">
-                    ${variations.map((v, i) => `
-                        <div class="variation">
-                            <div class="variation-label">${v.title}</div>
-                            <div class="email-body" style="margin-top: 10px; white-space: pre-wrap;">${v.email}</div>
-                            <button class="btn copy-btn" onclick="copyText(\`${v.email.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, 'Variation ${i + 1} copied!')">📋 Copy This Version</button>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            // Render variations with safer onclick handlers
+            let html = '<div class="variations-container">';
+            currentVariations.forEach((v, i) => {
+                html += `
+                    <div class="variation">
+                        <div class="variation-label">${v.title}</div>
+                        <div class="email-body" style="margin-top: 10px; white-space: pre-wrap;">${v.email}</div>
+                        <button class="btn copy-btn" onclick="copyVariation(${i})">📋 Copy This Version</button>
+                    </div>
+                `;
+            });
+            html += '</div>';
 
+            variationsOutput.innerHTML = html;
             showAlert('✅ 4 strategic variations generated!', 'success');
+        }
+
+        // Copy a variation by index
+        function copyVariation(index) {
+            if (currentVariations[index]) {
+                copyText(currentVariations[index].email, `Variation ${index + 1} copied!`);
+            }
         }
 
         // Copy text to clipboard
