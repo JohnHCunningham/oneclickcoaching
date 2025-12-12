@@ -343,20 +343,47 @@
                 </div>
 
                 <div class="input-group">
-                    <label>Email Approach</label>
-                    <select id="email-style">
-                        <option value="soft">Soft Approach (Consultative)</option>
-                        <option value="bold">Bold Approach (Direct Challenge)</option>
+                    <label>Channel</label>
+                    <select id="channel-type" onchange="updateChannelOptions()">
+                        <option value="email">Email Outreach</option>
+                        <option value="linkedin">LinkedIn Outreach</option>
                     </select>
                 </div>
 
-                <div class="input-group">
-                    <label>Call-to-Action</label>
-                    <select id="cta-type">
-                        <option value="calendar">Calendar Link</option>
-                        <option value="reply">Reply "Curious"</option>
-                        <option value="both">Both Options</option>
-                    </select>
+                <div id="email-options">
+                    <div class="input-group">
+                        <label>Email Approach</label>
+                        <select id="email-style">
+                            <option value="soft">Soft Approach (Consultative)</option>
+                            <option value="bold">Bold Approach (Direct Challenge)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Call-to-Action</label>
+                        <select id="cta-type">
+                            <option value="calendar">Calendar Link</option>
+                            <option value="reply">Reply "Curious"</option>
+                            <option value="both">Both Options</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="linkedin-options" style="display: none;">
+                    <div class="input-group">
+                        <label>LinkedIn Message Type</label>
+                        <select id="linkedin-type">
+                            <option value="connection">Connection Request</option>
+                            <option value="dm">Direct Message (After Connected)</option>
+                            <option value="group-post">Sandler Group Post</option>
+                            <option value="comment">Comment on Discussion</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Context (Optional)</label>
+                        <textarea id="linkedin-context" placeholder="e.g., Saw your post about Pain Funnel challenges..."></textarea>
+                    </div>
                 </div>
 
                 <button class="btn" onclick="generateEmails()">✨ Generate Emails</button>
@@ -429,6 +456,18 @@
             setTimeout(() => container.innerHTML = '', 5000);
         }
 
+        // Update channel options
+        function updateChannelOptions() {
+            const channel = document.getElementById('channel-type').value;
+            if (channel === 'linkedin') {
+                document.getElementById('email-options').style.display = 'none';
+                document.getElementById('linkedin-options').style.display = 'block';
+            } else {
+                document.getElementById('email-options').style.display = 'block';
+                document.getElementById('linkedin-options').style.display = 'none';
+            }
+        }
+
         // Switch tabs
         function switchTab(tab) {
             currentTab = tab;
@@ -443,35 +482,158 @@
             const company = document.getElementById('company').value.trim();
             const industry = document.getElementById('industry').value.trim() || 'your industry';
             const painPoint = document.getElementById('pain-point').value.trim();
-            const style = document.getElementById('email-style').value;
-            const ctaType = document.getElementById('cta-type').value;
+            const channel = document.getElementById('channel-type').value;
 
             if (!firstName || !company) {
                 showAlert('Please enter at least First Name and Company', 'error');
                 return;
             }
 
-            // Generate subject lines
-            const subjectLines = [
-                `${firstName} - Are your reps executing Sandler or just talking about it?`,
-                `Quick question about ${company}'s Sandler execution`,
-                `${company} - Sandler coaching that doesn't require a $10K consultant`
-            ];
+            if (channel === 'linkedin') {
+                generateLinkedInMessages(firstName, company, industry, painPoint);
+            } else {
+                const style = document.getElementById('email-style').value;
+                const ctaType = document.getElementById('cta-type').value;
 
-            // Generate email body
-            const emailBody = style === 'soft' ? generateSoftEmail(firstName, company, industry, painPoint, ctaType) : generateBoldEmail(firstName, company, industry, painPoint, ctaType);
+                // Generate subject lines
+                const subjectLines = [
+                    `${firstName} - Are your reps executing Sandler or just talking about it?`,
+                    `Quick question about ${company}'s Sandler execution`,
+                    `${company} - Sandler coaching that doesn't require a $10K consultant`
+                ];
+
+                // Generate email body
+                const emailBody = style === 'soft' ? generateSoftEmail(firstName, company, industry, painPoint, ctaType) : generateBoldEmail(firstName, company, industry, painPoint, ctaType);
+
+                generatedEmails = {
+                    subjectLines,
+                    emailBody,
+                    style,
+                    firstName,
+                    company,
+                    channel: 'email'
+                };
+
+                currentTab = 'subject';
+                displayCurrentTab();
+                showAlert('✅ Emails generated! Click tabs to see subject lines, body, and request AI variations.', 'success');
+            }
+        }
+
+        // Generate LinkedIn messages
+        function generateLinkedInMessages(firstName, company, industry, painPoint) {
+            const linkedinType = document.getElementById('linkedin-type').value;
+            const context = document.getElementById('linkedin-context').value.trim();
+
+            let messages = {};
+
+            switch(linkedinType) {
+                case 'connection':
+                    messages = {
+                        subjectLines: ['LinkedIn Connection Request'],
+                        emailBody: generateLinkedInConnection(firstName, company, context)
+                    };
+                    break;
+                case 'dm':
+                    messages = {
+                        subjectLines: ['LinkedIn Direct Message'],
+                        emailBody: generateLinkedInDM(firstName, company, industry, painPoint, context)
+                    };
+                    break;
+                case 'group-post':
+                    messages = {
+                        subjectLines: ['Sandler Group Post'],
+                        emailBody: generateLinkedInGroupPost()
+                    };
+                    break;
+                case 'comment':
+                    messages = {
+                        subjectLines: ['Discussion Comment'],
+                        emailBody: generateLinkedInComment(context)
+                    };
+                    break;
+            }
 
             generatedEmails = {
-                subjectLines,
-                emailBody,
-                style,
+                ...messages,
+                style: linkedinType,
                 firstName,
-                company
+                company,
+                channel: 'linkedin'
             };
 
-            currentTab = 'subject';
+            currentTab = 'email';
             displayCurrentTab();
-            showAlert('✅ Emails generated! Click tabs to see subject lines, body, and request AI variations.', 'success');
+            showAlert('✅ LinkedIn message generated!', 'success');
+        }
+
+        // Generate LinkedIn connection request
+        function generateLinkedInConnection(firstName, company, context) {
+            if (context) {
+                return `Hi ${firstName},\n\n${context}\n\nI help sales teams execute Sandler methodology in real conversations. Would love to connect and share insights!\n\nBest,\nJohn`;
+            } else {
+                return `Hi ${firstName},\n\nSaw you're with ${company}. I work with sales teams implementing Sandler methodology and would love to connect.\n\nLooking forward to sharing insights!\n\nBest,\nJohn`;
+            }
+        }
+
+        // Generate LinkedIn DM (after connection)
+        function generateLinkedInDM(firstName, company, industry, painPoint, context) {
+            const contextLine = context ? `\n\n${context}\n\n` : '\n\n';
+
+            return `Hi ${firstName},${contextLine}Thanks for connecting! I noticed you're focused on ${industry}.
+
+Quick question: After your team gets Sandler training, do you have a system to ensure they're actually EXECUTING it in real calls?
+
+Most sales leaders I talk to face the same challenge:
+- Reps learn Sandler → Get excited → Week 1-2 they use it → Week 4+ back to old habits
+
+I built an AI coaching tool that analyzes every call and gives reps specific Sandler scripts to use next time.
+
+**Example:** When prospect says "We're too busy," instead of ending the call, it coaches:
+> "Try: 'I get it. That's exactly why I called—to give you back 20 hours/week. Worth 15 min to explore?'"
+
+Worth a quick look? I can send you a 2-min demo or we could jump on a quick call.
+
+Either way, happy to be connected!
+
+Best,
+John`;
+        }
+
+        // Generate LinkedIn group post
+        function generateLinkedInGroupPost() {
+            return `After Sandler training, we had a problem:
+
+Reps KNEW the methodology but weren't EXECUTING it in real calls.
+
+We tried:
+❌ More role-playing → Didn't stick
+❌ Weekly call reviews → Only covered 2-3 calls
+❌ Reminder emails → Ignored
+
+Then we built an AI coach that analyzes EVERY call and gives specific Sandler scripts.
+
+Example: When prospect says "We're too busy," AI coaches:
+**"Try: 'I get it. That's why I called—to give you back 20 hours/week. Worth 15 min to explore?'"**
+
+Result: Reps now USE what they learned.
+
+**Question for the group:** How do you ensure your team executes Sandler 60+ days after training?
+
+What's working for you?
+
+---
+
+P.S. - Happy to share more about the AI tool if anyone's curious. DM me.`;
+        }
+
+        // Generate LinkedIn comment
+        function generateLinkedInComment(context) {
+            if (!context) {
+                return `Great point! The gap between Sandler training and execution is massive. We built an AI tool that gives reps specific scripts after every call. Game-changer for reinforcement.`;
+            }
+
+            return `Totally agree with this.\n\n${context}\n\nWe solved this with an AI coach that analyzes calls and gives Sandler-specific scripts. Reps get feedback on EVERY call, not just the ones managers review.\n\nHappy to share more if useful!`;
         }
 
         // Generate soft approach email
