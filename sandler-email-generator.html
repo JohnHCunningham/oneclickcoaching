@@ -760,89 +760,139 @@ Hamilton, ON
             }
         }
 
-        // Generate AI variations using Claude
+        // Generate smart variations using different Sandler strategies
         async function generateVariations() {
             if (!generatedEmails.emailBody) {
                 showAlert('Please generate base emails first!', 'error');
                 return;
             }
 
-            showAlert('🤖 Generating AI variations with Claude...', 'success');
+            showAlert('✨ Generating strategic variations...', 'success');
             currentTab = 'variations';
-            switchTab('variations');
 
-            const variationsOutput = document.getElementById('variations-output');
-            variationsOutput.innerHTML = '<div class="loading">🤖 Claude is analyzing and creating variations...</div>';
+            // Update tab UI
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab')[2].classList.add('active');
 
-            try {
-                const { data, error } = await supabaseClient.functions.invoke('analyze-conversation', {
-                    body: {
-                        transcript: `Generate 3 variations of this Sandler prospecting email. Each variation should:
-1. Use different opening hooks
-2. Emphasize different pain points
-3. Use different Sandler techniques (Negative Reverse, Up-Front Contract, etc.)
-4. Keep the same professional tone
+            const variationsOutput = document.getElementById('variations-output') || document.getElementById('output-container');
+            variationsOutput.innerHTML = '<div class="loading">Creating Sandler-based variations...</div>';
 
-Original email:
-${generatedEmails.emailBody}
+            // Create intelligent variations based on Sandler principles
+            const variations = [
+                {
+                    title: "Variation 1: Negative Reverse Selling",
+                    email: `Hi ${generatedEmails.firstName},
 
-Return as JSON with format:
-{
-  "variations": [
-    {"title": "Variation 1: [Strategy]", "email": "..."},
-    {"title": "Variation 2: [Strategy]", "email": "..."},
-    {"title": "Variation 3: [Strategy]", "email": "..."}
-  ]
-}`,
-                        callType: 'email_generation'
-                    }
-                });
+I'm not sure if this is relevant to ${generatedEmails.company}, but I'll take 30 seconds.
 
-                if (error) throw error;
+Most sales leaders tell me their reps learned Sandler... but don't actually USE it in real conversations.
 
-                // For now, create manual variations since Claude response format needs adjustment
-                const variations = [
-                    {
-                        title: "Variation 1: Pain-First Approach",
-                        email: generatedEmails.emailBody.replace("I know I'm catching you cold", "I solve a problem you might be experiencing right now")
-                    },
-                    {
-                        title: "Variation 2: Social Proof Focus",
-                        email: generatedEmails.emailBody.replace("I built an AI-powered coaching system", "Sales teams at companies like [Company] are using an AI coaching system I built")
-                    },
-                    {
-                        title: "Variation 3: Ultra-Short Version",
-                        email: `Hi ${generatedEmails.firstName},
+Sound familiar?
 
-Quick question: Do you have a way to coach EVERY sales call your team makes?
+If it does, I built something that might help: An AI coach that gives your reps specific Sandler scripts after every call.
 
-Most don't. I built an AI system that does.
+Example: When a prospect says "We're too busy," it coaches:
+> "Try: 'I get it. That's why I called—to give you back 20 hours/week. Worth 15 min?'"
 
-15-minute demo? [Calendar Link]
+If this isn't a fit, no worries. But if it is, would 15 minutes make sense to explore?
+
+Worst case, you'll tell me "not a fit" and we'll both move on.
+
+Fair enough?
 
 Best,
-John Cunningham`
-                    }
-                ];
+John Cunningham
+AI Advantage Solutions
+[Calendar Link]`
+                },
+                {
+                    title: "Variation 2: Pain Funnel Focus",
+                    email: `Hi ${generatedEmails.firstName},
 
-                variationsOutput.innerHTML = `
-                    <div class="variations-container">
-                        ${variations.map(v => `
-                            <div class="variation">
-                                <div class="variation-label">${v.title}</div>
-                                <div class="email-body" style="margin-top: 10px;">${v.email}</div>
-                                <button class="btn copy-btn" onclick="copyText(\`${v.email.replace(/`/g, '\\`')}\`, 'Variation copied!')">📋 Copy</button>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+Quick question about ${generatedEmails.company}:
 
-                showAlert('✅ AI variations generated!', 'success');
+After your team gets Sandler training, how long does it take before they're back to old habits?
 
-            } catch (error) {
-                console.error('Error:', error);
-                variationsOutput.innerHTML = '<p style="color: var(--brand-pink); text-align: center;">Failed to generate variations. Try again or use manual variations.</p>';
-            }
+Here's what I typically hear:
+- Week 1-2: They use the Pain Funnel
+- Week 4: Using maybe 30% of it
+- Week 8: Back to feature-dumping
+
+The problem? No real-time reinforcement.
+
+I built an AI system that analyzes EVERY call and coaches reps with specific Sandler scripts.
+
+**Here's my question:** If I could show you a way to make Sandler stick for 90+ days instead of 14 days, would 15 minutes be a good investment?
+
+If yes: [Calendar Link]
+If no: Just tell me "not interested" and I'll stop here.
+
+Best,
+John Cunningham
+AI Advantage Solutions
+Hamilton, ON`
+                },
+                {
+                    title: "Variation 3: Ultra-Brief (Mobile Optimized)",
+                    email: `${generatedEmails.firstName} -
+
+Problem: Your reps learned Sandler but don't execute it.
+
+Solution: AI coach gives them specific scripts after EVERY call.
+
+Example:
+Prospect: "We're too busy"
+AI: "Try: 'That's why I called—to give you 20 hours back. 15 min?'"
+
+Worth a 15-min demo?
+
+[Calendar Link]
+
+John Cunningham
+AI Advantage Solutions`
+                },
+                {
+                    title: "Variation 4: Social Proof Version",
+                    email: `Hi ${generatedEmails.firstName},
+
+I work with Sandler-trained sales teams at companies like ${generatedEmails.company}.
+
+Common challenge they share: Reps know the methodology but don't execute it consistently.
+
+We solved this with an AI coaching system that:
+- Analyzes 100% of calls (not just 2-3/week)
+- Gives reps exact Sandler scripts for next time
+- Reinforces Pain Funnel, Up-Front Contract, Budget discussion, etc.
+
+**Real example:** When prospect says "Send me info," AI coaches:
+> "Try: 'Happy to. After you review it, what happens? Should we book 15 min to discuss, or will you reach out?'"
+
+Teams using this are seeing 40%+ improvement in Sandler execution scores.
+
+Would it make sense to see if this could work for ${generatedEmails.company}?
+
+15-minute demo: [Calendar Link]
+
+Best,
+John Cunningham
+AI Advantage Solutions
+Hamilton, ON`
+                }
+            ];
+
+            variationsOutput.innerHTML = `
+                <div class="variations-container">
+                    ${variations.map((v, i) => `
+                        <div class="variation">
+                            <div class="variation-label">${v.title}</div>
+                            <div class="email-body" style="margin-top: 10px; white-space: pre-wrap;">${v.email}</div>
+                            <button class="btn copy-btn" onclick="copyText(\`${v.email.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, 'Variation ${i + 1} copied!')">📋 Copy This Version</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            showAlert('✅ 4 strategic variations generated!', 'success');
         }
 
         // Copy text to clipboard
@@ -885,12 +935,13 @@ John Cunningham`
             try {
                 const { data, error } = await supabaseClient
                     .from('Email_Tracking')
-                    .select('*');
+                    .select('*')
+                    .order('sent_date', { ascending: false });
 
                 if (error) throw error;
 
                 const totalSent = data.length;
-                const responded = data.filter(e => e.status === 'responded').length;
+                const responded = data.filter(e => e.status === 'responded' || e.status === 'booked').length;
                 const responseRate = totalSent > 0 ? ((responded / totalSent) * 100).toFixed(1) : 0;
 
                 // Find best subject line
@@ -900,7 +951,7 @@ John Cunningham`
                         subjectStats[email.subject_line] = { sent: 0, responded: 0 };
                     }
                     subjectStats[email.subject_line].sent++;
-                    if (email.status === 'responded') {
+                    if (email.status === 'responded' || email.status === 'booked') {
                         subjectStats[email.subject_line].responded++;
                     }
                 });
@@ -909,7 +960,7 @@ John Cunningham`
                 let bestRate = 0;
                 Object.entries(subjectStats).forEach(([subject, stats]) => {
                     const rate = stats.responded / stats.sent;
-                    if (rate > bestRate) {
+                    if (rate > bestRate && stats.sent >= 2) { // Only count if sent at least 2 times
                         bestRate = rate;
                         bestSubject = subject.substring(0, 30) + '...';
                     }
@@ -919,8 +970,72 @@ John Cunningham`
                 document.getElementById('response-rate').textContent = responseRate + '%';
                 document.getElementById('best-subject').textContent = bestSubject;
 
+                // Show recent emails with status update options
+                const trackingDetails = document.getElementById('tracking-details');
+                if (data.length > 0) {
+                    trackingDetails.innerHTML = `
+                        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                            <h3 style="color: var(--brand-aqua); font-size: 1rem; margin-bottom: 15px;">Recent Emails (Click to Update Status)</h3>
+                            <div style="display: grid; gap: 10px;">
+                                ${data.slice(0, 10).map(email => `
+                                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;">
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--brand-gold); font-size: 0.9rem;">${email.prospect_name} - ${email.prospect_company}</div>
+                                            <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 3px;">${email.sent_date} • ${email.subject_line.substring(0, 40)}...</div>
+                                        </div>
+                                        <div style="display: flex; gap: 5px;">
+                                            <select id="status-${email.id}" onchange="updateEmailStatus('${email.id}')" style="padding: 6px; border-radius: 6px; background: var(--input-bg); color: var(--brand-teal); border: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem;">
+                                                <option value="sent" ${email.status === 'sent' ? 'selected' : ''}>📤 Sent</option>
+                                                <option value="opened" ${email.status === 'opened' ? 'selected' : ''}>👀 Opened</option>
+                                                <option value="responded" ${email.status === 'responded' ? 'selected' : ''}>💬 Responded</option>
+                                                <option value="booked" ${email.status === 'booked' ? 'selected' : ''}>✅ Meeting Booked</option>
+                                                <option value="no_response" ${email.status === 'no_response' ? 'selected' : ''}>❌ No Response</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    trackingDetails.innerHTML = `
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(16, 195, 176, 0.1); border-radius: 8px; text-align: center;">
+                            <p style="opacity: 0.8;">No emails tracked yet. Click "Mark as Sent" after generating emails to start tracking!</p>
+                        </div>
+                    `;
+                }
+
             } catch (error) {
                 console.error('Stats error:', error);
+                document.getElementById('tracking-details').innerHTML = `
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(230, 69, 99, 0.1); border-radius: 8px; text-align: center;">
+                        <p style="color: var(--brand-pink);">Email tracking not set up yet. Run the SQL schema to create the Email_Tracking table.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Update email status
+        async function updateEmailStatus(emailId) {
+            const newStatus = document.getElementById(`status-${emailId}`).value;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('Email_Tracking')
+                    .update({
+                        status: newStatus,
+                        response_date: newStatus === 'responded' || newStatus === 'booked' ? new Date().toISOString().split('T')[0] : null
+                    })
+                    .eq('id', emailId);
+
+                if (error) throw error;
+
+                showAlert(`✅ Status updated to: ${newStatus}`, 'success');
+                loadEmailStats(); // Refresh stats
+
+            } catch (error) {
+                console.error('Update error:', error);
+                showAlert('⚠️ Failed to update status', 'error');
             }
         }
     </script>
