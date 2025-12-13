@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import toast from 'react-hot-toast'
-import { HiPlay } from 'react-icons/hi2'
+import { HiPlay, HiXMark } from 'react-icons/hi2'
 
 const emailSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -213,7 +213,7 @@ const Hero = () => {
               onClick={() => setShowVideo(false)}
               className="absolute top-4 right-4 z-10 text-white hover:text-teal bg-navy/50 rounded-full p-2"
             >
-              <HiX size={24} />
+              <HiXMark size={24} />
             </button>
             {/* Replace with actual video */}
             <div className="w-full h-full flex items-center justify-center text-light">
