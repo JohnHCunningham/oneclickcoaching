@@ -22,7 +22,7 @@ serve(async (req) => {
 
   try {
     // Get request body
-    const { transcript, callType, methodology = 'sandler' } = await req.json()
+    const { transcript, callType, methodology = 'sandler', scripts } = await req.json()
 
     if (!transcript) {
       return new Response(
@@ -32,7 +32,7 @@ serve(async (req) => {
     }
 
     // Build methodology-specific coaching prompt
-    const coachingPrompt = getMethodologyPrompt(methodology, transcript, callType)
+    const coachingPrompt = getMethodologyPrompt(methodology, transcript, callType, scripts)
 
     // Call Claude API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -95,7 +95,28 @@ serve(async (req) => {
 })
 
 // Helper function to generate methodology-specific prompts
-function getMethodologyPrompt(methodology: string, transcript: string, callType: string): string {
+function getMethodologyPrompt(methodology: string, transcript: string, callType: string, scripts?: any): string {
+  // Build reference scripts section if provided
+  let scriptsSection = '';
+  if (scripts) {
+    scriptsSection = `
+REFERENCE SCRIPTS (User's Custom Scripts):
+Opening: "${scripts.opening || 'Not provided'}"
+Value Prop: "${scripts.valueProp || 'Not provided'}"
+CTA: "${scripts.cta || 'Not provided'}"
+Objection Handling: "${scripts.objections || 'Not provided'}"
+Business: ${scripts.businessDescription || 'Not provided'}
+`;
+  } else {
+    // Default/fallback scripts
+    scriptsSection = `
+REFERENCE SCRIPTS (Default):
+Opening: "Hi [Name], this is [Your Name] from [Company] here in [Location]. I know I'm catching you cold, so I'll be brief."
+Value Prop: "I help [Target Customer] achieve [Specific Benefit] by [Solution]."
+CTA: "I'd love to show you how in a quick 15-minute online meeting. Do you have your calendar handy?"
+`;
+  }
+
   const basePrompt = `
 You are an expert sales trainer and tactical coach. Your job is to analyze this conversation and provide SPECIFIC, ACTIONABLE scripts and alternatives.
 
@@ -104,6 +125,9 @@ IMPORTANT:
 - Provide EXACT WORDS and SPECIFIC SCRIPTS for what to say next time
 - Give 2-3 ALTERNATIVE responses for key moments
 - Show ROLE-PLAY examples: "You say... They say... You say..."
+- Compare the actual conversation to the reference scripts below
+
+${scriptsSection}
 
 Conversation Type: ${callType}
 

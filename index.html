@@ -620,6 +620,55 @@
                 <button class="btn-primary" onclick="saveActivityGoals()">Save Goals</button>
             </div>
 
+            <!-- Sales Scripts Editor Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Sales Scripts</h2>
+                    <span class="card-icon">📝</span>
+                </div>
+
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(61, 224, 210, 0.1); border-radius: 10px; font-size: 0.9rem;">
+                    <strong>✨ AI-Powered:</strong> Describe your business below and let Claude rewrite your scripts to match your unique value proposition.
+                </div>
+
+                <div class="input-group">
+                    <label>Business Description</label>
+                    <textarea id="script-business-description" placeholder="e.g., I help mixed-income community housing providers in Hamilton save up to 20 hours per week by automating repetitive tasks like maintenance requests, tenant communications, and compliance tracking." rows="3"></textarea>
+                    <small style="opacity: 0.7; font-size: 0.85rem; margin-top: 5px; display: block;">
+                        What do you do? Who do you help? What problems do you solve?
+                    </small>
+                </div>
+
+                <div class="input-group">
+                    <label>Opening Script (Cold Call)</label>
+                    <textarea id="script-opening" placeholder='e.g., "Hi [Name], this is [Your Name] from [Company] here in [Location]. I know I\'m catching you cold, so I\'ll be brief."' rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Value Proposition</label>
+                    <textarea id="script-value-prop" placeholder='e.g., "I help [Target Customer] save up to [Specific Benefit] by [How You Do It]."' rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Call to Action (CTA)</label>
+                    <textarea id="script-cta" placeholder='e.g., "I\'d love to show you how in a quick 15-minute online meeting. Do you have your calendar handy, or would [Date] at [Time] work better?"' rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Objection Handling Template</label>
+                    <textarea id="script-objections" placeholder='e.g., "I understand. A lot of our clients felt the same way initially. What if we could show you [specific outcome] in the first 30 days?"' rows="3"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn-primary" onclick="saveScripts()">💾 Save Scripts</button>
+                    <button class="btn-primary" onclick="rewriteScriptsWithAI()" style="background: linear-gradient(135deg, var(--brand-pink), #c13752);">
+                        ✨ Rewrite Scripts with AI
+                    </button>
+                </div>
+
+                <div id="scripts-rewrite-status" style="margin-top: 15px; display: none;"></div>
+            </div>
+
             </div><!-- End setup-section -->
 
             <!-- SECTION 2: DAILY ACTIONS -->
@@ -2207,8 +2256,10 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             // Use secure Supabase Edge Function (required for production)
             // API keys are stored securely on the server, never exposed to the client
             try {
+                const scripts = getScripts(); // Get user's custom scripts
+
                 const { data, error } = await supabaseClient.functions.invoke('analyze-conversation', {
-                    body: { transcript, callType, methodology }
+                    body: { transcript, callType, methodology, scripts }
                 });
 
                 if (error) throw error;
@@ -2573,6 +2624,112 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         }
 
         // ============================================
+        // SALES SCRIPTS FUNCTIONS
+        // ============================================
+
+        function saveScripts() {
+            const scripts = {
+                businessDescription: document.getElementById('script-business-description').value.trim(),
+                opening: document.getElementById('script-opening').value.trim(),
+                valueProp: document.getElementById('script-value-prop').value.trim(),
+                cta: document.getElementById('script-cta').value.trim(),
+                objections: document.getElementById('script-objections').value.trim()
+            };
+
+            localStorage.setItem('salesScripts', JSON.stringify(scripts));
+            showAlert('✅ Scripts saved successfully!', 'success');
+        }
+
+        function loadScripts() {
+            const saved = localStorage.getItem('salesScripts');
+            if (saved) {
+                const scripts = JSON.parse(saved);
+                document.getElementById('script-business-description').value = scripts.businessDescription || '';
+                document.getElementById('script-opening').value = scripts.opening || '';
+                document.getElementById('script-value-prop').value = scripts.valueProp || '';
+                document.getElementById('script-cta').value = scripts.cta || '';
+                document.getElementById('script-objections').value = scripts.objections || '';
+            }
+        }
+
+        function getScripts() {
+            const saved = localStorage.getItem('salesScripts');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+
+            // Return default scripts if none saved
+            return {
+                businessDescription: 'AI Advantage Solutions - helping businesses automate tasks and save time',
+                opening: 'Hi [Name], this is John from AI Advantage Solutions here in Hamilton. I know I\'m catching you cold, so I\'ll be brief.',
+                valueProp: 'I help mixed-income community providers like [Company] save up to 20 hours per week by automating repetitive tasks—things like maintenance requests, tenant communications, and compliance tracking.',
+                cta: 'I\'d love to show you how in a quick 15-minute online meeting. Do you have your calendar handy, or would [Date] at [Time] work better?',
+                objections: 'I understand. A lot of our clients felt the same way initially. What if I could show you how one client saved 15 hours in their first week?'
+            };
+        }
+
+        async function rewriteScriptsWithAI() {
+            const businessDescription = document.getElementById('script-business-description').value.trim();
+            const statusDiv = document.getElementById('scripts-rewrite-status');
+
+            if (!businessDescription) {
+                showAlert('Please enter a business description first', 'error');
+                return;
+            }
+
+            // Show loading state
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '<div class="loading">✨ Claude is rewriting your scripts...</div>';
+
+            try {
+                // Call Supabase Edge Function to generate scripts
+                const { data, error } = await supabaseClient.functions.invoke('generate-scripts', {
+                    body: {
+                        businessDescription: businessDescription,
+                        methodology: getMethodology()
+                    }
+                });
+
+                if (error) throw error;
+
+                if (data && data.scripts) {
+                    // Populate the fields with AI-generated scripts
+                    document.getElementById('script-opening').value = data.scripts.opening || '';
+                    document.getElementById('script-value-prop').value = data.scripts.valueProp || '';
+                    document.getElementById('script-cta').value = data.scripts.cta || '';
+                    document.getElementById('script-objections').value = data.scripts.objections || '';
+
+                    statusDiv.innerHTML = '<div class="alert alert-success">✅ Scripts rewritten successfully! Review and save them below.</div>';
+                    celebrateWithConfetti('default');
+                } else {
+                    throw new Error('No scripts returned from AI');
+                }
+
+            } catch (error) {
+                console.error('Script rewriting error:', error);
+                statusDiv.innerHTML = `<div class="alert alert-error">❌ Failed to rewrite scripts: ${error.message}. Using demo mode instead.</div>`;
+
+                // Fallback: Generate demo scripts locally
+                generateDemoScripts(businessDescription);
+            }
+        }
+
+        function generateDemoScripts(businessDescription) {
+            // Demo script generation (basic templating as fallback)
+            const opening = `Hi [Name], this is [Your Name] from [Your Company] here in [Location]. I know I'm catching you cold, so I'll be brief.`;
+            const valueProp = businessDescription || 'I help [Target Customer] achieve [Specific Benefit] by [Your Solution].';
+            const cta = `I'd love to show you how in a quick 15-minute online meeting. Do you have your calendar handy, or would [Day] at [Time] work better?`;
+            const objections = `I understand. Many of our clients felt the same way initially. What if we could show you [specific outcome] in the first 30 days—would that be worth 15 minutes?`;
+
+            document.getElementById('script-opening').value = opening;
+            document.getElementById('script-value-prop').value = valueProp;
+            document.getElementById('script-cta').value = cta;
+            document.getElementById('script-objections').value = objections;
+
+            showAlert('Demo scripts generated. For AI-powered scripts, deploy the generate-scripts Edge Function.', 'success');
+        }
+
+        // ============================================
         // SALES METHODOLOGY FUNCTIONS
         // ============================================
 
@@ -2803,6 +2960,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 loadMethodology();
                 loadICP();
                 loadProducts();
+                loadScripts();
                 loadSetupState();
 
                 // Load monthly quota from localStorage if exists
