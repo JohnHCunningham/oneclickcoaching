@@ -547,14 +547,11 @@
                 <div class="input-group">
                     <label>Which sales framework do you use?</label>
                     <select id="sales-methodology" onchange="saveMethodology()">
+                        <option value="meddic">MEDDIC/MEDDPICC</option>
+                        <option value="challenger">Challenger Sale</option>
                         <option value="sandler">Sandler Selling System</option>
                         <option value="spin">SPIN Selling</option>
-                        <option value="challenger">The Challenger Sale</option>
                         <option value="gap">Gap Selling</option>
-                        <option value="solution">Solution Selling</option>
-                        <option value="value">Value Selling</option>
-                        <option value="consultative">Consultative Selling</option>
-                        <option value="custom">Custom/None</option>
                     </select>
                 </div>
 
@@ -591,7 +588,7 @@
 
                 <div class="input-group">
                     <label>Key Pain Points</label>
-                    <textarea id="icp-pain-points" placeholder="e.g., Sandler-trained reps not executing methodology, inconsistent pipeline, low close rates" rows="3"></textarea>
+                    <textarea id="icp-pain-points" placeholder="e.g., Sales reps not executing methodology, inconsistent pipeline, low close rates" rows="3"></textarea>
                 </div>
 
                 <div class="input-group">
@@ -617,7 +614,7 @@
                 <div style="margin-bottom: 20px;">
                     <div class="input-group">
                         <label>Service/Product Name</label>
-                        <input type="text" id="product-name" placeholder="e.g., AI Sandler Coaching - Monthly">
+                        <input type="text" id="product-name" placeholder="e.g., AI Sales Coaching - Monthly">
                     </div>
 
                     <div class="input-group">
@@ -1905,16 +1902,18 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             }
         }
 
-        // Analyze performance and generate insights with SANDLER SALES METHODOLOGY
+        // Analyze performance and generate insights with SELECTED SALES METHODOLOGY
         function analyzePerformance(dailyData, salesData) {
             const insights = [];
             const today = new Date().toISOString().split('T')[0];
+            const methodologyInfo = getMethodologyInfo();
+            const methodologyName = methodologyInfo.name;
 
             if (dailyData.length === 0) {
                 insights.push({
                     type: 'alert',
-                    title: '🚀 Get Started - Sandler Cookbook',
-                    content: 'Start tracking your daily activities to unlock Sandler-based coaching insights. Remember: Success in sales = Activity × Effectiveness. Log your dials, conversations, and meetings.',
+                    title: '🚀 Get Started with Your Sales Tracking',
+                    content: `Start tracking your daily activities to unlock ${methodologyName}-based coaching insights. Remember: Success in sales = Activity × Effectiveness. Log your dials, conversations, and meetings.`,
                     priority: 'high'
                 });
                 return insights;
@@ -1929,66 +1928,66 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             const meetingRate = totalConversations > 0 ? (totalMeetings / totalConversations) * 100 : 0;
             const closeRate = totalMeetings > 0 ? (salesData.length / totalMeetings) * 100 : 0;
 
-            // SANDLER INSIGHT 1: Cookbook Consistency - Daily Behavior
+            // INSIGHT 1: Daily Activity - Consistency & Volume
             if (avgDials < 10) {
                 insights.push({
                     type: 'suggestion',
-                    title: '📞 Sandler Cookbook: Increase Activity',
-                    content: `You're averaging ${avgDials.toFixed(1)} dials per day. Sandler principle: "You can't control outcomes, only behaviors." Target 20-30 prospecting calls daily. Block time like a real appointment - no interruptions.`,
+                    title: '📞 Increase Daily Activity',
+                    content: `You're averaging ${avgDials.toFixed(1)} dials per day. Sales principle: "You can't control outcomes, only behaviors." Target 20-30 prospecting calls daily. Block time like a real appointment - no interruptions.`,
                     priority: 'high'
                 });
             } else if (avgDials >= 20) {
                 insights.push({
                     type: 'milestone',
-                    title: '🌟 Sandler Behavior: Excellent Activity',
-                    content: `You're averaging ${avgDials.toFixed(1)} dials per day - outstanding cookbook execution! Remember: "Success = Activity × Effectiveness". Keep this momentum going.`,
+                    title: '🌟 Excellent Activity Level',
+                    content: `You're averaging ${avgDials.toFixed(1)} dials per day - outstanding execution! Remember: "Success = Activity × Effectiveness". Keep this momentum going.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 2: Bonding & Rapport - Getting Conversations
+            // INSIGHT 2: Dial to Conversation Conversion
             if (conversionRate < 15 && totalDials >= 20) {
                 insights.push({
                     type: 'performance',
-                    title: '🤝 Sandler: Work on Bonding & Rapport',
-                    content: `Your dial-to-conversation rate is ${conversionRate.toFixed(1)}%. Sandler tip: People buy from people they trust. Focus on bonding in the first 30 seconds. Ask: "How's your day going?" before jumping into business. Use Negative Reverse Selling: "I'm not sure if we're a fit, but..."`,
+                    title: '🤝 Improve Conversation Rate',
+                    content: `Your dial-to-conversation rate is ${conversionRate.toFixed(1)}%. Key tip: People buy from people they trust. Focus on building rapport in the first 30 seconds. Ask: "How's your day going?" before jumping into business. Remove pressure with: "I'm not sure if we're a fit, but..."`,
                     priority: 'high'
                 });
             } else if (conversionRate >= 25) {
                 insights.push({
                     type: 'milestone',
-                    title: '🎯 Sandler: Strong Bonding Skills',
-                    content: `Your ${conversionRate.toFixed(1)}% conversation rate shows excellent bonding! You're building rapport effectively. Keep using curiosity-based questions and avoiding "show up and throw up" presentations.`,
+                    title: '🎯 Strong Connection Skills',
+                    content: `Your ${conversionRate.toFixed(1)}% conversation rate shows excellent rapport building! You're connecting effectively with prospects. Keep using curiosity-based questions and avoiding premature presentations.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 3: Up-Front Contracts - Meeting Conversion
+            // INSIGHT 3: Conversation to Meeting Conversion
             if (meetingRate < 20 && totalConversations >= 10) {
                 insights.push({
                     type: 'suggestion',
-                    title: '📋 Sandler: Set Up-Front Contracts',
-                    content: `${meetingRate.toFixed(1)}% of conversations lead to meetings. Sandler principle: Always set an Up-Front Contract. Ask: "Would it make sense to schedule 15 minutes to explore if we're a fit? At the end, you can tell me 'yes,' 'no,' or 'let's talk again.' Fair enough?" This removes pressure and increases bookings.`,
+                    title: '📋 Increase Meeting Bookings',
+                    content: `${meetingRate.toFixed(1)}% of conversations lead to meetings. Key principle: Set clear expectations. Try: "Would it make sense to schedule 15 minutes to explore if we're a fit? At the end, you can tell me 'yes,' 'no,' or 'let's talk again.' Fair enough?" This removes pressure and increases bookings.`,
                     priority: 'high'
                 });
             } else if (meetingRate >= 30) {
                 insights.push({
                     type: 'milestone',
-                    title: '📋 Sandler: Excellent Up-Front Contracts',
-                    content: `${meetingRate.toFixed(1)}% meeting conversion shows you're setting clear expectations! Keep using Up-Front Contracts to build trust and reduce no-shows.`,
+                    title: '📋 Excellent Meeting Conversion',
+                    content: `${meetingRate.toFixed(1)}% meeting conversion shows you're setting clear expectations! Keep building trust and reducing no-shows with this approach.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 4: Pain Funnel & Closing - Revenue Performance
+            // INSIGHT 4: Revenue Performance & Discovery
             if (salesData.length > 0) {
                 const totalRevenue = salesData.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
                 const avgSale = totalRevenue / salesData.length;
 
                 insights.push({
                     type: 'performance',
-                    title: '💰 Sandler: Revenue & Pain Discovery',
-                    content: `You've closed ${salesData.length} sales (${closeRate.toFixed(1)}% close rate) with average value of $${avgSale.toFixed(2)} CAD. Total: $${totalRevenue.toFixed(2)} CAD. Sandler reminder: "No pain, no change." Keep using the Pain Funnel in discovery meetings to uncover compelling reasons to buy.`,
+                    title: '💰 Revenue Performance',
+                    content: `You've closed ${salesData.length} sales (${closeRate.toFixed(1)}% close rate) with average value of $${avgSale.toFixed(2)} CAD. Total: $${totalRevenue.toFixed(2)} CAD. Remember: "No pain, no change." Keep using deep discovery to uncover compelling reasons to buy.`,
                     priority: 'low'
                 });
 
@@ -1996,56 +1995,56 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 if (closeRate < 25 && totalMeetings >= 5) {
                     insights.push({
                         type: 'suggestion',
-                        title: '🔍 Sandler: Use the Pain Funnel',
-                        content: `Your ${closeRate.toFixed(1)}% close rate suggests qualification gaps. In discovery meetings, use the Pain Funnel: "Tell me more about that... How long has that been a problem? What have you tried? How much is it costing you? What happens if you don't fix it?" Uncover COMPELLING pain, not just technical needs.`,
+                        title: '🔍 Improve Discovery Process',
+                        content: `Your ${closeRate.toFixed(1)}% close rate suggests qualification gaps. In discovery meetings, dig deeper: "Tell me more about that... How long has that been a problem? What have you tried? How much is it costing you? What happens if you don't fix it?" Uncover COMPELLING pain, not just surface-level needs.`,
                         priority: 'high'
                     });
                 } else if (closeRate >= 40) {
                     insights.push({
                         type: 'milestone',
-                        title: '🎯 Sandler: Excellent Qualification',
-                        content: `Your ${closeRate.toFixed(1)}% close rate shows you're qualifying well! You're uncovering real pain and only moving forward with qualified prospects. This is true Sandler discipline.`,
+                        title: '🎯 Excellent Qualification',
+                        content: `Your ${closeRate.toFixed(1)}% close rate shows you're qualifying well! You're uncovering real pain and only moving forward with qualified prospects. This is true sales discipline.`,
                         priority: 'low'
                     });
                 }
             }
 
-            // SANDLER INSIGHT 5: Budget & Decision - Qualification Discipline
+            // INSIGHT 5: Budget & Decision Process Qualification
             if (totalMeetings >= 5 && salesData.length === 0) {
                 insights.push({
                     type: 'alert',
-                    title: '💵 Sandler: Qualify Budget & Decision Early',
-                    content: `You've held ${totalMeetings} meetings but no sales yet. Sandler tip: Don't waste time on unqualified prospects. In first call, ask: "If this makes sense, what kind of budget have you set aside?" and "Who else needs to be involved in this decision?" Disqualify fast to focus on real opportunities.`,
+                    title: '💵 Qualify Budget & Decision Process Early',
+                    content: `You've held ${totalMeetings} meetings but no sales yet. Key tip: Don't waste time on unqualified prospects. In first call, ask: "If this makes sense, what kind of budget have you set aside?" and "Who else needs to be involved in this decision?" Disqualify fast to focus on real opportunities.`,
                     priority: 'high'
                 });
             }
 
-            // SANDLER INSIGHT 6: Cookbook Consistency - Daily Discipline
+            // INSIGHT 6: Activity Consistency & Daily Discipline
             const activeDays = dailyData.filter(day => (day.dials || 0) > 0).length;
             const consistencyRate = (activeDays / dailyData.length) * 100;
 
             if (consistencyRate < 70) {
                 insights.push({
                     type: 'alert',
-                    title: '📅 Sandler Cookbook: Build Consistency',
-                    content: `You've been active ${activeDays} out of ${dailyData.length} days (${consistencyRate.toFixed(0)}%). Sandler principle: "The Cookbook is your recipe for success." Treat prospecting time as sacred. Block your calendar and protect it like you would a meeting with your best client. Consistency compounds.`,
+                    title: '📅 Build Daily Consistency',
+                    content: `You've been active ${activeDays} out of ${dailyData.length} days (${consistencyRate.toFixed(0)}%). Sales principle: "Consistency is your recipe for success." Treat prospecting time as sacred. Block your calendar and protect it like you would a meeting with your best client. Consistency compounds.`,
                     priority: 'high'
                 });
             } else if (consistencyRate >= 85) {
                 insights.push({
                     type: 'milestone',
-                    title: '📖 Sandler Cookbook: Excellent Discipline',
-                    content: `${consistencyRate.toFixed(0)}% consistency shows true cookbook discipline! You're treating sales as a science, not an art. This consistent behavior WILL drive predictable results.`,
+                    title: '📖 Excellent Daily Discipline',
+                    content: `${consistencyRate.toFixed(0)}% consistency shows true sales discipline! You're treating sales as a science, not an art. This consistent behavior WILL drive predictable results.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 7: Negative Reverse Selling Reminder
+            // INSIGHT 7: Remove Sales Pressure
             if (totalConversations >= 10 && conversionRate < 20) {
                 insights.push({
                     type: 'suggestion',
-                    title: '🔄 Sandler: Try Negative Reverse Selling',
-                    content: `Low conversation-to-meeting rate? Try Negative Reverse Selling to remove pressure: "I'm not sure if what we do is a fit for you, but would it make sense to spend 10 minutes finding out? Worst case, we'll both know it's not a match." This approach often INCREASES interest by removing the "sales pressure."`,
+                    title: '🔄 Remove Sales Pressure',
+                    content: `Low conversation-to-meeting rate? Try removing pressure with: "I'm not sure if what we do is a fit for you, but would it make sense to spend 10 minutes finding out? Worst case, we'll both know it's not a match." This approach often INCREASES interest by removing the "sales pressure."`,
                     priority: 'medium'
                 });
             }
@@ -2175,8 +2174,13 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             }
         }
 
-        // Analyze conversation using Sandler methodology (with VERIFICATION)
-        async function analyzeSalesConversation(transcript, callType, methodology = 'sandler') {
+        // Analyze conversation using selected sales methodology (with VERIFICATION)
+        async function analyzeSalesConversation(transcript, callType, methodology = null) {
+            // Get user's selected methodology if not provided
+            if (!methodology) {
+                methodology = getMethodology();
+            }
+            const methodologyInfo = METHODOLOGIES[methodology] || METHODOLOGIES['meddic'];
             // Use secure Edge Function for public deployment
             if (USE_EDGE_FUNCTION) {
                 try {
@@ -2195,8 +2199,8 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
 
             // Legacy direct API call (NOT SECURE for public deployment)
             // Only use this for local testing
-            const sandlerPrompt = `
-You are an expert Sandler Sales trainer analyzing a sales conversation.
+            const analysisPrompt = `
+You are an expert ${methodologyInfo.name} sales trainer analyzing a sales conversation.
 
 IMPORTANT: Be FACTUAL and EVIDENCE-BASED. Cite specific quotes from the transcript to support every observation.
 
@@ -2210,7 +2214,7 @@ CTA: "I'd love to show you how in a quick 15-minute online meeting. Do you have 
 TRANSCRIPT:
 ${transcript}
 
-ANALYZE using Sandler Sales System methodology + Script Adherence:
+ANALYZE using ${methodologyInfo.name} + Script Adherence:
 
 1. SCRIPT ADHERENCE (Score 1-10)
    - Did they follow the opening structure?
@@ -2291,7 +2295,7 @@ ONLY include observations you can PROVE from the transcript.
                         max_tokens: 4000,
                         messages: [{
                             role: 'user',
-                            content: sandlerPrompt
+                            content: analysisPrompt
                         }]
                     })
                 });
@@ -2357,6 +2361,8 @@ ONLY include observations you can PROVE from the transcript.
         // Display analysis results with beautiful coaching cards
         function displayAnalysisResults(analysis) {
             const container = document.getElementById('conversation-analysis-result');
+            const methodologyInfo = getMethodologyInfo();
+            const methodologyName = methodologyInfo.name;
 
             // Build tactical scripts sections
             let tacticalScriptsHTML = '';
@@ -2463,7 +2469,7 @@ ONLY include observations you can PROVE from the transcript.
             container.innerHTML = `
                 <div style="background: linear-gradient(135deg, rgba(16, 195, 176, 0.2), rgba(61, 224, 210, 0.1)); padding: 25px; border-radius: 15px; margin-top: 20px;">
                     <h3 style="color: var(--brand-aqua); font-size: 1.5rem; margin-bottom: 15px;">
-                        🎯 Sandler Execution Score: ${analysis.overall_score}/10
+                        🎯 ${methodologyName} Execution Score: ${analysis.overall_score}/10
                     </h3>
 
                     <div class="stats-grid" style="margin-bottom: 20px;">
@@ -2554,7 +2560,7 @@ ONLY include observations you can PROVE from the transcript.
                             <div style="font-size: 1.5rem; font-weight: 700; color: ${conv.overall_sandler_score >= 7 ? 'var(--brand-teal)' : 'var(--brand-gold)'};">
                                 ${conv.overall_sandler_score}/10
                             </div>
-                            <div style="font-size: 0.75rem; opacity: 0.7;">Sandler Score</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">Score</div>
                         </div>
                         <button class="btn-secondary" style="width: auto; margin: 0; padding: 8px 16px;" onclick="viewConversationDetails('${conv.id}')">
                             View Details
@@ -2651,6 +2657,18 @@ ONLY include observations you can PROVE from the transcript.
         // ============================================
 
         const METHODOLOGIES = {
+            meddic: {
+                name: 'MEDDIC/MEDDPICC',
+                description: 'Qualify opportunities using Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion (+ Paper Process, Competition).',
+                keyPrinciples: ['Metrics', 'Economic Buyer', 'Decision Criteria', 'Decision Process', 'Identify Pain', 'Champion'],
+                coachingPrompt: 'MEDDIC/MEDDPICC methodology'
+            },
+            challenger: {
+                name: 'Challenger Sale',
+                description: 'Teach prospects something new, tailor messaging to their situation, and take control of the sale.',
+                keyPrinciples: ['Teach for Differentiation', 'Tailor for Resonance', 'Take Control'],
+                coachingPrompt: 'Challenger Sale methodology'
+            },
             sandler: {
                 name: 'Sandler Selling System',
                 description: 'Focus on Pain Funnel, Up-Front Contracts, Negative Reverse Selling, and Budget discussions. Talk 30%, listen 70%.',
@@ -2663,41 +2681,11 @@ ONLY include observations you can PROVE from the transcript.
                 keyPrinciples: ['Situation Questions', 'Problem Questions', 'Implication Questions', 'Need-Payoff Questions'],
                 coachingPrompt: 'SPIN Selling methodology'
             },
-            challenger: {
-                name: 'The Challenger Sale',
-                description: 'Teach prospects something new, tailor messaging to their situation, and take control of the sale.',
-                keyPrinciples: ['Teach for Differentiation', 'Tailor for Resonance', 'Take Control'],
-                coachingPrompt: 'Challenger Sale methodology'
-            },
             gap: {
                 name: 'Gap Selling',
                 description: 'Focus on the gap between current state and future state. Problem-centric, not product-centric selling.',
                 keyPrinciples: ['Current State Analysis', 'Future State Vision', 'Gap Identification', 'Impact of Inaction'],
                 coachingPrompt: 'Gap Selling methodology'
-            },
-            solution: {
-                name: 'Solution Selling',
-                description: 'Diagnose before prescribing. Focus on solving business problems, not pushing products.',
-                keyPrinciples: ['Pain Sheet Development', 'Vision Processing', 'Control', 'Solution Development'],
-                coachingPrompt: 'Solution Selling methodology'
-            },
-            value: {
-                name: 'Value Selling',
-                description: 'Sell outcomes and business value, not features. Quantify ROI and business impact.',
-                keyPrinciples: ['Business Value Focus', 'ROI Quantification', 'Executive Alignment', 'Value Proposition'],
-                coachingPrompt: 'Value Selling methodology'
-            },
-            consultative: {
-                name: 'Consultative Selling',
-                description: 'Act as a trusted advisor. Deep discovery, problem-solving partnership, long-term relationship focus.',
-                keyPrinciples: ['Trust Building', 'Deep Discovery', 'Problem Solving', 'Partnership Mindset'],
-                coachingPrompt: 'Consultative Selling methodology'
-            },
-            custom: {
-                name: 'Custom/No Specific Methodology',
-                description: 'Track your sales activities without methodology-specific coaching.',
-                keyPrinciples: ['Activity Tracking', 'Performance Metrics', 'General Sales Best Practices'],
-                coachingPrompt: 'general sales best practices'
             }
         };
 
@@ -2709,7 +2697,7 @@ ONLY include observations you can PROVE from the transcript.
         }
 
         function loadMethodology() {
-            const saved = localStorage.getItem('salesMethodology') || 'sandler';
+            const saved = localStorage.getItem('salesMethodology') || 'meddic';
             document.getElementById('sales-methodology').value = saved;
             displayMethodology();
         }
