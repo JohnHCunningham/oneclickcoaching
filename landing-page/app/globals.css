@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy text-light antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-gold hover:shadow-glow-gold text-navy font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:-translate-y-1;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-teal hover:shadow-glow-teal text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:-translate-y-1;
+  }
+
+  .card {
+    @apply bg-navy-light border border-teal/10 rounded-2xl p-6 shadow-card hover:border-teal/30 transition-all duration-300;
+  }
+
+  .section-padding {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+}
