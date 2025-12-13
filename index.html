@@ -507,6 +507,134 @@
                 <button class="btn-primary" onclick="saveDailyStats()">Save Today's Stats</button>
             </div>
 
+            <!-- Activity Goals Settings Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Activity Goals Settings</h2>
+                    <span class="card-icon">⚙️</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Dials Goal</label>
+                    <input type="number" id="goal-dials" min="1" value="15">
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Conversations Goal</label>
+                    <input type="number" id="goal-conversations" min="1" value="5">
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Meetings Goal</label>
+                    <input type="number" id="goal-meetings" min="1" value="2">
+                </div>
+
+                <div class="input-group">
+                    <label>Daily Sales Goal</label>
+                    <input type="number" id="goal-sales" min="1" value="1">
+                </div>
+
+                <button class="btn-primary" onclick="saveActivityGoals()">Save Goals</button>
+            </div>
+
+            <!-- Sales Methodology Selector Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Sales Methodology</h2>
+                    <span class="card-icon">📚</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Which sales framework do you use?</label>
+                    <select id="sales-methodology" onchange="saveMethodology()">
+                        <option value="meddic">MEDDIC/MEDDPICC</option>
+                        <option value="challenger">Challenger Sale</option>
+                        <option value="sandler">Sandler Selling System</option>
+                        <option value="spin">SPIN Selling</option>
+                        <option value="gap">Gap Selling</option>
+                    </select>
+                </div>
+
+                <div id="methodology-description" style="margin-top: 15px; padding: 15px; background: rgba(16, 195, 176, 0.1); border-radius: 10px; font-size: 0.9rem; line-height: 1.6;">
+                    <!-- Methodology description will be inserted here -->
+                </div>
+
+                <div style="margin-top: 15px; padding: 12px; background: rgba(244, 176, 58, 0.1); border-radius: 8px; font-size: 0.85rem;">
+                    <strong>💡 White-Label Ready:</strong> This platform adapts to YOUR methodology. Coaching analysis and templates customize automatically.
+                </div>
+            </div>
+
+            <!-- ICP (Ideal Customer Profile) Builder Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Ideal Customer Profile (ICP)</h2>
+                    <span class="card-icon">🎯</span>
+                </div>
+
+                <div class="input-group">
+                    <label>Target Industry</label>
+                    <input type="text" id="icp-industry" placeholder="e.g., Mixed-income housing providers, SaaS companies">
+                </div>
+
+                <div class="input-group">
+                    <label>Company Size</label>
+                    <input type="text" id="icp-company-size" placeholder="e.g., 50-500 employees, $10M-$100M revenue">
+                </div>
+
+                <div class="input-group">
+                    <label>Target Job Titles</label>
+                    <input type="text" id="icp-job-titles" placeholder="e.g., VP Sales, Sales Director, Head of Revenue">
+                </div>
+
+                <div class="input-group">
+                    <label>Key Pain Points</label>
+                    <textarea id="icp-pain-points" placeholder="e.g., Sales reps not executing methodology, inconsistent pipeline, low close rates" rows="3"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Typical Budget Range</label>
+                    <input type="text" id="icp-budget" placeholder="e.g., $500-$2,000/month, $5,000-$25,000/year">
+                </div>
+
+                <button class="btn-primary" onclick="saveICP()">Save ICP</button>
+
+                <div id="icp-display" style="margin-top: 20px; padding: 15px; background: rgba(16, 195, 176, 0.1); border-radius: 12px; display: none;">
+                    <h3 style="color: var(--brand-gold); font-size: 1rem; margin-bottom: 10px;">Your Ideal Customer:</h3>
+                    <div id="icp-summary" style="font-size: 0.9rem; line-height: 1.6;"></div>
+                </div>
+            </div>
+
+            <!-- Services/Products Manager Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Services/Products</h2>
+                    <span class="card-icon">📦</span>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div class="input-group">
+                        <label>Service/Product Name</label>
+                        <input type="text" id="product-name" placeholder="e.g., AI Sales Coaching - Monthly">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Price (CAD)</label>
+                        <input type="number" id="product-price" min="0" step="0.01" placeholder="5000">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Description (Optional)</label>
+                        <textarea id="product-description" placeholder="Brief description of the service/product" rows="2"></textarea>
+                    </div>
+
+                    <button class="btn-primary" onclick="addProduct()">+ Add Product</button>
+                </div>
+
+                <div id="products-list" style="display: grid; gap: 10px;">
+                    <!-- Products will be listed here -->
+                </div>
+            </div>
+
             <!-- Daily Goal Progress Card -->
             <div class="card wide-card">
                 <div class="card-header">
@@ -527,26 +655,27 @@
                 </div>
 
                 <div class="input-group">
+                    <label>Select Product/Service</label>
+                    <select id="input-product" onchange="selectProduct()">
+                        <option value="">Select a product...</option>
+                        <!-- Products will be loaded dynamically -->
+                    </select>
+                    <small style="opacity: 0.7; font-size: 0.85rem; margin-top: 5px; display: block;">
+                        No products? Add them in "Your Services/Products" section above
+                    </small>
+                </div>
+
+                <div class="input-group">
                     <label>Sale Amount (CAD)</label>
                     <input type="number" id="input-amount" min="0" step="0.01" placeholder="0.00">
+                    <small style="opacity: 0.7; font-size: 0.85rem; margin-top: 5px; display: block;">
+                        Auto-filled from product, or enter custom amount
+                    </small>
                 </div>
 
                 <div class="input-group">
                     <label>Client Name</label>
                     <input type="text" id="input-client" placeholder="Client name">
-                </div>
-
-                <div class="input-group">
-                    <label>Service Type</label>
-                    <select id="input-service">
-                        <option value="">Select service...</option>
-                        <option value="Mixed Income Development">Mixed Income Development</option>
-                        <option value="Near Market Rentals">Near Market Rentals</option>
-                        <option value="AODA Compliance">AODA Compliance</option>
-                        <option value="Tenant Engagement">Tenant Engagement</option>
-                        <option value="Process Optimization">Process Optimization</option>
-                        <option value="Digital Solutions">Digital Solutions</option>
-                    </select>
                 </div>
 
                 <button class="btn-primary" onclick="recordSale()">Record Sale</button>
@@ -577,6 +706,20 @@
                 </div>
             </div>
 
+            <!-- Smart Goal Calculator Card -->
+            <div class="card wide-card">
+                <div class="card-header">
+                    <h2 class="card-title">Smart Activity Recommendations</h2>
+                    <span class="card-icon">🧠</span>
+                </div>
+
+                <p style="opacity: 0.9; margin-bottom: 20px;">Based on your historical conversion rates and sales quota, here's what you need to do:</p>
+
+                <div id="smart-recommendations">
+                    <div class="loading">Calculating recommendations...</div>
+                </div>
+            </div>
+
             <!-- Revenue Summary Card -->
             <div class="card">
                 <div class="card-header">
@@ -596,6 +739,29 @@
                         <div class="stat-value" id="avg-sale">$0</div>
                         <div class="stat-label">Avg Sale Value</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Sales Quota Tracking Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Sales Quota Tracking</h2>
+                    <span class="card-icon">🎯</span>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Monthly Sales Quota (CAD)</label>
+                    <input type="number" id="monthly-quota" value="10000" min="0" step="1000"
+                        style="width: 100%; background: var(--input-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--brand-teal); padding: 10px; border-radius: 8px; font-weight: 600; font-size: 1rem;"
+                        onchange="updateQuotaTracking()">
+                </div>
+
+                <div id="quota-tracking-mtd" style="margin-bottom: 25px;">
+                    <!-- MTD quota tracking will be inserted here -->
+                </div>
+
+                <div id="quota-tracking-ytd">
+                    <!-- YTD quota tracking will be inserted here -->
                 </div>
             </div>
 
@@ -744,14 +910,14 @@
                 </div>
             </div>
 
-            <!-- Sandler Conversation Analysis -->
+            <!-- Sales Conversation Analysis -->
             <div class="card wide-card">
                 <div class="card-header">
-                    <h2 class="card-title">🎙️ Sandler Conversation Coach</h2>
+                    <h2 class="card-title">🎙️ Sales Conversation Coach</h2>
                     <span class="card-icon">📞</span>
                 </div>
 
-                <p style="opacity: 0.9; margin-bottom: 20px;">Upload a sales call recording or transcript to get detailed Sandler coaching on your conversation execution AND script adherence.</p>
+                <p style="opacity: 0.9; margin-bottom: 20px;">Upload a sales call recording or transcript to get detailed coaching on your conversation execution based on your selected sales methodology.</p>
 
                 <div class="input-group">
                     <label>Conversation Title</label>
@@ -780,7 +946,7 @@ Prospect: No problem, what's this about?
 Rep: I wanted to learn more about your housing operations..."></textarea>
                 </div>
 
-                <button class="btn-primary" onclick="analyzeConversation()">🎯 Analyze with Sandler Coach</button>
+                <button class="btn-primary" onclick="analyzeConversation()">🎯 Analyze Sales Conversation</button>
 
                 <div id="conversation-analysis-result" style="margin-top: 20px;"></div>
             </div>
@@ -980,7 +1146,8 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 loadGoalProgress(),
                 loadRevenueSummary(),
                 loadWeeklyChart(),
-                loadCoachingInsights()
+                loadCoachingInsights(),
+                calculateSmartRecommendations()
             ]);
         }
 
@@ -1103,16 +1270,51 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             }
         }
 
+        // Save activity goals to localStorage
+        function saveActivityGoals() {
+            const goals = {
+                dials: parseInt(document.getElementById('goal-dials').value) || 15,
+                conversations: parseInt(document.getElementById('goal-conversations').value) || 5,
+                meetings: parseInt(document.getElementById('goal-meetings').value) || 2,
+                sales: parseInt(document.getElementById('goal-sales').value) || 1
+            };
+
+            localStorage.setItem('activityGoals', JSON.stringify(goals));
+            showAlert('Activity goals saved successfully!', 'success');
+
+            // Refresh goal progress display
+            loadGoalProgress();
+            calculateSmartRecommendations();
+        }
+
+        // Get activity goals from localStorage
+        function getActivityGoals() {
+            const saved = localStorage.getItem('activityGoals');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return {
+                dials: 15,
+                conversations: 5,
+                meetings: 2,
+                sales: 1
+            };
+        }
+
+        // Load activity goals into form
+        function loadActivityGoalsForm() {
+            const goals = getActivityGoals();
+            document.getElementById('goal-dials').value = goals.dials;
+            document.getElementById('goal-conversations').value = goals.conversations;
+            document.getElementById('goal-meetings').value = goals.meetings;
+            document.getElementById('goal-sales').value = goals.sales;
+        }
+
         // Load goal progress circles
         async function loadGoalProgress() {
             try {
-                // Define daily goals
-                const goals = {
-                    dials: 15,
-                    conversations: 5,
-                    meetings: 2,
-                    sales: 1
-                };
+                // Get custom daily goals from localStorage
+                const goals = getActivityGoals();
 
                 // Get today's date
                 const today = new Date().toISOString().split('T')[0];
@@ -1182,7 +1384,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             try {
                 const { data, error } = await supabaseClient
                     .from('Sales')
-                    .select('amount_cad');
+                    .select('amount_cad, date');
 
                 if (error) throw error;
 
@@ -1194,10 +1396,94 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 document.getElementById('total-sales').textContent = totalSales;
                 document.getElementById('avg-sale').textContent = `$${avgSale.toFixed(2)}`;
 
-                // Update goal tracking
+                // Update goal tracking and quota tracking
                 updateGoalTracking(totalRevenue);
+                updateQuotaTracking(data);
             } catch (error) {
                 console.error('Error loading revenue:', error);
+            }
+        }
+
+        // Update quota tracking (MTD and YTD)
+        async function updateQuotaTracking(salesData = null) {
+            try {
+                // If salesData not provided, fetch it
+                if (!salesData) {
+                    const { data, error } = await supabaseClient
+                        .from('Sales')
+                        .select('amount_cad, date');
+
+                    if (error) throw error;
+                    salesData = data;
+                }
+
+                const now = new Date();
+                const currentMonth = now.toISOString().slice(0, 7); // YYYY-MM
+                const currentYear = now.getFullYear().toString();
+
+                // Get monthly quota from input or localStorage
+                const monthlyQuota = parseFloat(document.getElementById('monthly-quota').value) || 10000;
+                localStorage.setItem('monthlyQuota', monthlyQuota);
+
+                // Calculate MTD revenue
+                const mtdSales = salesData.filter(s => s.date.startsWith(currentMonth));
+                const mtdRevenue = mtdSales.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
+                const mtdProgress = (mtdRevenue / monthlyQuota) * 100;
+
+                // Calculate YTD revenue
+                const ytdSales = salesData.filter(s => s.date.startsWith(currentYear));
+                const ytdRevenue = ytdSales.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
+                const ytdQuota = monthlyQuota * now.getMonth() + monthlyQuota; // Quota for months passed + current month
+                const ytdProgress = (ytdRevenue / ytdQuota) * 100;
+
+                // Render MTD tracking
+                document.getElementById('quota-tracking-mtd').innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; color: var(--brand-aqua);">Month to Date</span>
+                            <span style="color: var(--brand-gold); font-weight: 600;">
+                                $${mtdRevenue.toFixed(0)} / $${monthlyQuota.toFixed(0)}
+                            </span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${Math.min(mtdProgress, 100)}%;"></div>
+                        </div>
+                        <div style="text-align: right; margin-top: 5px; font-size: 0.85rem; color: var(--brand-teal);">
+                            ${mtdProgress.toFixed(1)}% Complete
+                        </div>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(16, 195, 176, 0.1); border-radius: 8px; font-size: 0.9rem;">
+                            ${mtdProgress >= 100 ? '🎉 Monthly quota achieved!' :
+                              `🎯 $${(monthlyQuota - mtdRevenue).toFixed(0)} remaining to hit quota`}
+                        </div>
+                    </div>
+                `;
+
+                // Render YTD tracking
+                document.getElementById('quota-tracking-ytd').innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; color: var(--brand-aqua);">Year to Date</span>
+                            <span style="color: var(--brand-gold); font-weight: 600;">
+                                $${ytdRevenue.toFixed(0)} / $${ytdQuota.toFixed(0)}
+                            </span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${Math.min(ytdProgress, 100)}%;"></div>
+                        </div>
+                        <div style="text-align: right; margin-top: 5px; font-size: 0.85rem; color: var(--brand-teal);">
+                            ${ytdProgress.toFixed(1)}% Complete
+                        </div>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(244, 176, 58, 0.1); border-radius: 8px; font-size: 0.9rem;">
+                            📊 ${mtdSales.length} sales this month • ${ytdSales.length} sales YTD
+                        </div>
+                    </div>
+                `;
+
+                // Load smart recommendations after quota tracking is updated
+                calculateSmartRecommendations();
+
+            } catch (error) {
+                console.error('Error updating quota tracking:', error);
             }
         }
 
@@ -1259,6 +1545,193 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                     </div>
                 </div>
             `;
+        }
+
+        // Calculate smart activity recommendations based on historical conversion rates
+        async function calculateSmartRecommendations() {
+            try {
+                const now = new Date();
+                const currentMonth = now.toISOString().slice(0, 7);
+                const currentYear = now.getFullYear().toString();
+
+                // Fetch historical data
+                const { data: dailyData, error: dailyError } = await supabaseClient
+                    .from('Daily_Tracker')
+                    .select('*')
+                    .gte('date', `${currentYear}-01-01`);
+
+                if (dailyError) throw dailyError;
+
+                const { data: salesData, error: salesError } = await supabaseClient
+                    .from('Sales')
+                    .select('*')
+                    .gte('date', `${currentYear}-01-01`);
+
+                if (salesError) throw salesError;
+
+                // Calculate historical conversion rates
+                const totalDials = dailyData.reduce((sum, d) => sum + (d.dials || 0), 0);
+                const totalConversations = dailyData.reduce((sum, d) => sum + (d.conversations || 0), 0);
+                const totalMeetings = dailyData.reduce((sum, d) => sum + (d.discovery_meetings || 0), 0);
+                const totalSales = salesData.length;
+
+                // Calculate conversion rates (with minimum data validation)
+                const dialToConvRate = totalDials > 0 ? totalConversations / totalDials : 0.25; // default 25%
+                const convToMeetingRate = totalConversations > 0 ? totalMeetings / totalConversations : 0.30; // default 30%
+                const meetingToSaleRate = totalMeetings > 0 ? totalSales / totalMeetings : 0.25; // default 25%
+
+                // Get monthly quota and calculate average sale value
+                const monthlyQuota = parseFloat(document.getElementById('monthly-quota').value) || 10000;
+                const avgSaleValue = totalSales > 0 ? salesData.reduce((sum, s) => sum + parseFloat(s.amount_cad), 0) / totalSales : 5000;
+
+                // Calculate MTD sales
+                const mtdSales = salesData.filter(s => s.date.startsWith(currentMonth));
+                const mtdRevenue = mtdSales.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
+                const remainingQuota = monthlyQuota - mtdRevenue;
+
+                // Calculate days remaining in month
+                const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+                const daysRemaining = daysInMonth - now.getDate() + 1;
+
+                // Calculate what's needed
+                const salesNeeded = Math.ceil(remainingQuota / avgSaleValue);
+                const meetingsNeeded = Math.ceil(salesNeeded / meetingToSaleRate);
+                const conversationsNeeded = Math.ceil(meetingsNeeded / convToMeetingRate);
+                const dialsNeeded = Math.ceil(conversationsNeeded / dialToConvRate);
+
+                // Calculate daily requirements
+                const dailySalesNeeded = (salesNeeded / daysRemaining).toFixed(1);
+                const dailyMeetingsNeeded = Math.ceil(meetingsNeeded / daysRemaining);
+                const dailyConversationsNeeded = Math.ceil(conversationsNeeded / daysRemaining);
+                const dailyDialsNeeded = Math.ceil(dialsNeeded / daysRemaining);
+
+                // Render recommendations
+                const container = document.getElementById('smart-recommendations');
+
+                if (remainingQuota <= 0) {
+                    container.innerHTML = `
+                        <div style="padding: 20px; background: linear-gradient(135deg, rgba(16, 195, 176, 0.2), rgba(61, 224, 210, 0.1)); border-radius: 12px; text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+                            <h3 style="color: var(--brand-gold); font-size: 1.5rem; margin-bottom: 10px;">Monthly Quota Achieved!</h3>
+                            <p style="opacity: 0.9;">You've hit your monthly sales quota of $${monthlyQuota.toFixed(0)}. Keep up the great work!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <div style="background: linear-gradient(135deg, rgba(244, 176, 58, 0.2), rgba(249, 200, 99, 0.1)); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="color: var(--brand-gold); font-size: 1.2rem; margin-bottom: 15px;">📊 Your Historical Conversion Rates</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-teal);">
+                                    ${(dialToConvRate * 100).toFixed(1)}%
+                                </div>
+                                <div class="stat-label">Dial → Conversation</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-aqua);">
+                                    ${(convToMeetingRate * 100).toFixed(1)}%
+                                </div>
+                                <div class="stat-label">Conversation → Meeting</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-gold);">
+                                    ${(meetingToSaleRate * 100).toFixed(1)}%
+                                </div>
+                                <div class="stat-label">Meeting → Sale</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value" style="font-size: 1.3rem; color: var(--brand-pink);">
+                                    $${avgSaleValue.toFixed(0)}
+                                </div>
+                                <div class="stat-label">Avg Sale Value</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(16, 195, 176, 0.2), rgba(61, 224, 210, 0.1)); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                        <h3 style="color: var(--brand-aqua); font-size: 1.2rem; margin-bottom: 15px;">🎯 To Hit Your Monthly Quota</h3>
+                        <div style="margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                            <div style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 8px;">
+                                You need $${remainingQuota.toFixed(0)} more in the next ${daysRemaining} days
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: var(--brand-gold); font-size: 1.1rem;">Total Activities Needed (Rest of Month):</strong>
+                            <div class="stats-grid" style="margin-top: 10px;">
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-teal);">
+                                        ${dialsNeeded}
+                                    </div>
+                                    <div class="stat-label">Dials Needed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-aqua);">
+                                        ${conversationsNeeded}
+                                    </div>
+                                    <div class="stat-label">Conversations Needed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-gold);">
+                                        ${meetingsNeeded}
+                                    </div>
+                                    <div class="stat-label">Meetings Needed</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-value" style="font-size: 1.5rem; color: var(--brand-pink);">
+                                        ${salesNeeded}
+                                    </div>
+                                    <div class="stat-label">Sales Needed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(230, 69, 99, 0.2), rgba(244, 176, 58, 0.1)); padding: 20px; border-radius: 12px; border: 2px solid var(--brand-pink);">
+                        <h3 style="color: var(--brand-pink); font-size: 1.3rem; margin-bottom: 15px;">🚀 YOUR DAILY ACTION PLAN</h3>
+                        <p style="margin-bottom: 15px; font-size: 1.05rem; opacity: 0.9;">
+                            Based on your conversion rates, here's what you need to do EVERY DAY for the next ${daysRemaining} days:
+                        </p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-teal);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-teal);">
+                                    ${dailyDialsNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Dials/Day</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-aqua);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-aqua);">
+                                    ${dailyConversationsNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Conversations/Day</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-gold);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-gold);">
+                                    ${dailyMeetingsNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Meetings/Day</div>
+                            </div>
+                            <div style="padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center; border: 2px solid var(--brand-pink);">
+                                <div style="font-size: 2.5rem; font-weight: 700; color: var(--brand-pink);">
+                                    ${dailySalesNeeded}
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">Sales/Day</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px; padding: 15px; background: rgba(244, 176, 58, 0.2); border-radius: 8px; font-size: 0.95rem; line-height: 1.6;">
+                            💡 <strong>Pro Tip:</strong> These numbers are based on YOUR actual historical conversion rates. As you track more data, these recommendations will become even more accurate!
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error calculating recommendations:', error);
+                document.getElementById('smart-recommendations').innerHTML = `
+                    <p style="opacity: 0.7;">Start tracking your daily activities to see personalized recommendations based on your conversion rates!</p>
+                `;
+            }
         }
 
         // Load weekly performance chart
@@ -1429,16 +1902,18 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             }
         }
 
-        // Analyze performance and generate insights with SANDLER SALES METHODOLOGY
+        // Analyze performance and generate insights with SELECTED SALES METHODOLOGY
         function analyzePerformance(dailyData, salesData) {
             const insights = [];
             const today = new Date().toISOString().split('T')[0];
+            const methodologyInfo = getMethodologyInfo();
+            const methodologyName = methodologyInfo.name;
 
             if (dailyData.length === 0) {
                 insights.push({
                     type: 'alert',
-                    title: '🚀 Get Started - Sandler Cookbook',
-                    content: 'Start tracking your daily activities to unlock Sandler-based coaching insights. Remember: Success in sales = Activity × Effectiveness. Log your dials, conversations, and meetings.',
+                    title: '🚀 Get Started with Your Sales Tracking',
+                    content: `Start tracking your daily activities to unlock ${methodologyName}-based coaching insights. Remember: Success in sales = Activity × Effectiveness. Log your dials, conversations, and meetings.`,
                     priority: 'high'
                 });
                 return insights;
@@ -1453,66 +1928,66 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             const meetingRate = totalConversations > 0 ? (totalMeetings / totalConversations) * 100 : 0;
             const closeRate = totalMeetings > 0 ? (salesData.length / totalMeetings) * 100 : 0;
 
-            // SANDLER INSIGHT 1: Cookbook Consistency - Daily Behavior
+            // INSIGHT 1: Daily Activity - Consistency & Volume
             if (avgDials < 10) {
                 insights.push({
                     type: 'suggestion',
-                    title: '📞 Sandler Cookbook: Increase Activity',
-                    content: `You're averaging ${avgDials.toFixed(1)} dials per day. Sandler principle: "You can't control outcomes, only behaviors." Target 20-30 prospecting calls daily. Block time like a real appointment - no interruptions.`,
+                    title: '📞 Increase Daily Activity',
+                    content: `You're averaging ${avgDials.toFixed(1)} dials per day. Sales principle: "You can't control outcomes, only behaviors." Target 20-30 prospecting calls daily. Block time like a real appointment - no interruptions.`,
                     priority: 'high'
                 });
             } else if (avgDials >= 20) {
                 insights.push({
                     type: 'milestone',
-                    title: '🌟 Sandler Behavior: Excellent Activity',
-                    content: `You're averaging ${avgDials.toFixed(1)} dials per day - outstanding cookbook execution! Remember: "Success = Activity × Effectiveness". Keep this momentum going.`,
+                    title: '🌟 Excellent Activity Level',
+                    content: `You're averaging ${avgDials.toFixed(1)} dials per day - outstanding execution! Remember: "Success = Activity × Effectiveness". Keep this momentum going.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 2: Bonding & Rapport - Getting Conversations
+            // INSIGHT 2: Dial to Conversation Conversion
             if (conversionRate < 15 && totalDials >= 20) {
                 insights.push({
                     type: 'performance',
-                    title: '🤝 Sandler: Work on Bonding & Rapport',
-                    content: `Your dial-to-conversation rate is ${conversionRate.toFixed(1)}%. Sandler tip: People buy from people they trust. Focus on bonding in the first 30 seconds. Ask: "How's your day going?" before jumping into business. Use Negative Reverse Selling: "I'm not sure if we're a fit, but..."`,
+                    title: '🤝 Improve Conversation Rate',
+                    content: `Your dial-to-conversation rate is ${conversionRate.toFixed(1)}%. Key tip: People buy from people they trust. Focus on building rapport in the first 30 seconds. Ask: "How's your day going?" before jumping into business. Remove pressure with: "I'm not sure if we're a fit, but..."`,
                     priority: 'high'
                 });
             } else if (conversionRate >= 25) {
                 insights.push({
                     type: 'milestone',
-                    title: '🎯 Sandler: Strong Bonding Skills',
-                    content: `Your ${conversionRate.toFixed(1)}% conversation rate shows excellent bonding! You're building rapport effectively. Keep using curiosity-based questions and avoiding "show up and throw up" presentations.`,
+                    title: '🎯 Strong Connection Skills',
+                    content: `Your ${conversionRate.toFixed(1)}% conversation rate shows excellent rapport building! You're connecting effectively with prospects. Keep using curiosity-based questions and avoiding premature presentations.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 3: Up-Front Contracts - Meeting Conversion
+            // INSIGHT 3: Conversation to Meeting Conversion
             if (meetingRate < 20 && totalConversations >= 10) {
                 insights.push({
                     type: 'suggestion',
-                    title: '📋 Sandler: Set Up-Front Contracts',
-                    content: `${meetingRate.toFixed(1)}% of conversations lead to meetings. Sandler principle: Always set an Up-Front Contract. Ask: "Would it make sense to schedule 15 minutes to explore if we're a fit? At the end, you can tell me 'yes,' 'no,' or 'let's talk again.' Fair enough?" This removes pressure and increases bookings.`,
+                    title: '📋 Increase Meeting Bookings',
+                    content: `${meetingRate.toFixed(1)}% of conversations lead to meetings. Key principle: Set clear expectations. Try: "Would it make sense to schedule 15 minutes to explore if we're a fit? At the end, you can tell me 'yes,' 'no,' or 'let's talk again.' Fair enough?" This removes pressure and increases bookings.`,
                     priority: 'high'
                 });
             } else if (meetingRate >= 30) {
                 insights.push({
                     type: 'milestone',
-                    title: '📋 Sandler: Excellent Up-Front Contracts',
-                    content: `${meetingRate.toFixed(1)}% meeting conversion shows you're setting clear expectations! Keep using Up-Front Contracts to build trust and reduce no-shows.`,
+                    title: '📋 Excellent Meeting Conversion',
+                    content: `${meetingRate.toFixed(1)}% meeting conversion shows you're setting clear expectations! Keep building trust and reducing no-shows with this approach.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 4: Pain Funnel & Closing - Revenue Performance
+            // INSIGHT 4: Revenue Performance & Discovery
             if (salesData.length > 0) {
                 const totalRevenue = salesData.reduce((sum, sale) => sum + parseFloat(sale.amount_cad), 0);
                 const avgSale = totalRevenue / salesData.length;
 
                 insights.push({
                     type: 'performance',
-                    title: '💰 Sandler: Revenue & Pain Discovery',
-                    content: `You've closed ${salesData.length} sales (${closeRate.toFixed(1)}% close rate) with average value of $${avgSale.toFixed(2)} CAD. Total: $${totalRevenue.toFixed(2)} CAD. Sandler reminder: "No pain, no change." Keep using the Pain Funnel in discovery meetings to uncover compelling reasons to buy.`,
+                    title: '💰 Revenue Performance',
+                    content: `You've closed ${salesData.length} sales (${closeRate.toFixed(1)}% close rate) with average value of $${avgSale.toFixed(2)} CAD. Total: $${totalRevenue.toFixed(2)} CAD. Remember: "No pain, no change." Keep using deep discovery to uncover compelling reasons to buy.`,
                     priority: 'low'
                 });
 
@@ -1520,56 +1995,56 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 if (closeRate < 25 && totalMeetings >= 5) {
                     insights.push({
                         type: 'suggestion',
-                        title: '🔍 Sandler: Use the Pain Funnel',
-                        content: `Your ${closeRate.toFixed(1)}% close rate suggests qualification gaps. In discovery meetings, use the Pain Funnel: "Tell me more about that... How long has that been a problem? What have you tried? How much is it costing you? What happens if you don't fix it?" Uncover COMPELLING pain, not just technical needs.`,
+                        title: '🔍 Improve Discovery Process',
+                        content: `Your ${closeRate.toFixed(1)}% close rate suggests qualification gaps. In discovery meetings, dig deeper: "Tell me more about that... How long has that been a problem? What have you tried? How much is it costing you? What happens if you don't fix it?" Uncover COMPELLING pain, not just surface-level needs.`,
                         priority: 'high'
                     });
                 } else if (closeRate >= 40) {
                     insights.push({
                         type: 'milestone',
-                        title: '🎯 Sandler: Excellent Qualification',
-                        content: `Your ${closeRate.toFixed(1)}% close rate shows you're qualifying well! You're uncovering real pain and only moving forward with qualified prospects. This is true Sandler discipline.`,
+                        title: '🎯 Excellent Qualification',
+                        content: `Your ${closeRate.toFixed(1)}% close rate shows you're qualifying well! You're uncovering real pain and only moving forward with qualified prospects. This is true sales discipline.`,
                         priority: 'low'
                     });
                 }
             }
 
-            // SANDLER INSIGHT 5: Budget & Decision - Qualification Discipline
+            // INSIGHT 5: Budget & Decision Process Qualification
             if (totalMeetings >= 5 && salesData.length === 0) {
                 insights.push({
                     type: 'alert',
-                    title: '💵 Sandler: Qualify Budget & Decision Early',
-                    content: `You've held ${totalMeetings} meetings but no sales yet. Sandler tip: Don't waste time on unqualified prospects. In first call, ask: "If this makes sense, what kind of budget have you set aside?" and "Who else needs to be involved in this decision?" Disqualify fast to focus on real opportunities.`,
+                    title: '💵 Qualify Budget & Decision Process Early',
+                    content: `You've held ${totalMeetings} meetings but no sales yet. Key tip: Don't waste time on unqualified prospects. In first call, ask: "If this makes sense, what kind of budget have you set aside?" and "Who else needs to be involved in this decision?" Disqualify fast to focus on real opportunities.`,
                     priority: 'high'
                 });
             }
 
-            // SANDLER INSIGHT 6: Cookbook Consistency - Daily Discipline
+            // INSIGHT 6: Activity Consistency & Daily Discipline
             const activeDays = dailyData.filter(day => (day.dials || 0) > 0).length;
             const consistencyRate = (activeDays / dailyData.length) * 100;
 
             if (consistencyRate < 70) {
                 insights.push({
                     type: 'alert',
-                    title: '📅 Sandler Cookbook: Build Consistency',
-                    content: `You've been active ${activeDays} out of ${dailyData.length} days (${consistencyRate.toFixed(0)}%). Sandler principle: "The Cookbook is your recipe for success." Treat prospecting time as sacred. Block your calendar and protect it like you would a meeting with your best client. Consistency compounds.`,
+                    title: '📅 Build Daily Consistency',
+                    content: `You've been active ${activeDays} out of ${dailyData.length} days (${consistencyRate.toFixed(0)}%). Sales principle: "Consistency is your recipe for success." Treat prospecting time as sacred. Block your calendar and protect it like you would a meeting with your best client. Consistency compounds.`,
                     priority: 'high'
                 });
             } else if (consistencyRate >= 85) {
                 insights.push({
                     type: 'milestone',
-                    title: '📖 Sandler Cookbook: Excellent Discipline',
-                    content: `${consistencyRate.toFixed(0)}% consistency shows true cookbook discipline! You're treating sales as a science, not an art. This consistent behavior WILL drive predictable results.`,
+                    title: '📖 Excellent Daily Discipline',
+                    content: `${consistencyRate.toFixed(0)}% consistency shows true sales discipline! You're treating sales as a science, not an art. This consistent behavior WILL drive predictable results.`,
                     priority: 'low'
                 });
             }
 
-            // SANDLER INSIGHT 7: Negative Reverse Selling Reminder
+            // INSIGHT 7: Remove Sales Pressure
             if (totalConversations >= 10 && conversionRate < 20) {
                 insights.push({
                     type: 'suggestion',
-                    title: '🔄 Sandler: Try Negative Reverse Selling',
-                    content: `Low conversation-to-meeting rate? Try Negative Reverse Selling to remove pressure: "I'm not sure if what we do is a fit for you, but would it make sense to spend 10 minutes finding out? Worst case, we'll both know it's not a match." This approach often INCREASES interest by removing the "sales pressure."`,
+                    title: '🔄 Remove Sales Pressure',
+                    content: `Low conversation-to-meeting rate? Try removing pressure with: "I'm not sure if what we do is a fit for you, but would it make sense to spend 10 minutes finding out? Worst case, we'll both know it's not a match." This approach often INCREASES interest by removing the "sales pressure."`,
                     priority: 'medium'
                 });
             }
@@ -1597,7 +2072,8 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 return;
             }
 
-            showAlert('🎯 Analyzing conversation with Sandler framework...', 'success');
+            const methodologyInfo = getMethodologyInfo();
+            showAlert(`🎯 Analyzing conversation with ${methodologyInfo.name}...`, 'success');
 
             try {
                 let finalTranscript = transcript;
@@ -1625,7 +2101,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                         }
 
                         finalTranscript = transcriptionData.transcript;
-                        showAlert('✅ Audio transcribed successfully! Now analyzing with Sandler framework...', 'success');
+                        showAlert(`✅ Audio transcribed successfully! Now analyzing with ${methodologyInfo.name}...`, 'success');
 
                         // Show the transcript to the user
                         document.getElementById('transcript-input').value = finalTranscript;
@@ -1637,8 +2113,9 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                     }
                 }
 
-                // Analyze transcript with Sandler methodology
-                const analysis = await analyzeSandlerConversation(finalTranscript, type);
+                // Analyze transcript with selected methodology
+                const methodology = getMethodology();
+                const analysis = await analyzeSalesConversation(finalTranscript, type, methodology);
 
                 // If no analysis (API key not configured), return early
                 if (!analysis) {
@@ -1697,13 +2174,18 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             }
         }
 
-        // Analyze conversation using Sandler methodology (with VERIFICATION)
-        async function analyzeSandlerConversation(transcript, callType) {
+        // Analyze conversation using selected sales methodology (with VERIFICATION)
+        async function analyzeSalesConversation(transcript, callType, methodology = null) {
+            // Get user's selected methodology if not provided
+            if (!methodology) {
+                methodology = getMethodology();
+            }
+            const methodologyInfo = METHODOLOGIES[methodology] || METHODOLOGIES['meddic'];
             // Use secure Edge Function for public deployment
             if (USE_EDGE_FUNCTION) {
                 try {
                     const { data, error } = await supabaseClient.functions.invoke('analyze-conversation', {
-                        body: { transcript, callType }
+                        body: { transcript, callType, methodology }
                     });
 
                     if (error) throw error;
@@ -1717,8 +2199,8 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
 
             // Legacy direct API call (NOT SECURE for public deployment)
             // Only use this for local testing
-            const sandlerPrompt = `
-You are an expert Sandler Sales trainer analyzing a sales conversation.
+            const analysisPrompt = `
+You are an expert ${methodologyInfo.name} sales trainer analyzing a sales conversation.
 
 IMPORTANT: Be FACTUAL and EVIDENCE-BASED. Cite specific quotes from the transcript to support every observation.
 
@@ -1732,7 +2214,7 @@ CTA: "I'd love to show you how in a quick 15-minute online meeting. Do you have 
 TRANSCRIPT:
 ${transcript}
 
-ANALYZE using Sandler Sales System methodology + Script Adherence:
+ANALYZE using ${methodologyInfo.name} + Script Adherence:
 
 1. SCRIPT ADHERENCE (Score 1-10)
    - Did they follow the opening structure?
@@ -1813,7 +2295,7 @@ ONLY include observations you can PROVE from the transcript.
                         max_tokens: 4000,
                         messages: [{
                             role: 'user',
-                            content: sandlerPrompt
+                            content: analysisPrompt
                         }]
                     })
                 });
@@ -1879,6 +2361,8 @@ ONLY include observations you can PROVE from the transcript.
         // Display analysis results with beautiful coaching cards
         function displayAnalysisResults(analysis) {
             const container = document.getElementById('conversation-analysis-result');
+            const methodologyInfo = getMethodologyInfo();
+            const methodologyName = methodologyInfo.name;
 
             // Build tactical scripts sections
             let tacticalScriptsHTML = '';
@@ -1985,7 +2469,7 @@ ONLY include observations you can PROVE from the transcript.
             container.innerHTML = `
                 <div style="background: linear-gradient(135deg, rgba(16, 195, 176, 0.2), rgba(61, 224, 210, 0.1)); padding: 25px; border-radius: 15px; margin-top: 20px;">
                     <h3 style="color: var(--brand-aqua); font-size: 1.5rem; margin-bottom: 15px;">
-                        🎯 Sandler Execution Score: ${analysis.overall_score}/10
+                        🎯 ${methodologyName} Execution Score: ${analysis.overall_score}/10
                     </h3>
 
                     <div class="stats-grid" style="margin-bottom: 20px;">
@@ -2076,7 +2560,7 @@ ONLY include observations you can PROVE from the transcript.
                             <div style="font-size: 1.5rem; font-weight: 700; color: ${conv.overall_sandler_score >= 7 ? 'var(--brand-teal)' : 'var(--brand-gold)'};">
                                 ${conv.overall_sandler_score}/10
                             </div>
-                            <div style="font-size: 0.75rem; opacity: 0.7;">Sandler Score</div>
+                            <div style="font-size: 0.75rem; opacity: 0.7;">Score</div>
                         </div>
                         <button class="btn-secondary" style="width: auto; margin: 0; padding: 8px 16px;" onclick="viewConversationDetails('${conv.id}')">
                             View Details
@@ -2112,6 +2596,281 @@ ONLY include observations you can PROVE from the transcript.
         }
 
         // ============================================
+        // ICP (IDEAL CUSTOMER PROFILE) FUNCTIONS
+        // ============================================
+
+        function saveICP() {
+            const icp = {
+                industry: document.getElementById('icp-industry').value.trim(),
+                companySize: document.getElementById('icp-company-size').value.trim(),
+                jobTitles: document.getElementById('icp-job-titles').value.trim(),
+                painPoints: document.getElementById('icp-pain-points').value.trim(),
+                budget: document.getElementById('icp-budget').value.trim()
+            };
+
+            if (!icp.industry && !icp.companySize && !icp.jobTitles) {
+                showAlert('Please fill in at least Industry, Company Size, or Job Titles', 'error');
+                return;
+            }
+
+            localStorage.setItem('icp', JSON.stringify(icp));
+            showAlert('✅ Ideal Customer Profile saved!', 'success');
+            displayICP();
+        }
+
+        function loadICP() {
+            const saved = localStorage.getItem('icp');
+            if (saved) {
+                const icp = JSON.parse(saved);
+                document.getElementById('icp-industry').value = icp.industry || '';
+                document.getElementById('icp-company-size').value = icp.companySize || '';
+                document.getElementById('icp-job-titles').value = icp.jobTitles || '';
+                document.getElementById('icp-pain-points').value = icp.painPoints || '';
+                document.getElementById('icp-budget').value = icp.budget || '';
+                displayICP();
+            }
+        }
+
+        function displayICP() {
+            const saved = localStorage.getItem('icp');
+            if (!saved) return;
+
+            const icp = JSON.parse(saved);
+            const display = document.getElementById('icp-display');
+            const summary = document.getElementById('icp-summary');
+
+            let html = '';
+            if (icp.industry) html += `<strong>Industry:</strong> ${icp.industry}<br>`;
+            if (icp.companySize) html += `<strong>Company Size:</strong> ${icp.companySize}<br>`;
+            if (icp.jobTitles) html += `<strong>Target Titles:</strong> ${icp.jobTitles}<br>`;
+            if (icp.painPoints) html += `<strong>Pain Points:</strong> ${icp.painPoints}<br>`;
+            if (icp.budget) html += `<strong>Budget Range:</strong> ${icp.budget}`;
+
+            if (html) {
+                summary.innerHTML = html;
+                display.style.display = 'block';
+            }
+        }
+
+        // ============================================
+        // SALES METHODOLOGY FUNCTIONS
+        // ============================================
+
+        const METHODOLOGIES = {
+            meddic: {
+                name: 'MEDDIC/MEDDPICC',
+                description: 'Qualify opportunities using Metrics, Economic Buyer, Decision Criteria, Decision Process, Identify Pain, Champion (+ Paper Process, Competition).',
+                keyPrinciples: ['Metrics', 'Economic Buyer', 'Decision Criteria', 'Decision Process', 'Identify Pain', 'Champion'],
+                coachingPrompt: 'MEDDIC/MEDDPICC methodology'
+            },
+            challenger: {
+                name: 'Challenger Sale',
+                description: 'Teach prospects something new, tailor messaging to their situation, and take control of the sale.',
+                keyPrinciples: ['Teach for Differentiation', 'Tailor for Resonance', 'Take Control'],
+                coachingPrompt: 'Challenger Sale methodology'
+            },
+            sandler: {
+                name: 'Sandler Selling System',
+                description: 'Focus on Pain Funnel, Up-Front Contracts, Negative Reverse Selling, and Budget discussions. Talk 30%, listen 70%.',
+                keyPrinciples: ['Pain Funnel', 'Up-Front Contract', 'Negative Reverse Selling', 'Budget Before Presentation', 'Decision Before Presentation'],
+                coachingPrompt: 'Sandler Selling System methodology'
+            },
+            spin: {
+                name: 'SPIN Selling',
+                description: 'Use Situation, Problem, Implication, and Need-Payoff questions to uncover pain and build value.',
+                keyPrinciples: ['Situation Questions', 'Problem Questions', 'Implication Questions', 'Need-Payoff Questions'],
+                coachingPrompt: 'SPIN Selling methodology'
+            },
+            gap: {
+                name: 'Gap Selling',
+                description: 'Focus on the gap between current state and future state. Problem-centric, not product-centric selling.',
+                keyPrinciples: ['Current State Analysis', 'Future State Vision', 'Gap Identification', 'Impact of Inaction'],
+                coachingPrompt: 'Gap Selling methodology'
+            }
+        };
+
+        function saveMethodology() {
+            const methodology = document.getElementById('sales-methodology').value;
+            localStorage.setItem('salesMethodology', methodology);
+            displayMethodology();
+            showAlert(`✅ Methodology set to ${METHODOLOGIES[methodology].name}`, 'success');
+        }
+
+        function loadMethodology() {
+            const saved = localStorage.getItem('salesMethodology') || 'meddic';
+            document.getElementById('sales-methodology').value = saved;
+            displayMethodology();
+        }
+
+        function displayMethodology() {
+            const methodology = document.getElementById('sales-methodology').value;
+            const info = METHODOLOGIES[methodology];
+            const container = document.getElementById('methodology-description');
+
+            container.innerHTML = `
+                <h3 style="color: var(--brand-gold); font-size: 1rem; margin-bottom: 10px;">${info.name}</h3>
+                <p style="margin-bottom: 10px;">${info.description}</p>
+                <div style="margin-top: 10px;">
+                    <strong>Key Principles:</strong>
+                    <ul style="margin: 8px 0 0 20px; line-height: 1.8;">
+                        ${info.keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function getMethodology() {
+            return localStorage.getItem('salesMethodology') || 'sandler';
+        }
+
+        function getMethodologyInfo() {
+            const methodology = getMethodology();
+            return METHODOLOGIES[methodology];
+        }
+
+        // ============================================
+        // PRODUCTS/SERVICES FUNCTIONS
+        // ============================================
+
+        function addProduct() {
+            const name = document.getElementById('product-name').value.trim();
+            const price = parseFloat(document.getElementById('product-price').value);
+            const description = document.getElementById('product-description').value.trim();
+
+            if (!name || !price || price <= 0) {
+                showAlert('Please enter a product name and valid price', 'error');
+                return;
+            }
+
+            const products = getProducts();
+            products.push({
+                id: Date.now().toString(),
+                name,
+                price,
+                description
+            });
+
+            localStorage.setItem('products', JSON.stringify(products));
+
+            // Clear form
+            document.getElementById('product-name').value = '';
+            document.getElementById('product-price').value = '';
+            document.getElementById('product-description').value = '';
+
+            showAlert('✅ Product added!', 'success');
+            loadProducts();
+        }
+
+        function getProducts() {
+            const saved = localStorage.getItem('products');
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        function deleteProduct(productId) {
+            if (!confirm('Delete this product?')) return;
+
+            let products = getProducts();
+            products = products.filter(p => p.id !== productId);
+            localStorage.setItem('products', JSON.stringify(products));
+
+            showAlert('Product deleted', 'success');
+            loadProducts();
+        }
+
+        function loadProducts() {
+            const products = getProducts();
+            const listContainer = document.getElementById('products-list');
+            const productSelect = document.getElementById('input-product');
+
+            // Update products list display
+            if (products.length === 0) {
+                listContainer.innerHTML = '<p style="opacity: 0.7; text-align: center; padding: 20px;">No products added yet. Add your first product above!</p>';
+            } else {
+                listContainer.innerHTML = products.map(p => `
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--brand-gold); font-size: 1rem;">${p.name}</div>
+                            <div style="font-size: 1.2rem; color: var(--brand-teal); margin: 5px 0;">$${p.price.toFixed(2)}</div>
+                            ${p.description ? `<div style="font-size: 0.85rem; opacity: 0.8;">${p.description}</div>` : ''}
+                        </div>
+                        <button onclick="deleteProduct('${p.id}')" style="background: var(--brand-pink); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600;">Delete</button>
+                    </div>
+                `).join('');
+            }
+
+            // Update product select dropdown in sales form
+            productSelect.innerHTML = '<option value="">Select a product...</option>' +
+                products.map(p => `<option value="${p.id}">${p.name} - $${p.price.toFixed(2)}</option>`).join('');
+        }
+
+        function selectProduct() {
+            const productId = document.getElementById('input-product').value;
+            if (!productId) return;
+
+            const products = getProducts();
+            const product = products.find(p => p.id === productId);
+
+            if (product) {
+                document.getElementById('input-amount').value = product.price.toFixed(2);
+            }
+        }
+
+        // ============================================
+        // UPDATE RECORD SALE FUNCTION
+        // ============================================
+
+        async function recordSale() {
+            const amount = parseFloat(document.getElementById('input-amount').value);
+            const client = document.getElementById('input-client').value.trim();
+            const productId = document.getElementById('input-product').value;
+
+            if (!amount || amount <= 0) {
+                showAlert('Please enter a valid sale amount', 'error');
+                return;
+            }
+
+            if (!client) {
+                showAlert('Please enter client name', 'error');
+                return;
+            }
+
+            // Get product name
+            let productName = 'Custom Sale';
+            if (productId) {
+                const products = getProducts();
+                const product = products.find(p => p.id === productId);
+                if (product) productName = product.name;
+            }
+
+            try {
+                const { error } = await supabaseClient
+                    .from('Sales')
+                    .insert({
+                        amount_cad: amount,
+                        client_name: client,
+                        service_type: productName,
+                        date: new Date().toISOString().split('T')[0]
+                    });
+
+                if (error) throw error;
+
+                showAlert('✅ Sale recorded successfully!', 'success');
+
+                // Clear form
+                document.getElementById('input-amount').value = '';
+                document.getElementById('input-client').value = '';
+                document.getElementById('input-product').value = '';
+
+                // Refresh revenue data
+                loadRevenueSummary();
+
+            } catch (error) {
+                console.error('Error recording sale:', error);
+                showAlert('⚠️ Error recording sale. Please try again.', 'error');
+            }
+        }
+
+        // ============================================
         // INITIALIZE DASHBOARD
         // ============================================
 
@@ -2119,6 +2878,19 @@ ONLY include observations you can PROVE from the transcript.
             if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
                 showAlert('⚠️ Please configure Supabase credentials in the code.', 'error');
             } else {
+                // Load saved settings
+                loadActivityGoalsForm();
+                loadMethodology();
+                loadICP();
+                loadProducts();
+
+                // Load monthly quota from localStorage if exists
+                const savedQuota = localStorage.getItem('monthlyQuota');
+                if (savedQuota) {
+                    document.getElementById('monthly-quota').value = savedQuota;
+                }
+
+                // Load dashboard data
                 loadDashboardData();
                 loadConversationHistory();
             }
