@@ -7,7 +7,8 @@ import Link from 'next/link'
 const tiers = [
   {
     name: 'STARTER',
-    price: '$497',
+    price: '$298',
+    originalPrice: '$497',
     period: '/month',
     description: '1-4 reps',
     features: [
@@ -23,7 +24,8 @@ const tiers = [
   },
   {
     name: 'GROWTH',
-    price: '$795',
+    price: '$477',
+    originalPrice: '$795',
     period: '/month',
     description: '5-9 reps',
     badge: 'Most Popular',
@@ -41,7 +43,8 @@ const tiers = [
   },
   {
     name: 'PROFESSIONAL',
-    price: '$997',
+    price: '$598',
+    originalPrice: '$997',
     period: '/month',
     description: '10-24 reps',
     features: [
@@ -58,7 +61,8 @@ const tiers = [
   },
   {
     name: 'ENTERPRISE',
-    price: '$1,495',
+    price: '$897',
+    originalPrice: '$1,495',
     period: '/month',
     description: '25+ reps',
     features: [
@@ -94,6 +98,15 @@ const Pricing = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
+          {/* Founding Customer Banner */}
+          <div className="inline-block mb-6">
+            <div className="bg-gradient-to-r from-pink via-pink/80 to-pink px-6 py-3 rounded-full shadow-lg shadow-pink/30">
+              <p className="text-white font-bold text-sm md:text-base">
+                🎉 Founding Customer Offer: 40% Off - Limited to First 10 Companies
+              </p>
+            </div>
+          </div>
+
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Simple Pricing.{' '}
             <span className="text-teal">Scale as You Grow.</span>
@@ -125,8 +138,14 @@ const Pricing = () => {
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
                 <div className="mb-2">
-                  <span className="text-5xl font-bold text-teal">{tier.price}</span>
-                  <span className="text-light-muted">{tier.period}</span>
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <span className="text-2xl font-semibold text-light-muted line-through">{tier.originalPrice}</span>
+                    <span className="bg-pink/20 text-pink px-2 py-1 rounded text-xs font-bold">40% OFF</span>
+                  </div>
+                  <div>
+                    <span className="text-5xl font-bold text-teal">{tier.price}</span>
+                    <span className="text-light-muted">{tier.period}</span>
+                  </div>
                 </div>
                 <p className="text-light-muted">{tier.description}</p>
               </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import AnnouncementBanner from '@/components/AnnouncementBanner'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import SocialProof from '@/components/SocialProof'
@@ -17,6 +18,7 @@ import Footer from '@/components/Footer'
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
+      <AnnouncementBanner />
       <Navbar />
       <Hero />
       <SocialProof />
