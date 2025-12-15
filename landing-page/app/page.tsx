@@ -9,6 +9,7 @@ import Solution from '@/components/Solution'
 import Features from '@/components/Features'
 import HowItWorks from '@/components/HowItWorks'
 import Methodologies from '@/components/Methodologies'
+import TheScience from '@/components/TheScience'
 import Pricing from '@/components/Pricing'
 import Testimonials from '@/components/Testimonials'
 import FAQ from '@/components/FAQ'
@@ -27,6 +28,7 @@ export default function LandingPage() {
       <Features />
       <HowItWorks />
       <Methodologies />
+      <TheScience />
       <Pricing />
       <Testimonials />
       <FAQ />
