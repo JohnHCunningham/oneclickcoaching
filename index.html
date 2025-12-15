@@ -1064,6 +1064,78 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         }
 
         // ============================================
+        // AUTHENTICATION CHECK
+        // ============================================
+
+        let currentUser = null;
+        let userEmail = '';
+
+        async function checkAuthentication() {
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+            if (error) {
+                console.error('Auth check error:', error);
+                redirectToLogin();
+                return false;
+            }
+
+            if (!session) {
+                redirectToLogin();
+                return false;
+            }
+
+            // Store current user info
+            currentUser = session.user;
+            userEmail = currentUser.email;
+
+            // Display user info in header
+            updateUserDisplay();
+
+            return true;
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        function updateUserDisplay() {
+            const header = document.querySelector('.header h1');
+            if (header && currentUser) {
+                const userName = currentUser.user_metadata?.full_name || currentUser.email;
+                header.innerHTML = `Daily Tracker <span style="font-size: 0.5em; color: var(--brand-teal); font-weight: normal;">| ${userName}</span>`;
+            }
+        }
+
+        async function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                await supabaseClient.auth.signOut();
+                redirectToLogin();
+            }
+        }
+
+        // Add logout button to page
+        function addLogoutButton() {
+            const header = document.querySelector('.header');
+            if (header) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.textContent = 'Logout';
+                logoutBtn.className = 'btn btn-danger';
+                logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px; padding: 8px 16px;';
+                logoutBtn.onclick = handleLogout;
+                document.body.appendChild(logoutBtn);
+            }
+        }
+
+        // Check auth on page load
+        checkAuthentication().then(isAuthenticated => {
+            if (isAuthenticated) {
+                addLogoutButton();
+                // Continue with normal page initialization
+                console.log('User authenticated:', userEmail);
+            }
+        });
+
+        // ============================================
         // CONFETTI CELEBRATION
         // ============================================
 

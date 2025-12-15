@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Sales Coach Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --brand-navy: #0A1628;
+            --brand-navy-light: #1a2942;
+            --brand-teal: #00CED1;
+            --brand-aqua: #7FFFD4;
+            --brand-pink: #FF1493;
+            --brand-gold: #FFD700;
+            --text-light: #F5F5F5;
+            --text-muted: #A0AEC0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            padding: 2rem 1rem;
+        }
+
+        .signup-container {
+            background: var(--brand-navy-light);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 206, 209, 0.1);
+            border: 1px solid rgba(0, 206, 209, 0.2);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            color: var(--text-light);
+        }
+
+        .logo span {
+            color: var(--brand-teal);
+        }
+
+        .logo p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--brand-navy);
+            border: 1px solid rgba(0, 206, 209, 0.2);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--brand-teal);
+            box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: var(--brand-navy);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--brand-teal), var(--brand-aqua));
+            color: var(--brand-navy);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 206, 209, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert.error {
+            background: rgba(255, 20, 147, 0.1);
+            border: 1px solid rgba(255, 20, 147, 0.3);
+            color: var(--brand-pink);
+        }
+
+        .alert.success {
+            background: rgba(0, 206, 209, 0.1);
+            border: 1px solid rgba(0, 206, 209, 0.3);
+            color: var(--brand-teal);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .login-link a {
+            color: var(--brand-teal);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-requirements {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="logo">
+            <h1>SalesAI<span>.coach</span></h1>
+            <p>Create Your Account</p>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="signupForm">
+            <div class="row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        placeholder="John"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Doe"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@company.com"
+                    required
+                    autocomplete="email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="company">Company Name</label>
+                <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    placeholder="Your Company"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="methodology">Primary Sales Methodology</label>
+                <select id="methodology" name="methodology" required>
+                    <option value="">Select methodology...</option>
+                    <option value="MEDDIC">MEDDIC</option>
+                    <option value="Sandler">Sandler</option>
+                    <option value="Challenger">Challenger</option>
+                    <option value="SPIN">SPIN</option>
+                    <option value="Gap Selling">Gap Selling</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    autocomplete="new-password"
+                    minlength="8"
+                >
+                <div class="password-requirements">
+                    Minimum 8 characters
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    required
+                    autocomplete="new-password"
+                >
+            </div>
+
+            <button type="submit" class="btn" id="signupBtn">
+                Create Account
+            </button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Sign in</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://qfztcmlqvnzlqxsibaao.supabase.co'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmenRjbWxxdm56bHF4c2liYWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIwNTU3MTcsImV4cCI6MjA0NzYzMTcxN30.AeaZuk4q5fHfemUDwFjsO6WN47y_iEjvHhGqTxAM-d4'
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+        // Check if already logged in
+        checkAuth()
+
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession()
+            if (session) {
+                window.location.href = 'index.html'
+            }
+        }
+
+        // Show alert message
+        function showAlert(message, type = 'error') {
+            const alert = document.getElementById('alert')
+            alert.textContent = message
+            alert.className = `alert ${type}`
+            alert.style.display = 'block'
+
+            setTimeout(() => {
+                alert.style.display = 'none'
+            }, 5000)
+        }
+
+        // Handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const firstName = document.getElementById('firstName').value
+            const lastName = document.getElementById('lastName').value
+            const email = document.getElementById('email').value
+            const company = document.getElementById('company').value
+            const methodology = document.getElementById('methodology').value
+            const password = document.getElementById('password').value
+            const confirmPassword = document.getElementById('confirmPassword').value
+            const signupBtn = document.getElementById('signupBtn')
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match')
+                return
+            }
+
+            // Validate password length
+            if (password.length < 8) {
+                showAlert('Password must be at least 8 characters')
+                return
+            }
+
+            // Disable button during signup
+            signupBtn.disabled = true
+            signupBtn.textContent = 'Creating account...'
+
+            try {
+                // Sign up user
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            first_name: firstName,
+                            last_name: lastName,
+                            company: company,
+                            methodology: methodology,
+                            full_name: `${firstName} ${lastName}`
+                        }
+                    }
+                })
+
+                if (authError) throw authError
+
+                showAlert('Account created successfully! Redirecting...', 'success')
+
+                // Redirect to main app
+                setTimeout(() => {
+                    window.location.href = 'index.html'
+                }, 1500)
+
+            } catch (error) {
+                console.error('Signup error:', error)
+                showAlert(error.message || 'Error creating account')
+                signupBtn.disabled = false
+                signupBtn.textContent = 'Create Account'
+            }
+        })
+    </script>
+</body>
+</html>
