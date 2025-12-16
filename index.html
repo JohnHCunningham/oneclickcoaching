@@ -1220,7 +1220,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                         dials: dials,
                         conversations: conversations,
                         discovery_meetings: meetings
-                    }, { onConflict: 'date' });
+                    }, { onConflict: 'user_id,date' });
 
                 if (error) throw error;
 
