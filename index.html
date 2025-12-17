@@ -316,6 +316,204 @@
             color: var(--brand-teal);
         }
 
+        /* Manager Notes Styles */
+        .manager-note {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--brand-teal);
+        }
+
+        .manager-note.type-praise {
+            border-left-color: var(--brand-teal);
+            background: rgba(16, 195, 176, 0.05);
+        }
+
+        .manager-note.type-strength {
+            border-left-color: var(--brand-teal);
+            background: rgba(16, 195, 176, 0.05);
+        }
+
+        .manager-note.type-correction {
+            border-left-color: var(--brand-pink);
+            background: rgba(230, 69, 99, 0.05);
+        }
+
+        .manager-note.type-weakness {
+            border-left-color: var(--brand-gold);
+            background: rgba(244, 176, 58, 0.05);
+        }
+
+        .manager-note.type-goal {
+            border-left-color: var(--brand-aqua);
+            background: rgba(61, 224, 210, 0.05);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .note-type-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            background: rgba(61, 224, 210, 0.2);
+            color: var(--brand-aqua);
+        }
+
+        .note-type-badge.praise {
+            background: rgba(16, 195, 176, 0.2);
+            color: var(--brand-teal);
+        }
+
+        .note-type-badge.strength {
+            background: rgba(16, 195, 176, 0.2);
+            color: var(--brand-teal);
+        }
+
+        .note-type-badge.correction {
+            background: rgba(230, 69, 99, 0.2);
+            color: var(--brand-pink);
+        }
+
+        .note-type-badge.weakness {
+            background: rgba(244, 176, 58, 0.2);
+            color: var(--brand-gold);
+        }
+
+        .note-date {
+            font-size: 0.85rem;
+            color: rgba(242, 244, 248, 0.5);
+        }
+
+        .note-text {
+            color: var(--light-text);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .note-related-metric {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            color: var(--brand-teal);
+        }
+
+        /* Goal Styles */
+        .goal-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--brand-aqua);
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .goal-metric-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--brand-aqua);
+        }
+
+        .goal-status-badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .goal-status-badge.active {
+            background: rgba(61, 224, 210, 0.2);
+            color: var(--brand-aqua);
+        }
+
+        .goal-status-badge.achieved {
+            background: rgba(16, 195, 176, 0.2);
+            color: var(--brand-teal);
+        }
+
+        .goal-status-badge.missed {
+            background: rgba(230, 69, 99, 0.2);
+            color: var(--brand-pink);
+        }
+
+        .goal-progress-section {
+            margin-bottom: 15px;
+        }
+
+        .goal-values {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .goal-current {
+            font-weight: 700;
+            color: var(--brand-gold);
+            font-size: 1.3rem;
+        }
+
+        .goal-target {
+            color: rgba(242, 244, 248, 0.7);
+        }
+
+        .goal-progress-bar {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-aqua));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .goal-progress-fill.achieved {
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-aqua));
+        }
+
+        .goal-progress-fill.on-track {
+            background: linear-gradient(90deg, var(--brand-gold), var(--brand-yellow));
+        }
+
+        .goal-progress-fill.behind {
+            background: linear-gradient(90deg, var(--brand-pink), #c13752);
+        }
+
+        .goal-notes {
+            color: rgba(242, 244, 248, 0.7);
+            font-size: 0.9rem;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .goal-period {
+            color: rgba(242, 244, 248, 0.6);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
         @media (max-width: 768px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
@@ -952,7 +1150,36 @@
                 </div>
             </div>
 
-            <!-- SECTION 5: AI COACHING & INSIGHTS -->
+            <!-- SECTION 5: MANAGER FEEDBACK & GOALS -->
+            <h2 style="grid-column: 1 / -1; color: var(--brand-aqua); margin: 30px 0 10px 0; font-size: 1.5rem;">👨‍💼 Manager Feedback & Goals</h2>
+
+            <!-- Manager Notes -->
+            <div class="card wide-card">
+                <div class="card-header">
+                    <h2 class="card-title">Coaching Notes from Your Manager</h2>
+                    <span class="card-icon">💬</span>
+                </div>
+
+                <div id="manager-notes-loading" class="loading" style="display: none;">Loading feedback...</div>
+                <div id="manager-notes-container">
+                    <p style="text-align: center; opacity: 0.6; padding: 30px;">No coaching notes yet</p>
+                </div>
+            </div>
+
+            <!-- Active Goals -->
+            <div class="card wide-card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Active Goals</h2>
+                    <span class="card-icon">🎯</span>
+                </div>
+
+                <div id="active-goals-loading" class="loading" style="display: none;">Loading goals...</div>
+                <div id="active-goals-container">
+                    <p style="text-align: center; opacity: 0.6; padding: 30px;">No active goals set</p>
+                </div>
+            </div>
+
+            <!-- SECTION 6: AI COACHING & INSIGHTS -->
             <h2 style="grid-column: 1 / -1; color: var(--brand-aqua); margin: 30px 0 10px 0; font-size: 1.5rem;">🤖 AI Coaching & Insights</h2>
 
             <!-- AI Coaching Insights -->
@@ -1117,6 +1344,20 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         function addLogoutButton() {
             const header = document.querySelector('.header');
             if (header) {
+                // Check if user is admin
+                const adminEmails = ['admin@aiadvantagesolutions.com', 'admin@aiadvantagesolutions.ca', 'john@aiadvantagesolutions.com'];
+                const isAdmin = adminEmails.includes(userEmail);
+
+                // Add admin dashboard link if admin
+                if (isAdmin) {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = 'admin-team.html';
+                    adminBtn.textContent = '👥 Team Dashboard';
+                    adminBtn.className = 'btn';
+                    adminBtn.style.cssText = 'position: absolute; top: 20px; right: 120px; padding: 8px 16px; background: linear-gradient(135deg, var(--brand-teal), var(--brand-aqua)); color: white; text-decoration: none; border-radius: 8px; font-weight: 700;';
+                    document.body.appendChild(adminBtn);
+                }
+
                 const logoutBtn = document.createElement('button');
                 logoutBtn.textContent = 'Logout';
                 logoutBtn.className = 'btn btn-danger';
@@ -1283,6 +1524,159 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         }
 
         // ============================================
+        // MANAGER FEEDBACK & GOALS
+        // ============================================
+
+        async function loadManagerNotes() {
+            const container = document.getElementById('manager-notes-container');
+            const loading = document.getElementById('manager-notes-loading');
+
+            try {
+                const { data: session } = await supabase.auth.getSession();
+                if (!session || !session.session) {
+                    container.innerHTML = '<p style="text-align: center; opacity: 0.6; padding: 30px;">Please sign in to view manager feedback</p>';
+                    return;
+                }
+
+                loading.style.display = 'block';
+
+                const { data: notes, error } = await supabase
+                    .from('Manager_Notes')
+                    .select('*')
+                    .eq('user_id', session.session.user.id)
+                    .eq('is_visible_to_user', true)
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                loading.style.display = 'none';
+
+                if (!notes || notes.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; opacity: 0.6; padding: 30px;">No coaching notes yet</p>';
+                    return;
+                }
+
+                container.innerHTML = notes.map(note => {
+                    const createdDate = new Date(note.created_at).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+
+                    return `
+                        <div class="manager-note type-${note.note_type}">
+                            <div class="note-header">
+                                <div class="note-type-badge ${note.note_type}">${note.note_type.toUpperCase()}</div>
+                                <div class="note-date">${createdDate}</div>
+                            </div>
+                            <div class="note-text">${note.note_text}</div>
+                            ${note.related_metric ? `
+                                <div class="note-related-metric">
+                                    📊 Related to: ${note.related_metric}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading manager notes:', error);
+                loading.style.display = 'none';
+                container.innerHTML = '<p style="text-align: center; color: var(--brand-pink); padding: 30px;">Error loading notes</p>';
+            }
+        }
+
+        async function loadActiveGoals() {
+            const container = document.getElementById('active-goals-container');
+            const loading = document.getElementById('active-goals-loading');
+
+            try {
+                const { data: session } = await supabase.auth.getSession();
+                if (!session || !session.session) {
+                    container.innerHTML = '<p style="text-align: center; opacity: 0.6; padding: 30px;">Please sign in to view goals</p>';
+                    return;
+                }
+
+                loading.style.display = 'block';
+
+                const { data: goals, error } = await supabase
+                    .from('User_Goals')
+                    .select('*')
+                    .eq('user_id', session.session.user.id)
+                    .eq('status', 'active')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                loading.style.display = 'none';
+
+                if (!goals || goals.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; opacity: 0.6; padding: 30px;">No active goals set</p>';
+                    return;
+                }
+
+                container.innerHTML = goals.map(goal => {
+                    const progressPercent = goal.target_value > 0
+                        ? Math.min((goal.current_value / goal.target_value) * 100, 100)
+                        : 0;
+
+                    const progressClass = progressPercent >= 100 ? 'achieved'
+                        : progressPercent >= 70 ? 'on-track'
+                        : 'behind';
+
+                    const startDate = new Date(goal.start_date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+                    const endDateStr = goal.end_date ? new Date(goal.end_date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    }) : 'Ongoing';
+
+                    return `
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <div class="goal-metric-name">${goal.metric_type.replace(/_/g, ' ')}</div>
+                                <div class="goal-status-badge ${goal.status}">${goal.status.toUpperCase()}</div>
+                            </div>
+                            <div class="goal-progress-section">
+                                <div class="goal-values">
+                                    <div>
+                                        <span class="goal-current">${goal.current_value}</span>
+                                        <span class="goal-target">/ ${goal.target_value}</span>
+                                    </div>
+                                    <div style="color: var(--brand-aqua); font-weight: 700;">
+                                        ${progressPercent.toFixed(0)}%
+                                    </div>
+                                </div>
+                                <div class="goal-progress-bar">
+                                    <div class="goal-progress-fill ${progressClass}"
+                                         style="width: ${progressPercent}%"></div>
+                                </div>
+                                <div class="goal-period">
+                                    ${goal.period.charAt(0).toUpperCase() + goal.period.slice(1)} Goal • ${startDate} - ${endDateStr}
+                                </div>
+                            </div>
+                            ${goal.notes ? `
+                                <div class="goal-notes">
+                                    💬 ${goal.notes}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Error loading active goals:', error);
+                loading.style.display = 'none';
+                container.innerHTML = '<p style="text-align: center; color: var(--brand-pink); padding: 30px;">Error loading goals</p>';
+            }
+        }
+
+        // ============================================
         // DASHBOARD DATA LOADING
         // ============================================
 
@@ -1293,7 +1687,9 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 loadRevenueSummary(),
                 loadWeeklyChart(),
                 loadCoachingInsights(),
-                calculateSmartRecommendations()
+                calculateSmartRecommendations(),
+                loadManagerNotes(),
+                loadActiveGoals()
             ]);
         }
 

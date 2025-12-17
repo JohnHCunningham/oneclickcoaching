@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Detail - Team Coaching Dashboard</title>
+
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* --- BRAND COLOR PALETTE --- */
+        :root {
+            --brand-navy: #0C1030;
+            --brand-teal: #10C3B0;
+            --brand-aqua: #3DE0D2;
+            --brand-pink: #E64563;
+            --brand-gold: #F4B03A;
+            --brand-yellow: #F9C863;
+            --light-text: #F2F4F8;
+            --card-bg: #131a40;
+            --input-bg: #090c26;
+            --success-green: #10C3B0;
+            --warning-yellow: #F9C863;
+            --danger-red: #E64563;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--brand-navy) 0%, #050816 100%);
+            color: var(--light-text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(61, 224, 210, 0.1);
+        }
+
+        .detail-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--brand-teal), var(--brand-aqua));
+        }
+
+        .user-header-info h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--brand-aqua), var(--brand-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        .user-meta {
+            color: var(--brand-gold);
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, rgba(61, 224, 210, 0.2), rgba(16, 195, 176, 0.2));
+            border: 1px solid var(--brand-teal);
+            color: var(--brand-aqua);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(61, 224, 210, 0.3), rgba(16, 195, 176, 0.3));
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(61, 224, 210, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--brand-gold);
+        }
+
+        /* Categorical Insights Panel */
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid var(--brand-teal);
+        }
+
+        .insight-item.severity-high {
+            border-left-color: var(--danger-red);
+            background: rgba(230, 69, 99, 0.05);
+        }
+
+        .insight-item.severity-medium {
+            border-left-color: var(--warning-yellow);
+            background: rgba(249, 200, 99, 0.05);
+        }
+
+        .insight-item.severity-low {
+            border-left-color: var(--success-green);
+            background: rgba(16, 195, 176, 0.05);
+        }
+
+        .insight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .insight-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+
+        .insight-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .insight-badge.high {
+            background-color: var(--danger-red);
+            color: white;
+        }
+
+        .insight-badge.medium {
+            background-color: var(--warning-yellow);
+            color: var(--brand-navy);
+        }
+
+        .insight-badge.low {
+            background-color: var(--success-green);
+            color: var(--brand-navy);
+        }
+
+        .insight-stats {
+            font-size: 0.9rem;
+            color: rgba(242, 244, 248, 0.6);
+            margin-bottom: 10px;
+        }
+
+        .execution-bar-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .execution-bar {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .execution-bar.high {
+            background: linear-gradient(90deg, var(--danger-red), #c13752);
+        }
+
+        .execution-bar.medium {
+            background: linear-gradient(90deg, var(--warning-yellow), var(--brand-gold));
+        }
+
+        .execution-bar.low {
+            background: linear-gradient(90deg, var(--success-green), var(--brand-aqua));
+        }
+
+        .coaching-prompt {
+            font-size: 0.9rem;
+            color: var(--brand-yellow);
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .coaching-prompt::before {
+            content: '💬 ';
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 15px;
+        }
+
+        /* Manager Notes Section */
+        .notes-section {
+            grid-column: 1 / -1;
+        }
+
+        .add-note-form {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--brand-teal);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--light-text);
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--brand-aqua);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--brand-teal), var(--brand-aqua));
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .note-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid var(--brand-teal);
+        }
+
+        .note-item.type-praise {
+            border-left-color: var(--success-green);
+        }
+
+        .note-item.type-correction {
+            border-left-color: var(--danger-red);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .note-type {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            background: rgba(61, 224, 210, 0.2);
+            color: var(--brand-aqua);
+        }
+
+        .note-date {
+            font-size: 0.85rem;
+            color: rgba(242, 244, 248, 0.5);
+        }
+
+        .note-text {
+            color: var(--light-text);
+            line-height: 1.5;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--brand-teal);
+            font-size: 1.2rem;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .alert-error {
+            background: rgba(230, 69, 99, 0.2);
+            border: 1px solid var(--brand-pink);
+            color: var(--brand-pink);
+        }
+
+        .alert-success {
+            background: rgba(16, 195, 176, 0.2);
+            border: 1px solid var(--brand-teal);
+            color: var(--brand-aqua);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Header -->
+        <div class="detail-header" style="position: relative;">
+            <div class="user-header-info">
+                <h1 id="user-name">Loading...</h1>
+                <div class="user-meta" id="user-meta">Loading...</div>
+            </div>
+            <div class="header-actions">
+                <a href="admin-team.html" class="btn btn-back">← Back to Team</a>
+            </div>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <!-- Main Grid -->
+        <div class="dashboard-grid">
+
+            <!-- Categorical Insights Panel -->
+            <div class="card">
+                <h2 class="card-title">Methodology Execution Breakdown</h2>
+                <div id="loading-insights" class="loading">Loading insights</div>
+                <div id="insights-container" class="insights-list hidden"></div>
+            </div>
+
+            <!-- Performance Summary -->
+            <div class="card">
+                <h2 class="card-title">Performance Summary</h2>
+                <div id="performance-summary" class="loading">Loading</div>
+            </div>
+
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="dashboard-grid">
+
+            <!-- Methodology Radar Chart -->
+            <div class="card">
+                <h2 class="card-title">Methodology Execution</h2>
+                <div class="chart-container">
+                    <canvas id="methodology-radar"></canvas>
+                </div>
+            </div>
+
+            <!-- Activity Trend -->
+            <div class="card">
+                <h2 class="card-title">Activity Trend (30 days)</h2>
+                <div class="chart-container">
+                    <canvas id="activity-trend"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Manager Notes Section -->
+        <div class="dashboard-grid notes-section">
+            <div class="card">
+                <h2 class="card-title">Manager Coaching Notes</h2>
+
+                <!-- Add Note Form -->
+                <div class="add-note-form">
+                    <h3 style="margin-bottom: 15px; color: var(--brand-aqua);">Add New Note</h3>
+                    <form id="add-note-form" onsubmit="addNote(event)">
+                        <div class="form-group">
+                            <label>Note Type</label>
+                            <select id="note-type" required>
+                                <option value="general">General</option>
+                                <option value="strength">Strength</option>
+                                <option value="weakness">Weakness</option>
+                                <option value="praise">Praise</option>
+                                <option value="correction">Correction</option>
+                                <option value="goal">Goal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Note Text</label>
+                            <textarea id="note-text" required placeholder="Enter coaching feedback..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Related Metric (Optional)</label>
+                            <input type="text" id="related-metric" placeholder="e.g., Upfront Contract, Pain Funnel">
+                        </div>
+                        <button type="submit" class="btn btn-submit">Add Note</button>
+                    </form>
+                </div>
+
+                <!-- Existing Notes -->
+                <h3 style="margin-bottom: 15px; color: var(--brand-aqua);">Note History</h3>
+                <div id="notes-loading" class="loading">Loading notes</div>
+                <div id="notes-container" class="notes-list hidden"></div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+
+        const SUPABASE_URL = 'https://qwqlsbccwnwrdpcaccjz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3cWxzYmNjd253cmRwY2FjY2p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzMTA1MDQsImV4cCI6MjA4MDg4NjUwNH0.yWzSV2Nid_T1XiDE0RrskFob9mRUc-m6MbeIiT7huC4';
+
+        const ADMIN_EMAILS = [
+            'admin@aiadvantagesolutions.com',
+            'admin@aiadvantagesolutions.ca',
+            'john@aiadvantagesolutions.com'
+        ];
+
+        let supabaseClient;
+        let currentUserId;
+        let currentUserData;
+        let charts = {};
+
+        // Initialize Supabase
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (error) {
+            console.error('Supabase initialization error:', error);
+        }
+
+        // ============================================
+        // DATA LOADING FUNCTIONS
+        // ============================================
+
+        async function loadUserDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentUserId = urlParams.get('user_id');
+
+            if (!currentUserId) {
+                document.getElementById('alert-container').innerHTML =
+                    '<div class="alert alert-error">No user ID provided</div>';
+                return;
+            }
+
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                const adminEmail = session.user.email;
+
+                // Load user data from get_team_overview
+                const { data: teamData, error: teamError } = await supabaseClient.rpc('get_team_overview', {
+                    admin_email: adminEmail,
+                    days_back: 30
+                });
+
+                if (teamError) throw teamError;
+
+                currentUserData = teamData.find(u => u.user_id === currentUserId);
+
+                if (!currentUserData) {
+                    throw new Error('User not found');
+                }
+
+                // Update header
+                document.getElementById('user-name').textContent =
+                    currentUserData.first_name || currentUserData.email;
+                document.getElementById('user-meta').textContent =
+                    `${currentUserData.methodology || 'No methodology'} • Performance: ${(currentUserData.performance_score || 0).toFixed(1)}/10`;
+
+                // Load categorical insights
+                await loadCategoricalInsights(adminEmail);
+
+                // Load performance summary
+                loadPerformanceSummary();
+
+                // Load manager notes
+                await loadManagerNotes();
+
+                // Render charts
+                renderCharts();
+
+            } catch (error) {
+                console.error('Error loading user detail:', error);
+                document.getElementById('alert-container').innerHTML =
+                    `<div class="alert alert-error">Error loading user data: ${error.message}</div>`;
+            }
+        }
+
+        async function loadCategoricalInsights(adminEmail) {
+            const loadingEl = document.getElementById('loading-insights');
+            const containerEl = document.getElementById('insights-container');
+
+            try {
+                const { data, error } = await supabaseClient.rpc('get_user_categorical_insights', {
+                    admin_email: adminEmail,
+                    target_user_id: currentUserId,
+                    days_back: 30
+                });
+
+                if (error) throw error;
+
+                loadingEl.classList.add('hidden');
+
+                if (!data || data.length === 0) {
+                    containerEl.innerHTML = '<div class="alert alert-error">No insights available yet</div>';
+                    containerEl.classList.remove('hidden');
+                    return;
+                }
+
+                renderCategoricalInsights(data);
+                containerEl.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading insights:', error);
+                loadingEl.textContent = 'Error loading insights';
+            }
+        }
+
+        function renderCategoricalInsights(insights) {
+            const container = document.getElementById('insights-container');
+
+            container.innerHTML = insights.map(insight => {
+                const executionRate = insight.execution_rate || 0;
+
+                return `
+                    <div class="insight-item severity-${insight.severity}">
+                        <div class="insight-header">
+                            <div class="insight-name">${insight.metric_name}</div>
+                            <div class="insight-badge ${insight.severity}">
+                                ${executionRate.toFixed(0)}%
+                            </div>
+                        </div>
+                        <div class="insight-stats">
+                            ${insight.calls_executed} of ${insight.calls_analyzed} calls analyzed
+                        </div>
+                        <div class="execution-bar-container">
+                            <div class="execution-bar ${insight.severity}"
+                                 style="width: ${executionRate}%"></div>
+                        </div>
+                        <div class="coaching-prompt">${insight.coaching_prompt}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadPerformanceSummary() {
+            const container = document.getElementById('performance-summary');
+
+            const stats = [
+                { label: 'Dials', value: currentUserData.total_dials || 0, icon: '📞' },
+                { label: 'Conversations', value: currentUserData.total_conversations || 0, icon: '💬' },
+                { label: 'Meetings', value: currentUserData.total_meetings || 0, icon: '🤝' },
+                { label: 'Revenue', value: `$${formatNumber(currentUserData.total_revenue || 0)}`, icon: '💰' },
+                { label: 'Sales', value: currentUserData.total_sales || 0, icon: '✅' },
+                { label: 'Dial → Conv Rate', value: `${(currentUserData.dial_conv_rate || 0).toFixed(1)}%`, icon: '🔄' },
+                { label: 'Active Days', value: currentUserData.active_days || 0, icon: '📅' },
+                { label: 'Avg Sandler Score', value: (currentUserData.avg_sandler_score || 0).toFixed(1), icon: '⭐' }
+            ];
+
+            container.innerHTML = stats.map(stat => `
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <div style="color: rgba(242, 244, 248, 0.7);">
+                        <span style="font-size: 1.2rem; margin-right: 8px;">${stat.icon}</span>
+                        ${stat.label}
+                    </div>
+                    <div style="font-weight: 700; color: var(--brand-gold);">${stat.value}</div>
+                </div>
+            `).join('');
+        }
+
+        async function loadManagerNotes() {
+            const loadingEl = document.getElementById('notes-loading');
+            const containerEl = document.getElementById('notes-container');
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('Manager_Notes')
+                    .select('*')
+                    .eq('user_id', currentUserId)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                loadingEl.classList.add('hidden');
+
+                if (!data || data.length === 0) {
+                    containerEl.innerHTML = '<div style="text-align: center; color: rgba(242, 244, 248, 0.5); padding: 20px;">No notes yet</div>';
+                    containerEl.classList.remove('hidden');
+                    return;
+                }
+
+                renderManagerNotes(data);
+                containerEl.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading notes:', error);
+                loadingEl.textContent = 'Error loading notes';
+            }
+        }
+
+        function renderManagerNotes(notes) {
+            const container = document.getElementById('notes-container');
+
+            container.innerHTML = notes.map(note => {
+                const createdDate = new Date(note.created_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                return `
+                    <div class="note-item type-${note.note_type}">
+                        <div class="note-header">
+                            <div class="note-type">${note.note_type}</div>
+                            <div class="note-date">${createdDate}</div>
+                        </div>
+                        <div class="note-text">${note.note_text}</div>
+                        ${note.related_metric ? `
+                            <div style="margin-top: 10px; font-size: 0.85rem; color: var(--brand-teal);">
+                                Related to: ${note.related_metric}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function addNote(event) {
+            event.preventDefault();
+
+            const noteType = document.getElementById('note-type').value;
+            const noteText = document.getElementById('note-text').value;
+            const relatedMetric = document.getElementById('related-metric').value;
+
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+
+                const { error } = await supabaseClient
+                    .from('Manager_Notes')
+                    .insert({
+                        user_id: currentUserId,
+                        manager_id: session.user.id,
+                        note_type: noteType,
+                        note_text: noteText,
+                        related_metric: relatedMetric || null,
+                        is_visible_to_user: true
+                    });
+
+                if (error) throw error;
+
+                // Clear form
+                document.getElementById('add-note-form').reset();
+
+                // Show success message
+                document.getElementById('alert-container').innerHTML =
+                    '<div class="alert alert-success">Note added successfully</div>';
+
+                setTimeout(() => {
+                    document.getElementById('alert-container').innerHTML = '';
+                }, 3000);
+
+                // Reload notes
+                await loadManagerNotes();
+
+            } catch (error) {
+                console.error('Error adding note:', error);
+                document.getElementById('alert-container').innerHTML =
+                    `<div class="alert alert-error">Error adding note: ${error.message}</div>`;
+            }
+        }
+
+        // ============================================
+        // CHART RENDERING
+        // ============================================
+
+        async function renderCharts() {
+            await renderMethodologyRadar();
+            await renderActivityTrend();
+        }
+
+        async function renderMethodologyRadar() {
+            const ctx = document.getElementById('methodology-radar');
+
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                const { data: insights } = await supabaseClient.rpc('get_user_categorical_insights', {
+                    admin_email: session.user.email,
+                    target_user_id: currentUserId,
+                    days_back: 30
+                });
+
+                if (!insights || insights.length === 0) return;
+
+                // Filter for methodology metrics only
+                const methodologyInsights = insights.filter(i => i.category === 'Methodology Execution');
+
+                const labels = methodologyInsights.map(i => i.metric_name);
+                const data = methodologyInsights.map(i => i.execution_rate || 0);
+
+                charts.methodologyRadar = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Execution Rate (%)',
+                            data: data,
+                            backgroundColor: 'rgba(61, 224, 210, 0.2)',
+                            borderColor: 'rgba(61, 224, 210, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(61, 224, 210, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(61, 224, 210, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: 'rgba(242, 244, 248, 0.6)',
+                                    backdropColor: 'transparent'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                pointLabels: {
+                                    color: 'rgba(242, 244, 248, 0.8)',
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error rendering methodology radar:', error);
+            }
+        }
+
+        async function renderActivityTrend() {
+            const ctx = document.getElementById('activity-trend');
+
+            try {
+                // Fetch daily activity data
+                const { data, error } = await supabaseClient
+                    .from('Daily_Tracker')
+                    .select('date, dials, conversations, discovery_meetings')
+                    .eq('user_id', currentUserId)
+                    .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
+                    .order('date', { ascending: true });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    ctx.getContext('2d').fillStyle = 'rgba(242, 244, 248, 0.5)';
+                    ctx.getContext('2d').fillText('No activity data', ctx.width / 2, ctx.height / 2);
+                    return;
+                }
+
+                const labels = data.map(d => new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                const dials = data.map(d => d.dials || 0);
+                const conversations = data.map(d => d.conversations || 0);
+
+                charts.activityTrend = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Dials',
+                                data: dials,
+                                borderColor: 'rgba(61, 224, 210, 1)',
+                                backgroundColor: 'rgba(61, 224, 210, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            },
+                            {
+                                label: 'Conversations',
+                                data: conversations,
+                                borderColor: 'rgba(244, 176, 58, 1)',
+                                backgroundColor: 'rgba(244, 176, 58, 0.1)',
+                                tension: 0.3,
+                                fill: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: 'rgba(242, 244, 248, 0.6)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: 'rgba(242, 244, 248, 0.6)',
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'rgba(242, 244, 248, 0.8)'
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error rendering activity trend:', error);
+            }
+        }
+
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toFixed(0);
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+
+                if (!session || !ADMIN_EMAILS.includes(session.user.email)) {
+                    window.location.href = 'admin-team.html';
+                    return;
+                }
+
+                await loadUserDetail();
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                window.location.href = 'admin-team.html';
+            }
+        });
+
+    </script>
+
+</body>
+</html>
