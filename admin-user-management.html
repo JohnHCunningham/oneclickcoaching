@@ -341,12 +341,34 @@
                     if (error) throw error;
                 }
 
+                // Send email notification via n8n webhook
+                try {
+                    await fetch('https://aiadvantagesolutions.app.n8n.cloud/webhook/1c96e8d2-b11e-45f8-a67e-08ee11244491', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password,
+                            firstName: firstName,
+                            lastName: lastName,
+                            methodology: methodology,
+                            fullName: `${firstName} ${lastName}`.trim()
+                        })
+                    });
+                    console.log('Email notification sent via n8n');
+                } catch (emailError) {
+                    console.error('Failed to send email notification:', emailError);
+                    // Don't fail user creation if email fails
+                }
+
                 alertContainer.innerHTML = `
                     <div class="alert alert-success">
                         ✅ User created successfully!<br>
                         <strong>Email:</strong> ${email}<br>
                         <strong>Password:</strong> ${password}<br>
-                        <small>Send these credentials to the user securely.</small>
+                        <small>Email notification sent to user.</small>
                     </div>
                 `;
 
