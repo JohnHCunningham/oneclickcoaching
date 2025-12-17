@@ -71,6 +71,9 @@
             transition: all 0.2s ease;
             text-decoration: none;
             display: inline-block;
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
         }
 
         .btn-primary {
@@ -183,8 +186,8 @@
                 <p style="color: var(--brand-gold); margin-top: 5px;">Create and manage team members</p>
             </div>
             <div class="header-actions">
-                <a href="admin-team.html" class="btn btn-secondary">← Team Dashboard</a>
-                <a href="admin.html" class="btn btn-secondary">Performance Dashboard</a>
+                <a href="admin-team.html" class="btn btn-secondary" onclick="console.log('Team Dashboard clicked'); return true;">← Team Dashboard</a>
+                <a href="admin.html" class="btn btn-secondary" onclick="console.log('Performance Dashboard clicked'); return true;">Performance Dashboard</a>
             </div>
         </div>
 
