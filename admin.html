@@ -90,6 +90,23 @@
             transform: translateY(-2px);
         }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(61, 224, 210, 0.2), rgba(16, 195, 176, 0.2));
+            border: 1px solid var(--brand-teal);
+            color: var(--brand-aqua);
+            padding: 10px 20px;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
         /* Quick Stats */
         .quick-stats {
             display: grid;
@@ -530,6 +547,8 @@
                 <p style="color: var(--brand-gold); margin-top: 5px;">AI Advantage Solutions</p>
             </div>
             <div class="header-actions">
+                <a href="admin-team.html" class="btn-secondary">← Team Dashboard</a>
+                <a href="admin-user-management.html" class="btn-secondary">➕ Add Team Member</a>
                 <span class="last-updated" id="last-updated">Loading...</span>
                 <button class="btn-logout" onclick="adminLogout()">Logout</button>
             </div>
