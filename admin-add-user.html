@@ -294,6 +294,12 @@
         async function createUser(event) {
             event.preventDefault();
 
+            // Prevent double submission
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            if (submitButton.disabled) return; // Already processing
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating User...';
+
             const email = document.getElementById('user-email').value;
             const password = document.getElementById('user-password').value;
             const firstName = document.getElementById('user-first-name').value;
@@ -386,6 +392,10 @@
                     loadUsers();
                 }, 1000);
 
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create User';
+
             } catch (error) {
                 console.error('Error creating user:', error);
                 alertContainer.innerHTML = `
@@ -393,6 +403,13 @@
                         Error creating user: ${error.message}
                     </div>
                 `;
+
+                // Re-enable button on error
+                submitButton.disabled = false;
+                submitButton.textContent = 'Create User';
+
+                // Scroll to top to show error message
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
