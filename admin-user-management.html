@@ -264,19 +264,19 @@
             'john@aiadvantagesolutions.com'
         ];
 
-        let supabase;
+        let supabaseClient;
         let currentAdminId;
 
         // Initialize
         try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         } catch (error) {
             console.error('Supabase initialization error:', error);
         }
 
         // Check admin auth
         async function checkAdmin() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await supabaseClient.auth.getSession();
 
             if (!session || !ADMIN_EMAILS.includes(session.user.email)) {
                 window.location.href = 'admin-team.html';
@@ -306,7 +306,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session.access_token}`
+                        'Authorization': `Bearer ${(await supabaseClient.auth.getSession()).data.session.access_token}`
                     },
                     body: JSON.stringify({
                         email: email,
@@ -324,7 +324,7 @@
 
                 if (!response.ok) {
                     // Fallback: Use regular signup
-                    const { data, error } = await supabase.auth.signUp({
+                    const { data, error } = await supabaseClient.auth.signUp({
                         email: email,
                         password: password,
                         options: {
