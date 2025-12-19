@@ -18,6 +18,7 @@ import FAQ from '@/components/FAQ'
 import Contact from '@/components/Contact'
 import FinalCTA from '@/components/FinalCTA'
 import Footer from '@/components/Footer'
+import Chatbot from '@/components/Chatbot'
 
 export default function LandingPage() {
   return (
@@ -40,6 +41,7 @@ export default function LandingPage() {
       <Contact />
       <FinalCTA />
       <Footer />
+      <Chatbot />
     </div>
   )
 }
