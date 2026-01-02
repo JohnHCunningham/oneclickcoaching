@@ -807,6 +807,14 @@
                 </div>
 
                 <div class="input-group">
+                    <label>Company Characteristics (Qualifiers & Disqualifiers)</label>
+                    <textarea id="icp-characteristics" placeholder="e.g., ✓ Uses Sandler/MEDDIC methodology ✓ Invested in sales training ✓ Modern sales tools (Gong, Salesforce) ✗ <5 sales reps ✗ B2C companies ✗ No formal methodology" rows="4"></textarea>
+                    <small style="opacity: 0.7; font-size: 0.85rem; margin-top: 5px; display: block;">
+                        What makes them a good fit? What disqualifies them? Use ✓ for qualifiers, ✗ for disqualifiers.
+                    </small>
+                </div>
+
+                <div class="input-group">
                     <label>Key Pain Points</label>
                     <textarea id="icp-pain-points" placeholder="e.g., Sales reps not executing methodology, inconsistent pipeline, low close rates" rows="3"></textarea>
                 </div>
@@ -3157,6 +3165,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 industry: document.getElementById('icp-industry').value.trim(),
                 companySize: document.getElementById('icp-company-size').value.trim(),
                 jobTitles: document.getElementById('icp-job-titles').value.trim(),
+                characteristics: document.getElementById('icp-characteristics').value.trim(),
                 painPoints: document.getElementById('icp-pain-points').value.trim(),
                 budget: document.getElementById('icp-budget').value.trim()
             };
@@ -3178,6 +3187,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 document.getElementById('icp-industry').value = icp.industry || '';
                 document.getElementById('icp-company-size').value = icp.companySize || '';
                 document.getElementById('icp-job-titles').value = icp.jobTitles || '';
+                document.getElementById('icp-characteristics').value = icp.characteristics || '';
                 document.getElementById('icp-pain-points').value = icp.painPoints || '';
                 document.getElementById('icp-budget').value = icp.budget || '';
                 displayICP();
@@ -3196,6 +3206,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             if (icp.industry) html += `<strong>Industry:</strong> ${icp.industry}<br>`;
             if (icp.companySize) html += `<strong>Company Size:</strong> ${icp.companySize}<br>`;
             if (icp.jobTitles) html += `<strong>Target Titles:</strong> ${icp.jobTitles}<br>`;
+            if (icp.characteristics) html += `<strong>Characteristics:</strong> ${icp.characteristics}<br>`;
             if (icp.painPoints) html += `<strong>Pain Points:</strong> ${icp.painPoints}<br>`;
             if (icp.budget) html += `<strong>Budget Range:</strong> ${icp.budget}`;
 
