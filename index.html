@@ -905,6 +905,14 @@
                 </div>
 
                 <div class="input-group">
+                    <label>Ideal Customer Profile (ICP)</label>
+                    <textarea id="script-icp" placeholder="e.g., Company Size: 50-200 employees, Sales Team: 10-50 reps, Revenue: $10M-$100M, Industry: B2B SaaS, Uses methodology: Sandler/MEDDIC, Modern sales tools: Salesforce/Gong" rows="4"></textarea>
+                    <small style="opacity: 0.7; font-size: 0.85rem; margin-top: 5px; display: block;">
+                        Who is your ideal customer? Company characteristics, qualifiers, and disqualifiers.
+                    </small>
+                </div>
+
+                <div class="input-group">
                     <label>Opening Script (Cold Call)</label>
                     <textarea id="script-opening" placeholder='e.g., "Hi [Name], this is [Your Name] from [Company] here in [Location]. I know I\'m catching you cold, so I\'ll be brief."' rows="3"></textarea>
                 </div>
@@ -3206,6 +3214,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
                 // Verify all elements exist
                 const elements = {
                     businessDescription: document.getElementById('script-business-description'),
+                    icp: document.getElementById('script-icp'),
                     opening: document.getElementById('script-opening'),
                     valueProp: document.getElementById('script-value-prop'),
                     cta: document.getElementById('script-cta'),
@@ -3223,6 +3232,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
 
                 const scripts = {
                     businessDescription: elements.businessDescription.value.trim(),
+                    icp: elements.icp.value.trim(),
                     opening: elements.opening.value.trim(),
                     valueProp: elements.valueProp.value.trim(),
                     cta: elements.cta.value.trim(),
@@ -3243,6 +3253,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             if (saved) {
                 const scripts = JSON.parse(saved);
                 document.getElementById('script-business-description').value = scripts.businessDescription || '';
+                document.getElementById('script-icp').value = scripts.icp || '';
                 document.getElementById('script-opening').value = scripts.opening || '';
                 document.getElementById('script-value-prop').value = scripts.valueProp || '';
                 document.getElementById('script-cta').value = scripts.cta || '';
@@ -3259,6 +3270,7 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
             // Return default scripts if none saved
             return {
                 businessDescription: 'AI Advantage Solutions - helping businesses automate tasks and save time',
+                icp: 'Company Size: 50-200 employees, Industry: B2B SaaS, Uses CRM/sales tools, Growing sales team',
                 opening: 'Hi [Name], this is John from AI Advantage Solutions here in Hamilton. I know I\'m catching you cold, so I\'ll be brief.',
                 valueProp: 'I help mixed-income community providers like [Company] save up to 20 hours per week by automating repetitive tasks—things like maintenance requests, tenant communications, and compliance tracking.',
                 cta: 'I\'d love to show you how in a quick 15-minute online meeting. Do you have your calendar handy, or would [Date] at [Time] work better?',
