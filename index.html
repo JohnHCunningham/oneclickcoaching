@@ -3201,17 +3201,41 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         // SALES SCRIPTS FUNCTIONS
         // ============================================
 
-        function saveScripts() {
-            const scripts = {
-                businessDescription: document.getElementById('script-business-description').value.trim(),
-                opening: document.getElementById('script-opening').value.trim(),
-                valueProp: document.getElementById('script-value-prop').value.trim(),
-                cta: document.getElementById('script-cta').value.trim(),
-                objections: document.getElementById('script-objections').value.trim()
-            };
+        async function saveScripts() {
+            try {
+                // Verify all elements exist
+                const elements = {
+                    businessDescription: document.getElementById('script-business-description'),
+                    opening: document.getElementById('script-opening'),
+                    valueProp: document.getElementById('script-value-prop'),
+                    cta: document.getElementById('script-cta'),
+                    objections: document.getElementById('script-objections')
+                };
 
-            localStorage.setItem('salesScripts', JSON.stringify(scripts));
-            showAlert('✅ Scripts saved successfully!', 'success');
+                // Check if any elements are missing
+                const missingElements = Object.entries(elements)
+                    .filter(([key, element]) => !element)
+                    .map(([key]) => key);
+
+                if (missingElements.length > 0) {
+                    throw new Error(`Missing form elements: ${missingElements.join(', ')}`);
+                }
+
+                const scripts = {
+                    businessDescription: elements.businessDescription.value.trim(),
+                    opening: elements.opening.value.trim(),
+                    valueProp: elements.valueProp.value.trim(),
+                    cta: elements.cta.value.trim(),
+                    objections: elements.objections.value.trim()
+                };
+
+                localStorage.setItem('salesScripts', JSON.stringify(scripts));
+                showAlert('✅ Scripts saved successfully!', 'success');
+                console.log('Scripts saved to localStorage:', scripts);
+            } catch (error) {
+                console.error('Error saving scripts:', error);
+                showAlert('❌ Failed to save scripts: ' + error.message, 'error');
+            }
         }
 
         function loadScripts() {
@@ -3243,19 +3267,34 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         }
 
         async function rewriteScriptsWithAI() {
-            const businessDescription = document.getElementById('script-business-description').value.trim();
-            const statusDiv = document.getElementById('scripts-rewrite-status');
-
-            if (!businessDescription) {
-                showAlert('Please enter a business description first', 'error');
-                return;
-            }
-
-            // Show loading state
-            statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<div class="loading">✨ Claude is rewriting your scripts...</div>';
-
             try {
+                const businessDescriptionEl = document.getElementById('script-business-description');
+                const statusDiv = document.getElementById('scripts-rewrite-status');
+
+                if (!businessDescriptionEl) {
+                    throw new Error('Business description field not found');
+                }
+
+                const businessDescription = businessDescriptionEl.value.trim();
+
+                if (!businessDescription) {
+                    showAlert('⚠️ Please enter a business description first', 'error');
+                    return;
+                }
+
+                if (!statusDiv) {
+                    throw new Error('Status display element not found');
+                }
+
+                // Show loading state
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = '<div class="loading">✨ Claude is rewriting your scripts...</div>';
+
+                // Check if Supabase client is initialized
+                if (!supabaseClient) {
+                    throw new Error('Supabase client not initialized. Using demo mode.');
+                }
+
                 // Call Supabase Edge Function to generate scripts
                 const { data, error } = await supabaseClient.functions.invoke('generate-scripts', {
                     body: {
@@ -3275,15 +3314,24 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
 
                     statusDiv.innerHTML = '<div class="alert alert-success">✅ Scripts rewritten successfully! Review and save them below.</div>';
                     celebrateWithConfetti('default');
+                    showAlert('✅ Scripts rewritten successfully!', 'success');
                 } else {
                     throw new Error('No scripts returned from AI');
                 }
 
             } catch (error) {
                 console.error('Script rewriting error:', error);
-                statusDiv.innerHTML = `<div class="alert alert-error">❌ Failed to rewrite scripts: ${error.message}. Using demo mode instead.</div>`;
+                const statusDiv = document.getElementById('scripts-rewrite-status');
+
+                if (statusDiv) {
+                    statusDiv.style.display = 'block';
+                    statusDiv.innerHTML = `<div class="alert alert-error">⚠️ AI rewrite unavailable. Using demo templates instead.</div>`;
+                }
+
+                showAlert('⚠️ AI rewrite unavailable. Using demo templates instead.', 'error');
 
                 // Fallback: Generate demo scripts locally
+                const businessDescription = document.getElementById('script-business-description').value.trim();
                 generateDemoScripts(businessDescription);
             }
         }
