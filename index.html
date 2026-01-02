@@ -1878,20 +1878,25 @@ Rep: I wanted to learn more about your housing operations..."></textarea>
         }
 
         // Save activity goals to localStorage
-        function saveActivityGoals() {
-            const goals = {
-                dials: parseInt(document.getElementById('goal-dials').value) || 15,
-                conversations: parseInt(document.getElementById('goal-conversations').value) || 5,
-                meetings: parseInt(document.getElementById('goal-meetings').value) || 2,
-                sales: parseInt(document.getElementById('goal-sales').value) || 1
-            };
+        async function saveActivityGoals() {
+            try {
+                const goals = {
+                    dials: parseInt(document.getElementById('goal-dials').value) || 15,
+                    conversations: parseInt(document.getElementById('goal-conversations').value) || 5,
+                    meetings: parseInt(document.getElementById('goal-meetings').value) || 2,
+                    sales: parseInt(document.getElementById('goal-sales').value) || 1
+                };
 
-            localStorage.setItem('activityGoals', JSON.stringify(goals));
-            showAlert('Activity goals saved successfully!', 'success');
+                localStorage.setItem('activityGoals', JSON.stringify(goals));
+                showAlert('Activity goals saved successfully!', 'success');
 
-            // Refresh goal progress display
-            loadGoalProgress();
-            calculateSmartRecommendations();
+                // Refresh goal progress display (async but don't await to avoid blocking)
+                loadGoalProgress().catch(err => console.error('Error loading goal progress:', err));
+                calculateSmartRecommendations().catch(err => console.error('Error calculating recommendations:', err));
+            } catch (error) {
+                console.error('Error saving activity goals:', error);
+                showAlert('Failed to save activity goals. Please try again.', 'error');
+            }
         }
 
         // Get activity goals from localStorage
