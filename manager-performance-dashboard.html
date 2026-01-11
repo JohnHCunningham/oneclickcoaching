@@ -570,12 +570,28 @@
             background: var(--card-bg);
             border-radius: 20px;
             padding: 40px;
-            max-width: 500px;
+            max-width: 700px;
             width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
             text-align: center;
             border: 2px solid var(--brand-teal);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             position: relative;
+        }
+
+        .celebration-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .celebration-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .celebration-content::-webkit-scrollbar-thumb {
+            background: var(--brand-teal);
+            border-radius: 10px;
         }
 
         .celebration-icon {
@@ -600,19 +616,25 @@
         }
 
         .celebration-description {
-            font-size: 1.1rem;
-            color: var(--light-text);
+            font-size: 1.05rem;
+            color: var(--brand-gold);
             line-height: 1.6;
             margin-bottom: 20px;
+            font-weight: 600;
         }
 
         .celebration-details {
-            background: rgba(61, 224, 210, 0.1);
+            background: rgba(61, 224, 210, 0.05);
+            border: 1px solid rgba(61, 224, 210, 0.2);
             border-radius: 10px;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 20px;
-            font-size: 0.95rem;
-            color: rgba(242, 244, 248, 0.8);
+            font-size: 0.9rem;
+            color: rgba(242, 244, 248, 0.9);
+            text-align: left;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         .celebration-close {
@@ -1446,18 +1468,112 @@
             // Trigger confetti
             triggerConfetti(status.status === 'critical' ? 2 : 1);
 
-            // Show achievement modal for coaching milestone
-            const coachingAchievement = {
-                icon: '🤖',
-                title: 'AI Coaching Activated',
-                description: `Coaching analysis generated for ${rep.name}`,
-                details: `${rep.name} will receive:\n✅ Performance analysis\n✅ Specific recommendations\n✅ Focus area for next call\n\nBased on: ${rep.methodology} methodology`,
-                level: status.status === 'critical' ? 2 : 1
-            };
+            // Generate coaching message based on rep
+            let coachingMessage = generateCoachingMessage(rep, status);
 
             setTimeout(() => {
-                showCelebrationModal(coachingAchievement);
+                showCelebrationModal(coachingMessage);
             }, 500);
+        }
+
+        function generateCoachingMessage(rep, status) {
+            // Sarah Johnson - Healthy performer (Sandler)
+            if (rep.name === "Sarah Johnson") {
+                return {
+                    icon: '🎯',
+                    title: 'Coaching: Sarah Johnson',
+                    description: 'Performance refinement and advanced techniques',
+                    details: `📊 WHAT YOU DID WELL
+
+✅ Activity Consistency — 65 dials this week = 130% of baseline. This is your highest activity week on record. 10-day streak shows discipline.
+
+✅ Conversion Quality — 31% dial-to-conversation rate vs 30% team average. You're connecting effectively.
+
+✅ Sandler Fundamentals — Recent calls show strong upfront contracts and pain funnel execution.
+
+⚠️ WHAT TO REFINE
+
+→ Deal Size Opportunity — Average deal: $15K. Top performers in your range close $20-25K deals. You have the activity to support bigger pipeline.
+
+→ Pain Funnel Depth — Good pain identification, but could go deeper on personal impact. "What does this mean for you personally?" unlocks bigger urgency.
+
+🎯 SPECIFIC RECOMMENDATIONS
+
+1. TARGET LARGER DEALS: Next 5 conversations, qualify for $20K+ budget. Ask: "Based on what you've shared, is $20-25K within your allocated budget for solving this?"
+
+2. DEEPEN PAIN: When prospect shares business problem, ask: "And what does that mean for you personally if this continues?" Then pause - let them feel it.
+
+3. LEVERAGE YOUR STREAK: You're hot right now. Book 2 extra discovery meetings this week while momentum is high.
+
+🔬 FOCUS FOR YOUR NEXT CALL
+
+Experiment: Target one $25K+ opportunity.
+Ask the personal pain question.
+See if urgency increases.
+
+You're executing at a high level. Time to scale the deals. 💪`,
+                    level: 1
+                };
+            }
+
+            // Lisa Park - Critical performer (Challenger)
+            if (rep.name === "Lisa Park") {
+                return {
+                    icon: '🚨',
+                    title: 'URGENT: Coaching for Lisa Park',
+                    description: 'Immediate action required - Activity 44% below baseline',
+                    details: `📊 CURRENT SITUATION
+
+⚠️ Activity Volume — 22 dials vs 50 expected = 44% of baseline
+⚠️ Conversion Rate — 27% dial-to-conv vs 30% team average
+⚠️ Pipeline Impact — At this pace, you'll close 0-1 deals this month vs 2 target
+
+This requires immediate attention.
+
+🟢 WHAT'S WORKING
+
+✅ Meeting Conversion — 2 meetings from 6 conversations = 33%. When you get conversations, you're qualifying well.
+
+✅ Challenger Methodology — Your last call (Jan 7) showed strong Commercial Teaching. Prospect engaged with your insight.
+
+❌ WHAT'S MISSING
+
+→ Activity Discipline — 22 dials/week won't build pipeline, regardless of conversion quality. You need 50+ to hit targets.
+
+→ Consistency — Activity is sporadic. Mon/Tue you dial, Wed-Fri you disappear. Sales is a daily discipline.
+
+→ Reframe Weakness — Jan 7 call: After your teaching, prospect took control. You need to own the conversation.
+
+🎯 IMMEDIATE ACTION PLAN
+
+1. BLOCK DIAL TIME: Tomorrow morning, 9-11 AM — 30 dials minimum. No meetings, no email. Just dial.
+
+2. DAILY DISCIPLINE: 10 dials/day minimum = 50/week. Set phone timer for 60 minutes of dial time every morning.
+
+3. REFRAME TECHNIQUE: After you teach, ask: "Given what I've shared, how does this compare to how you're handling it today?" Then pause. Let THEM talk.
+
+4. ACCOUNTABILITY: Report your daily dial count to your manager every day this week.
+
+🔬 YOUR ONE FOCUS
+
+Activity volume. Everything else is secondary.
+
+You can't coach your way out of 22 dials/week.
+Tomorrow: 30 dials. No exceptions. 💪
+
+Need help? Your manager is here to support you.`,
+                    level: 2
+                };
+            }
+
+            // Default coaching message for other reps
+            return {
+                icon: '🤖',
+                title: `Coaching: ${rep.name}`,
+                description: `AI coaching analysis generated`,
+                details: `${rep.name} will receive:\n\n✅ Performance analysis based on:\n   • ${rep.dials} dials (${getVsAverage(rep.dials, TEAM_AVERAGE.dials)} vs team avg)\n   • ${rep.conversations} conversations\n   • ${rep.meetings} meetings booked\n   • ${rep.sales} sales closed\n\n✅ Methodology-specific recommendations (${rep.methodology})\n\n✅ Focus area for next call\n\nCoaching delivered privately to rep's dashboard.`,
+                level: status.status === 'critical' ? 2 : 1
+            };
         }
 
         // ============================================
