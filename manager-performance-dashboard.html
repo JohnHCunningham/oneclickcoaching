@@ -1218,9 +1218,6 @@
         }
 
         function getCoachButton(rep, status) {
-            const repData = JSON.stringify(rep).replace(/"/g, '&quot;');
-            const statusData = JSON.stringify(status).replace(/"/g, '&quot;');
-
             if (rep.coachingStatus) {
                 if (rep.coachingStatus.read) {
                     return '<button class="btn btn-coached-read">💬 Coached ✓</button>';
@@ -1230,10 +1227,10 @@
             }
 
             if (status.status === 'critical') {
-                return `<button class="btn btn-coach urgent" onclick="handleCoachClick(${repData}, ${statusData}); event.stopPropagation();">🤖 Coach (URGENT)</button>`;
+                return `<button class="btn btn-coach urgent" onclick="handleCoachClickById(${rep.id}); event.stopPropagation();">🤖 Coach (URGENT)</button>`;
             }
 
-            return `<button class="btn btn-coach" onclick="handleCoachClick(${repData}, ${statusData}); event.stopPropagation();">🤖 Coach</button>`;
+            return `<button class="btn btn-coach" onclick="handleCoachClickById(${rep.id}); event.stopPropagation();">🤖 Coach</button>`;
         }
 
         // ============================================
@@ -1453,15 +1450,39 @@
 
             return `
                 <div class="achievement-badges">
-                    ${rep.achievements.map(achievement => `
+                    ${rep.achievements.map((achievement, index) => `
                         <div class="badge ${achievement.type}"
-                             onclick="showCelebrationModal(${JSON.stringify(achievement).replace(/"/g, '&quot;')}); event.stopPropagation();"
+                             onclick="showAchievementById(${rep.id}, ${index}); event.stopPropagation();"
                              title="${achievement.title}">
                             ${achievement.icon}
                         </div>
                     `).join('')}
                 </div>
             `;
+        }
+
+        function showAchievementById(repId, achievementIndex) {
+            const rep = demoReps.find(r => r.id === repId);
+            if (!rep || !rep.achievements || !rep.achievements[achievementIndex]) {
+                console.error('Achievement not found:', repId, achievementIndex);
+                return;
+            }
+            showCelebrationModal(rep.achievements[achievementIndex]);
+        }
+
+        function handleCoachClickById(repId) {
+            // Find the rep by ID
+            const rep = demoReps.find(r => r.id === repId);
+            if (!rep) {
+                console.error('Rep not found:', repId);
+                return;
+            }
+
+            // Get the rep's status
+            const status = getRepStatus(rep);
+
+            // Call the main handler
+            handleCoachClick(rep, status);
         }
 
         function handleCoachClick(rep, status) {
