@@ -361,24 +361,34 @@ $$;
 DO $$
 DECLARE
     default_account_id UUID;
-    user_record RECORD;
+    has_account_id BOOLEAN;
 BEGIN
-    -- Create a default account if none exists
-    IF NOT EXISTS (SELECT 1 FROM "Accounts" LIMIT 1) THEN
-        INSERT INTO "Accounts" (company_name, industry)
-        VALUES ('Default Company', 'Technology')
-        RETURNING id INTO default_account_id;
+    -- Check if account_id column exists in User_Roles
+    SELECT EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name = 'User_Roles' AND column_name = 'account_id'
+    ) INTO has_account_id;
 
-        RAISE NOTICE '✓ Created default account';
+    IF has_account_id THEN
+        -- Create a default account if none exists
+        IF NOT EXISTS (SELECT 1 FROM "Accounts" LIMIT 1) THEN
+            INSERT INTO "Accounts" (company_name, industry)
+            VALUES ('Default Company', 'Technology')
+            RETURNING id INTO default_account_id;
 
-        -- Update any existing User_Roles without account_id
-        UPDATE "User_Roles"
-        SET account_id = default_account_id
-        WHERE account_id IS NULL;
+            RAISE NOTICE '✓ Created default account';
 
-        RAISE NOTICE '✓ Updated existing users with default account';
+            -- Update any existing User_Roles without account_id
+            UPDATE "User_Roles"
+            SET account_id = default_account_id
+            WHERE account_id IS NULL;
+
+            RAISE NOTICE '✓ Updated existing users with default account';
+        ELSE
+            RAISE NOTICE '✓ Accounts already exist';
+        END IF;
     ELSE
-        RAISE NOTICE '✓ Accounts already exist';
+        RAISE NOTICE '✓ account_id column does not exist yet, skipping default account setup';
     END IF;
 END $$;
 
