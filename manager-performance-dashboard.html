@@ -747,6 +747,83 @@
         <div class="view-toggle">
             <button class="toggle-btn active" onclick="switchView('cards')">📊 Card View</button>
             <button class="toggle-btn" onclick="switchView('table')">📋 Table View</button>
+            <button class="toggle-btn" onclick="refreshHubSpotData()" id="sync-btn">🔄 Sync HubSpot</button>
+        </div>
+
+        <!-- HubSpot Live Stats -->
+        <div class="hubspot-stats" id="hubspot-stats" style="display: none; background: linear-gradient(135deg, #1a2555, #131a40); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(16, 195, 176, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #10C3B0; margin: 0;">📡 Live HubSpot Data</h3>
+                <span id="last-sync-time" style="color: rgba(255,255,255,0.5); font-size: 0.85rem;"></span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                <div style="background: rgba(16, 195, 176, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #10C3B0;" id="hubspot-calls">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">📞 Calls</div>
+                </div>
+                <div style="background: rgba(61, 224, 210, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #3DE0D2;" id="hubspot-emails">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">📧 Emails</div>
+                </div>
+                <div style="background: rgba(244, 176, 58, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #F4B03A;" id="hubspot-meetings">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">📅 Meetings</div>
+                </div>
+                <div style="background: rgba(230, 69, 99, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #E64563;" id="hubspot-tasks">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">✅ Tasks</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fathom Live Stats -->
+        <div class="fathom-stats" id="fathom-stats" style="display: none; background: linear-gradient(135deg, #2a1a55, #1a1040); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(147, 51, 234, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #9333EA; margin: 0;">🎙️ Fathom Call Recordings</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span id="fathom-sync-time" style="color: rgba(255,255,255,0.5); font-size: 0.85rem;"></span>
+                    <button onclick="refreshFathomData()" id="fathom-sync-btn" style="padding: 8px 15px; background: rgba(147, 51, 234, 0.2); border: 1px solid #9333EA; color: #9333EA; border-radius: 8px; cursor: pointer;">🔄 Sync</button>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                <div style="background: rgba(147, 51, 234, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #9333EA;" id="fathom-calls">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">🎥 Recorded Calls</div>
+                </div>
+                <div style="background: rgba(147, 51, 234, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #A855F7;" id="fathom-transcripts">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">📝 Transcripts</div>
+                </div>
+                <div style="background: rgba(147, 51, 234, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #C084FC;" id="fathom-summaries">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">🤖 AI Summaries</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aircall Live Stats -->
+        <div class="aircall-stats" id="aircall-stats" style="display: none; background: linear-gradient(135deg, #1a3a2a, #102a1a); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(34, 197, 94, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #22C55E; margin: 0;">📞 Aircall Phone Calls</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span id="aircall-sync-time" style="color: rgba(255,255,255,0.5); font-size: 0.85rem;"></span>
+                    <button onclick="refreshAircallData()" id="aircall-sync-btn" style="padding: 8px 15px; background: rgba(34, 197, 94, 0.2); border: 1px solid #22C55E; color: #22C55E; border-radius: 8px; cursor: pointer;">🔄 Sync</button>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                <div style="background: rgba(34, 197, 94, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #22C55E;" id="aircall-total">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">📞 Total Calls</div>
+                </div>
+                <div style="background: rgba(34, 197, 94, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #4ADE80;" id="aircall-recordings">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">🎙️ Recordings</div>
+                </div>
+                <div style="background: rgba(34, 197, 94, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #86EFAC;" id="aircall-minutes">0</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">⏱️ Total Minutes</div>
+                </div>
+            </div>
         </div>
 
         <!-- Card View Container -->
@@ -1677,6 +1754,220 @@ Need help? Your manager is here to support you.`,
         }
 
         // ============================================
+        // HUBSPOT INTEGRATION
+        // ============================================
+
+        const SUPABASE_URL = 'https://qwqlsbccwnwrdpcaccjz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3cWxzYmNjd253cmRwY2FjY2p6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzMTA1MDQsImV4cCI6MjA4MDg4NjUwNH0.yWzSV2Nid_T1XiDE0RrskFob9mRUc-m6MbeIiT7huC4';
+
+        async function loadHubSpotStats() {
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Synced_Activities?select=activity_type,count`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const data = await response.json();
+
+                // Count by activity type
+                const counts = { call: 0, email: 0, meeting: 0, task: 0 };
+                data.forEach(item => {
+                    if (counts.hasOwnProperty(item.activity_type)) {
+                        counts[item.activity_type] += item.count || 1;
+                    }
+                });
+
+                // Update UI
+                document.getElementById('hubspot-calls').textContent = counts.call;
+                document.getElementById('hubspot-emails').textContent = counts.email;
+                document.getElementById('hubspot-meetings').textContent = counts.meeting;
+                document.getElementById('hubspot-tasks').textContent = counts.task;
+                document.getElementById('last-sync-time').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+                document.getElementById('hubspot-stats').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading HubSpot stats:', error);
+            }
+        }
+
+        async function refreshHubSpotData() {
+            const btn = document.getElementById('sync-btn');
+            btn.textContent = '⏳ Syncing...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/functions/v1/hubspot-sync`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await loadHubSpotStats();
+                    triggerConfetti(1);
+                    alert(`Synced ${result.totalSynced} activities from HubSpot!`);
+                } else {
+                    alert('Sync failed: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Sync error: ' + error.message);
+            } finally {
+                btn.textContent = '🔄 Sync HubSpot';
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // FATHOM INTEGRATION
+        // ============================================
+
+        async function loadFathomStats() {
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Synced_Conversations?select=id,transcript,ai_summary&source_provider=eq.fathom`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const data = await response.json();
+
+                // Count stats
+                const totalCalls = data.length;
+                const withTranscripts = data.filter(d => d.transcript).length;
+                const withSummaries = data.filter(d => d.ai_summary).length;
+
+                // Update UI
+                document.getElementById('fathom-calls').textContent = totalCalls;
+                document.getElementById('fathom-transcripts').textContent = withTranscripts;
+                document.getElementById('fathom-summaries').textContent = withSummaries;
+                document.getElementById('fathom-sync-time').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+                document.getElementById('fathom-stats').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading Fathom stats:', error);
+            }
+        }
+
+        async function refreshFathomData() {
+            const btn = document.getElementById('fathom-sync-btn');
+            btn.textContent = '⏳ Syncing...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/functions/v1/fathom-sync`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await loadFathomStats();
+                    triggerConfetti(1);
+                    alert(`Synced ${result.results.meetings_synced} call recordings from Fathom!`);
+                } else {
+                    alert('Sync failed: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Sync error: ' + error.message);
+            } finally {
+                btn.textContent = '🔄 Sync';
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // AIRCALL INTEGRATION
+        // ============================================
+
+        async function loadAircallStats() {
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Synced_Conversations?select=id,recording_url,duration_minutes&source_provider=eq.aircall`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to fetch');
+
+                const data = await response.json();
+
+                // Count stats
+                const totalCalls = data.length;
+                const withRecordings = data.filter(d => d.recording_url).length;
+                const totalMinutes = data.reduce((sum, d) => sum + (d.duration_minutes || 0), 0);
+
+                // Update UI
+                document.getElementById('aircall-total').textContent = totalCalls;
+                document.getElementById('aircall-recordings').textContent = withRecordings;
+                document.getElementById('aircall-minutes').textContent = totalMinutes;
+                document.getElementById('aircall-sync-time').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+                document.getElementById('aircall-stats').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading Aircall stats:', error);
+            }
+        }
+
+        async function refreshAircallData() {
+            const btn = document.getElementById('aircall-sync-btn');
+            btn.textContent = '⏳ Syncing...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/functions/v1/aircall-sync`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await loadAircallStats();
+                    triggerConfetti(1);
+                    alert(`Synced ${result.results.calls_synced} phone calls from Aircall!`);
+                } else {
+                    alert('Sync failed: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Sync error: ' + error.message);
+            } finally {
+                btn.textContent = '🔄 Sync';
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================
         // INITIALIZATION
         // ============================================
 
@@ -1684,6 +1975,9 @@ Need help? Your manager is here to support you.`,
             renderRepCards();
             renderTable(); // Pre-render table
             renderCelebrationFeed(); // Render team wins feed
+            loadHubSpotStats(); // Load HubSpot data
+            loadFathomStats(); // Load Fathom data
+            loadAircallStats(); // Load Aircall data
         });
 
     </script>
