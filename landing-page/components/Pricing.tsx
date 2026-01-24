@@ -7,12 +7,12 @@ import Link from 'next/link'
 const tiers = [
   {
     name: 'STARTER',
-    price: '$298',
-    originalPrice: '$497',
+    price: '$290',
+    originalPrice: '$483',
     period: '/month',
-    description: '1-4 reps',
+    description: '1-5 reps',
     features: [
-      '1-4 users',
+      'Up to 5 users',
       'Unlimited conversation analyses',
       'Choose any methodology',
       'Custom script generator',
@@ -24,13 +24,13 @@ const tiers = [
   },
   {
     name: 'GROWTH',
-    price: '$477',
-    originalPrice: '$795',
+    price: '$499',
+    originalPrice: '$832',
     period: '/month',
-    description: '5-9 reps',
+    description: '5-10 reps',
     badge: 'Most Popular',
     features: [
-      '5-9 users',
+      'Up to 10 users',
       'Everything in Starter, plus:',
       'Admin dashboard',
       'Team performance analytics',
@@ -42,13 +42,13 @@ const tiers = [
     highlighted: true
   },
   {
-    name: 'PROFESSIONAL',
-    price: '$598',
-    originalPrice: '$997',
+    name: 'SCALE',
+    price: '$899',
+    originalPrice: '$1,498',
     period: '/month',
-    description: '10-24 reps',
+    description: '11-20 reps',
     features: [
-      '10-24 users',
+      'Up to 20 users',
       'Everything in Growth, plus:',
       'Advanced analytics',
       'Custom reporting',
@@ -61,13 +61,13 @@ const tiers = [
   },
   {
     name: 'ENTERPRISE',
-    price: '$897',
-    originalPrice: '$1,495',
+    price: '$1,349',
+    originalPrice: '$2,248',
     period: '/month',
-    description: '25+ reps',
+    description: '21+ reps',
     features: [
       'Unlimited users',
-      'Everything in Professional, plus:',
+      'Everything in Scale, plus:',
       'White-label branding',
       'Custom integrations (Salesforce, HubSpot)',
       'Custom methodology training',
@@ -82,7 +82,7 @@ const tiers = [
 const Pricing = () => {
   const handlePricingClick = (tierName: string) => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      ;(window as any).gtag('event', 'view_pricing', {
+      ; (window as any).gtag('event', 'view_pricing', {
         event_category: 'engagement',
         event_label: tierName,
       })
@@ -121,11 +121,10 @@ const Pricing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className={`relative card ${
-                tier.highlighted
+              className={`relative card ${tier.highlighted
                   ? 'border-2 border-teal shadow-glow-teal scale-105'
                   : 'border border-teal/10'
-              }`}
+                }`}
             >
               {tier.badge && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -162,11 +161,10 @@ const Pricing = () => {
               <a
                 href="https://tidycal.com/aiautomations/sales-coach"
                 onClick={() => handlePricingClick(tier.name)}
-                className={`block w-full text-center font-bold py-3 px-6 rounded-lg transition-all ${
-                  tier.highlighted
+                className={`block w-full text-center font-bold py-3 px-6 rounded-lg transition-all ${tier.highlighted
                     ? 'bg-gradient-gold text-navy hover:shadow-glow-gold'
                     : 'bg-navy-light text-teal border border-teal hover:bg-teal hover:text-white'
-                }`}
+                  }`}
               >
                 {tier.cta}
               </a>

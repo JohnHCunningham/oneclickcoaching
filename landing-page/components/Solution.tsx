@@ -31,14 +31,14 @@ const Solution = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            SalesAI.Coach Is the{' '}
+            The Revenue Factory is the{' '}
             <span className="bg-gradient-to-r from-teal to-aqua bg-clip-text text-transparent">
               Execution Layer
             </span>
             {' '}Beneath Your Sales Framework
           </h2>
           <p className="text-xl text-light-muted max-w-3xl mx-auto">
-            Instead of replacing your methodology, we operationalize it—making your framework visible, measurable, coachable, and enforceable.
+            Instead of replacing your methodology, we operationalize it—making your behavior visible, measurable, coachable, and permanent.
           </p>
         </motion.div>
 

@@ -30,9 +30,14 @@ const features = [
     icon: HiCurrencyDollar
   },
   {
+    title: 'LinkedIn Content Creator',
+    description: 'Stop the scroll with 10/10 AI-generated content. Based on behavioral science, our system writes frameworks, case studies, and hooks that drive profile visits.',
+    icon: HiUserGroup
+  },
+  {
     title: 'Admin Dashboard',
     description: 'For managers: team performance overview, client engagement scores, conversion funnel metrics, email campaign analytics.',
-    icon: HiUserGroup
+    icon: HiCog
   }
 ]
 

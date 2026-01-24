@@ -2,7 +2,7 @@
 
 import AnnouncementBanner from '@/components/AnnouncementBanner'
 import Navbar from '@/components/Navbar'
-import Hero from '@/components/Hero'
+import SandlerHero from '@/components/SandlerHero'
 import SocialProof from '@/components/SocialProof'
 import RevenueFactoryVision from '@/components/RevenueFactoryVision'
 import Problem from '@/components/Problem'
@@ -10,7 +10,7 @@ import UVP from '@/components/UVP'
 import Solution from '@/components/Solution'
 import Features from '@/components/Features'
 import HowItWorks from '@/components/HowItWorks'
-import FrictionlessCoaching from '@/components/FrictionlessCoaching'
+import SandlerFrictionlessCoaching from '@/components/SandlerFrictionlessCoaching'
 import Methodologies from '@/components/Methodologies'
 import TheScience from '@/components/TheScience'
 import Qualification from '@/components/Qualification'
@@ -22,29 +22,30 @@ import FinalCTA from '@/components/FinalCTA'
 import Footer from '@/components/Footer'
 import Chatbot from '@/components/Chatbot'
 
-export default function LandingPage() {
-  return (
-    <div className="min-h-screen">
-      <AnnouncementBanner />
-      <Navbar />
-      <Hero />
-      <SocialProof />
-      <RevenueFactoryVision />
-      <Problem />
-      <UVP />
-      <Solution />
-      <Features />
-      <HowItWorks />
-      <Methodologies />
-      <TheScience />
-      <Qualification />
-      <Pricing />
-      <Testimonials />
-      <FAQ />
-      <Contact />
-      <FinalCTA />
-      <Footer />
-      <Chatbot />
-    </div>
-  )
+export default function SandlerLandingPage() {
+    return (
+        <div className="min-h-screen">
+            <AnnouncementBanner />
+            <Navbar />
+            <SandlerHero />
+            <SocialProof />
+            <RevenueFactoryVision />
+            <Problem />
+            <UVP />
+            <Solution />
+            <Features />
+            <HowItWorks />
+            <SandlerFrictionlessCoaching />
+            <Methodologies />
+            <TheScience />
+            <Qualification />
+            <Pricing />
+            <Testimonials />
+            <FAQ />
+            <Contact />
+            <FinalCTA />
+            <Footer />
+            <Chatbot />
+        </div>
+    )
 }

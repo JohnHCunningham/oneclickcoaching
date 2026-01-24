@@ -15,13 +15,13 @@ const UVP = () => {
         >
           <div className="mb-6">
             <span className="inline-block px-4 py-2 bg-teal/10 border border-teal/30 rounded-full text-teal text-sm font-semibold uppercase tracking-wide">
-              What SalesAI.Coach Actually Does
+              What The Revenue Factory Actually Does
             </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
             <span className="bg-gradient-to-r from-teal to-aqua bg-clip-text text-transparent">
-              SalesAI.Coach
+              The Revenue Factory
             </span>{' '}
             is a behavioral accountability system that turns your sales methodology into daily execution.
           </h2>

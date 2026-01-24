@@ -7,23 +7,41 @@ import Image from 'next/image'
 const scientificPrinciples = [
   {
     icon: HiLightningBolt,
-    title: 'Immediate Feedback',
-    description: 'The brain learns through fast feedback loops. Delayed feedback = weak learning. 30-second response = behavior change.'
+    title: 'Hebbian Learning',
+    description: '"Neurons that fire together, wire together." The brain requires a 30-second feedback loop to anchor methodology to behavior. Anything later is just a memory.'
   },
   {
     icon: HiEye,
-    title: 'Full Transparency',
-    description: 'Self-monitoring is one of the strongest predictors of habit formation. See behavior clearly, without judgment.'
+    title: 'The Mirror Effect',
+    description: 'Observation induces "Conscious Execution." When reps know behavior is visible, the Pre-frontal Cortex remains engaged, preventing a default to old habits.'
   },
   {
     icon: HiRefresh,
-    title: 'Conscious Execution',
-    description: 'Under pressure, reps default to old habits. Immediate feedback interrupts this loop and anchors behavior to process.'
+    title: 'Cognitive Load Reduction',
+    description: 'Reps fail when they have to think about "How to sell" while selling. The Factory automates the tracking so the brain can focus on the human in front of them.'
   },
   {
     icon: HiTrendingUp,
-    title: 'Reinforcement Learning',
-    description: 'Action → Feedback → Adjustment → Reinforcement. This is how elite athletes train. Now it\'s how your team sells.'
+    title: 'Pattern Interruption',
+    description: 'The Revenue Factory identifies "Revenue Leaking Habits" and interrupts the loop immediately—the only proven way to untangle deeply rooted behavior.'
+  }
+]
+
+const neuroProofPoints = [
+  {
+    prefix: '87%',
+    label: 'Knowledge Decay',
+    context: 'of sales training is forgotten within 30 days without behavioral infrastructure.'
+  },
+  {
+    prefix: '30s',
+    label: 'Feedback Window',
+    context: 'The neurological limit for a brain to associate a corrective action with a specific event.'
+  },
+  {
+    prefix: '4x',
+    label: 'Retention Lift',
+    context: 'Immediate reinforcement increases methodology adherence by 400% compared to monthly coaching.'
   }
 ]
 
@@ -39,7 +57,7 @@ const comparison = [
     color: 'text-light-muted'
   },
   {
-    category: 'SalesAI.coach',
+    category: 'The Revenue Factory',
     items: [
       'Instant feedback (30 seconds)',
       'Full visibility on what happened',
@@ -67,13 +85,31 @@ const TheScience = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Why Sales Training Fails{' '}
-            <span className="text-teal">(And How We Fix It)</span>
+            The Neuro-Science of{' '}
+            <span className="text-teal">Sales Performance</span>
           </h2>
           <p className="text-xl text-light-muted max-w-3xl mx-auto leading-relaxed">
             Behavioral science is clear: <strong className="text-light">new habits don't form through insight alone.</strong> They form through fast feedback loops and visible progress.
           </p>
         </motion.div>
+
+        {/* Neuro Stats Dashboard */}
+        <div className="grid md:grid-cols-3 gap-8 mb-20">
+          {neuroProofPoints.map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-navy-light/40 border border-teal/10 p-8 rounded-2xl text-center"
+            >
+              <div className="text-5xl font-bold text-teal mb-2">{stat.prefix}</div>
+              <div className="text-lg font-bold text-light mb-3 uppercase tracking-wider">{stat.label}</div>
+              <p className="text-sm text-light-muted leading-relaxed">{stat.context}</p>
+            </motion.div>
+          ))}
+        </div>
 
         {/* The Problem */}
         <motion.div
@@ -84,16 +120,16 @@ const TheScience = () => {
         >
           <div className="card bg-navy-light/50 border-pink/20">
             <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-              <span className="text-pink">⚠️</span> The Problem With Traditional Training
+              <span className="text-pink">⚠️</span> The Training Decay Crisis
             </h3>
             <p className="text-light-muted leading-relaxed mb-4">
-              Your team learned MEDDIC or Sandler in a workshop. It made sense. But three months later, under pressure, they default back to old habits.
+              Your team learned a framework in a workshop. It made sense. But three months later, under pressure, they default back to old habits.
             </p>
             <p className="text-light leading-relaxed font-semibold">
               Why? <span className="text-teal">The brain needs immediate feedback to change behavior.</span>
             </p>
             <p className="text-light-muted leading-relaxed mt-2">
-              Without it, awareness decays. Old patterns win.
+              Without it, awareness vanishes. Revenue leaking habits become permanent.
             </p>
           </div>
         </motion.div>
@@ -117,7 +153,7 @@ const TheScience = () => {
                   </div>
                   <div>
                     <h4 className="text-xl font-bold mb-2 text-light">{principle.title}</h4>
-                    <p className="text-light-muted leading-relaxed">{principle.description}</p>
+                    <p className="text-light-muted leading-relaxed text-sm">{principle.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -145,11 +181,10 @@ const TheScience = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className={`card ${
-                  index === 0
+                className={`card ${index === 0
                     ? 'bg-navy-light/30 border-light-muted/10'
                     : 'bg-gradient-to-br from-teal/10 to-aqua/5 border-teal/30'
-                }`}
+                  }`}
               >
                 <h4 className={`text-xl font-bold mb-4 ${index === 0 ? 'text-light-muted' : 'text-teal'}`}>
                   {column.category}
@@ -160,7 +195,7 @@ const TheScience = () => {
                       <span className={`text-lg mt-0.5 ${column.color}`}>
                         {index === 0 ? '✗' : '✓'}
                       </span>
-                      <span className={column.color}>{item}</span>
+                      <span className={column.color + " text-sm"}>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -177,27 +212,25 @@ const TheScience = () => {
           className="max-w-5xl mx-auto mb-16"
         >
           <h3 className="text-3xl font-bold text-center mb-8">
-            The Psychology of <span className="text-teal">Accountability</span>
+            The Psychology of <span className="text-teal">Visibility</span>
           </h3>
           <div className="card bg-navy-light/50 border-teal/20">
             <div className="rounded-xl overflow-hidden mb-6">
               <Image
                 src="/accountability-psychology.jpg"
-                alt="The Psychology of Accountability - Alone vs With Others vs With Mirror"
+                alt="The Psychology of Accountability"
                 width={1200}
                 height={400}
-                className="w-full h-auto"
+                className="w-full h-auto opacity-80"
               />
             </div>
-            <p className="text-xl text-light-muted text-center leading-relaxed">
-              <strong className="text-light">When observed, behavior changes.</strong> Even a mirror works.
-              SalesAI.Coach creates that "mirror effect" for every sales conversation—your team executes better
-              when they know methodology compliance is visible.
+            <p className="text-lg text-light-muted text-center leading-relaxed">
+              <strong className="text-light">When observed, behavior changes.</strong> This isn't monitoring; it's a "mirror effect" for every sales conversation. Your team executes better simply because the standard is now <span className="text-teal font-bold uppercase italic">Visible.</span>
             </p>
           </div>
         </motion.div>
 
-        {/* Elite Performance Comparison */}
+        {/* Final Scientific CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -206,19 +239,16 @@ const TheScience = () => {
         >
           <div className="card bg-gradient-to-br from-gold/10 to-gold/5 border-gold/30">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              This Is How Elite Athletes Train
+              This Is How Elite Performance Is Built
             </h3>
             <p className="text-xl text-light-muted mb-6 leading-relaxed">
-              Coaches review plays <strong className="text-light">immediately</strong>. Pilots get <strong className="text-light">continuous feedback</strong>. Doctors use <strong className="text-light">checklists + outcome review</strong>.
-            </p>
-            <p className="text-2xl font-bold text-gold mb-8">
-              Now your sales team gets the same system—for methodology execution.
+              Coaches review plays <strong className="text-light">immediately</strong>. Pilots get <strong className="text-light">continuous feedback</strong>. Now your sales team gets the same behavioral infrastructure.
             </p>
             <a
               href="https://tidycal.com/aiautomations/sales-coach"
-              className="btn-primary inline-block"
+              className="btn-primary inline-block font-bold text-lg px-8 py-3"
             >
-              See How It Works
+              Start Permanent Behavior Change
             </a>
           </div>
         </motion.div>
