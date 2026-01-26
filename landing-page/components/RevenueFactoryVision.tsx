@@ -89,7 +89,7 @@ const RevenueFactoryVision = () => {
         >
           <Image
             src="/revenue-factory-map.jpg"
-            alt="The Revenue Factory Integration Map"
+            alt="Revenue Factory AI Sales System: Complete end-to-end workflow showing lead attraction, methodology execution coaching with MEDDIC Sandler, and deal completion automation"
             width={1200}
             height={600}
             className="w-full h-auto"

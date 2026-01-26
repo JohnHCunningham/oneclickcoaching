@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getBlogPosts, getAllCategories } from '@/lib/blog'
 import { Metadata } from 'next'
 
@@ -63,10 +64,21 @@ export default function BlogPage() {
               className="group"
             >
               <article className="bg-navy-light rounded-xl overflow-hidden border border-teal/10 hover:border-teal/30 transition-all duration-300 h-full flex flex-col">
-                {/* Cover Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-teal/20 to-aqua/20 flex items-center justify-center">
-                  <span className="text-4xl">{post.category === 'Sales Methodology' ? '📚' : '📊'}</span>
-                </div>
+                {/* Cover Image */}
+                {post.coverImage && post.coverImage.startsWith('/blog/') ? (
+                  <div className="h-48 relative overflow-hidden">
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-48 bg-gradient-to-br from-teal/20 to-aqua/20 flex items-center justify-center">
+                    <span className="text-4xl">{post.category === 'Sales Methodology' ? '📚' : '📊'}</span>
+                  </div>
+                )}
 
                 <div className="p-6 flex-1 flex flex-col">
                   {/* Category & Reading Time */}

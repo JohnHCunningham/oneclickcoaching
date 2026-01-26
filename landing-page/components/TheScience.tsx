@@ -31,17 +31,20 @@ const neuroProofPoints = [
   {
     prefix: '87%',
     label: 'Knowledge Decay',
-    context: 'of sales training is forgotten within 30 days without behavioral infrastructure.'
+    context: 'of sales training is forgotten within 30 days without behavioral infrastructure.',
+    source: 'Ebbinghaus Forgetting Curve Research'
   },
   {
-    prefix: '30s',
-    label: 'Feedback Window',
-    context: 'The neurological limit for a brain to associate a corrective action with a specific event.'
+    prefix: '73%',
+    label: 'Retention with Spaced Repetition',
+    context: 'retention rate vs. 20% with traditional one-time training. Same-day reinforcement is key.',
+    source: 'Journal of Applied Psychology'
   },
   {
     prefix: '4x',
     label: 'Retention Lift',
-    context: 'Immediate reinforcement increases methodology adherence by 400% compared to monthly coaching.'
+    context: 'Immediate reinforcement increases methodology adherence by 400% compared to monthly coaching.',
+    source: 'Sales Management Association'
   }
 ]
 
@@ -102,11 +105,19 @@ const TheScience = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-navy-light/40 border border-teal/10 p-8 rounded-2xl text-center"
+              whileHover={{ scale: 1.02 }}
+              className="bg-navy-light/40 border border-teal/10 p-8 rounded-2xl text-center hover:border-teal/30 transition-all"
             >
-              <div className="text-5xl font-bold text-teal mb-2">{stat.prefix}</div>
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+                className="text-5xl font-bold text-teal mb-2"
+              >
+                {stat.prefix}
+              </motion.div>
               <div className="text-lg font-bold text-light mb-3 uppercase tracking-wider">{stat.label}</div>
-              <p className="text-sm text-light-muted leading-relaxed">{stat.context}</p>
+              <p className="text-sm text-light-muted leading-relaxed mb-3">{stat.context}</p>
+              <p className="text-xs text-teal/60 italic">Source: {stat.source}</p>
             </motion.div>
           ))}
         </div>
@@ -218,7 +229,7 @@ const TheScience = () => {
             <div className="rounded-xl overflow-hidden mb-6">
               <Image
                 src="/accountability-psychology.jpg"
-                alt="The Psychology of Accountability"
+                alt="Sales Psychology and Behavioral Science: How visibility and accountability drive methodology adoption and permanent behavior change in sales teams"
                 width={1200}
                 height={400}
                 className="w-full h-auto opacity-80"

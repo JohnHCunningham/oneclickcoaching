@@ -7,6 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import toast from 'react-hot-toast'
 import { HiPlay, HiXMark } from 'react-icons/hi2'
+import SecurityBadges from './SecurityBadges'
+import Image from 'next/image'
 
 const emailSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -70,9 +72,9 @@ const Hero = () => {
               transition={{ delay: 0.2 }}
             >
               <span className="bg-gradient-to-r from-gold to-teal bg-clip-text text-transparent">
-                The Revenue Factory:
+                Finally Get ROI
               </span>{' '}
-              Complete AI Sales System
+              From Your Sales Training
             </motion.h1>
 
             <motion.p
@@ -81,7 +83,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Attract leads with AI. Execute with methodology coaching. Complete deals faster. Your end-to-end revenue engine.
+              AI coaching that reinforces what your trainers taught. Same-day feedback, every call, every rep.
             </motion.p>
 
             <motion.div
@@ -90,8 +92,8 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              <p className="mb-2 font-semibold text-teal">3-Stage System:</p>
-              <p className="text-light">Attraction → Execution (Available Now) → Completion</p>
+              <p className="mb-2 font-semibold text-teal">One-Click Coaching:</p>
+              <p className="text-light">Paste a transcript → Get instant methodology-specific feedback with proven scripts</p>
               <p className="text-sm text-light-muted mt-2">Supports: Sandler • Challenger • SPIN • GAP • MEDDICC • Custom</p>
             </motion.div>
 
@@ -101,7 +103,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
             >
-              See how your team is <span className="text-teal font-semibold">actually selling</span> — not how they say they are.
+              Scale coaching without scaling headcount. See how your team is <span className="text-teal font-semibold">actually executing</span> — not how they say they are.
             </motion.p>
 
             {/* Email Signup Form */}
@@ -140,6 +142,9 @@ const Hero = () => {
                   ✅ 30-day money-back guarantee
                 </span>
               </p>
+
+              {/* Security Badges */}
+              <SecurityBadges variant="hero" />
             </motion.div>
 
             <motion.button
@@ -156,83 +161,68 @@ const Hero = () => {
             </motion.button>
           </motion.div>
 
-          {/* Right Column - Visual/Dashboard Preview */}
+          {/* Right Column - Transformation Image */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative p-8 md:p-10"
+            className="relative"
           >
-            {/* Dashboard mockup with actual content */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-teal/20 border border-teal/30 bg-gradient-to-br from-navy-light to-navy">
-              <div className="p-6">
-                {/* Dashboard header */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-teal rounded-full animate-pulse" />
-                    <span className="text-light font-semibold text-sm">Live Analysis</span>
-                  </div>
-                  <div className="px-3 py-1 bg-gold/20 border border-gold/30 rounded-full">
-                    <span className="text-gold text-xs font-bold">94% Score</span>
-                  </div>
-                </div>
+            {/* Main transformation image with glow effect */}
+            <motion.div
+              animate={{
+                boxShadow: [
+                  '0 0 20px rgba(20, 184, 166, 0.3)',
+                  '0 0 40px rgba(20, 184, 166, 0.5)',
+                  '0 0 20px rgba(20, 184, 166, 0.3)'
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="relative rounded-2xl overflow-hidden border border-teal/30"
+            >
+              <Image
+                src="/images/transformation-hero.jpg"
+                alt="AI Sales Coaching Transformation: Before with delayed feedback and stressed manager vs After with instant AI-powered coaching insights and real-time methodology reinforcement"
+                width={600}
+                height={600}
+                className="w-full h-auto"
+                priority
+              />
+            </motion.div>
 
-                {/* Stats cards */}
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                  <div className="bg-navy-light/50 backdrop-blur border border-teal/20 rounded-lg p-3">
-                    <div className="text-light-muted text-xs mb-1">Close Rate</div>
-                    <div className="text-teal text-xl font-bold">+28%</div>
-                  </div>
-                  <div className="bg-navy-light/50 backdrop-blur border border-aqua/20 rounded-lg p-3">
-                    <div className="text-light-muted text-xs mb-1">Methodology</div>
-                    <div className="text-aqua text-xl font-bold">MEDDIC</div>
-                  </div>
-                  <div className="bg-navy-light/50 backdrop-blur border border-gold/20 rounded-lg p-3">
-                    <div className="text-light-muted text-xs mb-1">Calls Today</div>
-                    <div className="text-gold text-xl font-bold">24</div>
-                  </div>
-                </div>
+            {/* Animated floating badges */}
+            <motion.div
+              animate={{
+                y: [0, -15, 0],
+                rotate: [-2, 2, -2]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-4 -right-4 bg-gradient-to-r from-gold to-amber-400 text-navy px-5 py-2.5 rounded-full font-bold shadow-lg shadow-gold/40 text-sm"
+            >
+              ⚡ Instant Feedback
+            </motion.div>
 
-                {/* Conversation snippet */}
-                <div className="bg-navy-light/30 backdrop-blur border border-teal/10 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 bg-gradient-to-br from-teal to-aqua rounded-full flex items-center justify-center text-xs">✓</div>
-                    <span className="text-light font-semibold text-sm">Pain Points Identified</span>
-                  </div>
-                  <div className="space-y-2 text-xs text-light-muted">
-                    <div className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0" />
-                      <span>"Current process takes 3x longer"</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0" />
-                      <span>"Team struggling with adoption"</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0" />
-                      <span>"Budget approved for Q1"</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <motion.div
+              animate={{
+                y: [0, 12, 0],
+                rotate: [2, -2, 2]
+              }}
+              transition={{ duration: 2.5, repeat: Infinity, delay: 0.5, ease: "easeInOut" }}
+              className="absolute -bottom-4 -left-4 bg-gradient-to-r from-teal to-aqua text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-teal/40 text-sm"
+            >
+              🎯 60-Second Coaching
+            </motion.div>
 
-              {/* Floating badges */}
-              <motion.div
-                animate={{ y: [0, -12, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-5 -right-5 bg-gold text-navy px-4 py-2 rounded-full font-bold shadow-lg shadow-gold/30"
-              >
-                ✨ AI-Powered
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, delay: 1.25, ease: "easeInOut" }}
-                className="absolute -bottom-5 -left-5 bg-teal text-white px-4 py-2 rounded-full font-bold shadow-lg shadow-teal/30"
-              >
-                🎯 Instant Coaching
-              </motion.div>
-            </div>
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.8, 1, 0.8]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gold/90 text-navy px-4 py-3 rounded-xl font-bold shadow-2xl shadow-gold/50"
+            >
+              <span className="text-2xl">⚡</span>
+            </motion.div>
           </motion.div>
         </div>
       </div>

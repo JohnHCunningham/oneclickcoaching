@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getBlogPost, getBlogPosts, getRelatedPosts } from '@/lib/blog'
 import { Metadata } from 'next'
 import { HiClock, HiCalendar, HiTag } from 'react-icons/hi'
+import Image from 'next/image'
 import { FaTwitter, FaLinkedin, FaFacebook } from 'react-icons/fa'
 
 interface BlogPostPageProps {
@@ -116,9 +117,22 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </div>
 
-        {/* Cover Image Placeholder */}
-        <div className="mb-12 h-96 bg-gradient-to-br from-teal/20 to-aqua/20 rounded-2xl flex items-center justify-center">
-          <span className="text-8xl">{post.category === 'Sales Methodology' ? '📚' : '📊'}</span>
+        {/* Cover Image */}
+        <div className="mb-12 rounded-2xl overflow-hidden border border-teal/20">
+          {post.coverImage && post.coverImage.startsWith('/blog/') ? (
+            <Image
+              src={post.coverImage}
+              alt={`${post.title} - Sales methodology execution and coaching insights`}
+              width={1200}
+              height={630}
+              className="w-full h-auto"
+              priority
+            />
+          ) : (
+            <div className="h-96 bg-gradient-to-br from-teal/20 to-aqua/20 flex items-center justify-center">
+              <span className="text-8xl">{post.category === 'Sales Methodology' ? '📚' : '📊'}</span>
+            </div>
+          )}
         </div>
 
         {/* Social Share */}

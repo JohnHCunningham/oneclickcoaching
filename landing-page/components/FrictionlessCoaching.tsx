@@ -2,11 +2,78 @@
 
 import { motion } from 'framer-motion'
 import { HiCheckCircle, HiBolt, HiCircleStack, HiMicrophone, HiPhone } from 'react-icons/hi2'
+import Image from 'next/image'
 
 const FrictionlessCoaching = () => {
     return (
         <section id="integrations" className="section-padding bg-navy border-t border-teal/10">
             <div className="container-custom">
+                {/* One-Click Coaching Demo Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-20"
+                >
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                        <span className="text-teal">One-Click</span> Coaching in Action
+                    </h2>
+                    <p className="text-xl text-light-muted max-w-3xl mx-auto mb-12">
+                        Paste a transcript. Click analyze. Get instant, methodology-specific coaching with proven scripts.
+                    </p>
+
+                    {/* Animated One-Click Coaching Image */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="relative max-w-4xl mx-auto"
+                    >
+                        <motion.div
+                            animate={{
+                                boxShadow: [
+                                    '0 0 30px rgba(20, 184, 166, 0.2)',
+                                    '0 0 60px rgba(20, 184, 166, 0.4)',
+                                    '0 0 30px rgba(20, 184, 166, 0.2)'
+                                ]
+                            }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            className="rounded-2xl overflow-hidden border border-teal/30"
+                        >
+                            <Image
+                                src="/images/one-click-coaching.jpg"
+                alt="One-Click AI Sales Coaching Dashboard: Paste call transcript, click analyze, receive instant MEDDIC Sandler methodology coaching with proven scripts in 60 seconds"
+                                width={900}
+                                height={600}
+                                className="w-full h-auto"
+                            />
+                        </motion.div>
+
+                        {/* Animated callouts */}
+                        <motion.div
+                            animate={{ y: [0, -10, 0], opacity: [0.9, 1, 0.9] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="absolute -top-4 left-1/4 bg-gold text-navy px-4 py-2 rounded-full font-bold text-sm shadow-lg"
+                        >
+                            Step 1: Paste
+                        </motion.div>
+                        <motion.div
+                            animate={{ y: [0, -10, 0], opacity: [0.9, 1, 0.9] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                            className="absolute top-1/3 -right-2 md:right-4 bg-teal text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg"
+                        >
+                            Step 2: Click
+                        </motion.div>
+                        <motion.div
+                            animate={{ y: [0, -10, 0], opacity: [0.9, 1, 0.9] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                            className="absolute -bottom-4 right-1/4 bg-aqua text-navy px-4 py-2 rounded-full font-bold text-sm shadow-lg"
+                        >
+                            Step 3: Coach!
+                        </motion.div>
+                    </motion.div>
+                </motion.div>
+
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Left Column: Copy */}
                     <motion.div

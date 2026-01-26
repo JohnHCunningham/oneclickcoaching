@@ -2,20 +2,22 @@
 
 import { motion } from 'framer-motion'
 import { HiCheck } from 'react-icons/hi'
-import Link from 'next/link'
+import { useState } from 'react'
 
 const tiers = [
   {
     name: 'STARTER',
-    price: '$290',
-    originalPrice: '$483',
+    monthlyPrice: '$249',
+    annualPrice: '$207',
+    annualTotal: '$2,490',
     period: '/month',
-    description: '1-5 reps',
+    description: '1-4 reps',
+    perRep: '~$62-249/rep',
     features: [
-      'Up to 5 users',
+      'Up to 4 users',
       'Unlimited conversation analyses',
       'Choose any methodology',
-      'Custom script generator',
+      'AI-powered coaching with proven scripts',
       'Activity & revenue tracking',
       'Email support'
     ],
@@ -24,17 +26,19 @@ const tiers = [
   },
   {
     name: 'GROWTH',
-    price: '$499',
-    originalPrice: '$832',
+    monthlyPrice: '$489',
+    annualPrice: '$407',
+    annualTotal: '$4,890',
     period: '/month',
-    description: '5-10 reps',
+    description: '5-9 reps',
+    perRep: '~$54-98/rep',
     badge: 'Most Popular',
     features: [
-      'Up to 10 users',
+      'Up to 9 users',
       'Everything in Starter, plus:',
       'Admin dashboard',
       'Team performance analytics',
-      'Client engagement scoring',
+      'Adaptive learning memory',
       'Conversion funnel metrics',
       'Priority support'
     ],
@@ -43,10 +47,12 @@ const tiers = [
   },
   {
     name: 'SCALE',
-    price: '$899',
-    originalPrice: '$1,498',
+    monthlyPrice: '$1,148',
+    annualPrice: '$957',
+    annualTotal: '$11,480',
     period: '/month',
-    description: '11-20 reps',
+    description: '10-20 reps',
+    perRep: '~$57-115/rep',
     features: [
       'Up to 20 users',
       'Everything in Growth, plus:',
@@ -61,10 +67,12 @@ const tiers = [
   },
   {
     name: 'ENTERPRISE',
-    price: '$1,349',
-    originalPrice: '$2,248',
+    monthlyPrice: '$1,496',
+    annualPrice: '$1,247',
+    annualTotal: 'Custom',
     period: '/month',
-    description: '21+ reps',
+    description: '20+ reps',
+    perRep: 'Custom pricing',
     features: [
       'Unlimited users',
       'Everything in Scale, plus:',
@@ -80,6 +88,8 @@ const tiers = [
 ]
 
 const Pricing = () => {
+  const [isAnnual, setIsAnnual] = useState(false)
+
   const handlePricingClick = (tierName: string) => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       ; (window as any).gtag('event', 'view_pricing', {
@@ -98,19 +108,36 @@ const Pricing = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          {/* Founding Customer Banner */}
+          {/* Value Proposition Banner */}
           <div className="inline-block mb-6">
-            <div className="bg-gradient-to-r from-pink via-pink/80 to-pink px-6 py-3 rounded-full shadow-lg shadow-pink/30">
+            <div className="bg-gradient-to-r from-teal via-teal/80 to-teal px-6 py-3 rounded-full shadow-lg shadow-teal/30">
               <p className="text-white font-bold text-sm md:text-base">
-                🎉 Founding Customer Offer: 40% Off - Limited to First 10 Companies
+                💡 You invested $15,000+ per rep in training. This ensures you get that ROI.
               </p>
             </div>
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Simple Pricing.{' '}
-            <span className="text-teal">Scale as You Grow.</span>
+            Protect Your Training Investment.{' '}
+            <span className="text-teal">Scale Coaching Without Scaling Headcount.</span>
           </h2>
+          <p className="text-xl text-light-muted max-w-3xl mx-auto mb-8">
+            For leaders who believe in their methodology but don't have 40 hours/week to coach every rep.
+          </p>
+
+          {/* Annual/Monthly Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className={`font-semibold ${!isAnnual ? 'text-teal' : 'text-light-muted'}`}>Monthly</span>
+            <button
+              onClick={() => setIsAnnual(!isAnnual)}
+              className={`relative w-16 h-8 rounded-full transition-colors ${isAnnual ? 'bg-teal' : 'bg-navy-light border border-teal/30'}`}
+            >
+              <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-transform ${isAnnual ? 'translate-x-9' : 'translate-x-1'}`} />
+            </button>
+            <span className={`font-semibold ${isAnnual ? 'text-teal' : 'text-light-muted'}`}>
+              Annual <span className="text-gold text-sm">(Save 2 months)</span>
+            </span>
+          </div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
@@ -137,16 +164,18 @@ const Pricing = () => {
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
                 <div className="mb-2">
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <span className="text-2xl font-semibold text-light-muted line-through">{tier.originalPrice}</span>
-                    <span className="bg-pink/20 text-pink px-2 py-1 rounded text-xs font-bold">40% OFF</span>
-                  </div>
                   <div>
-                    <span className="text-5xl font-bold text-teal">{tier.price}</span>
+                    <span className="text-5xl font-bold text-teal">
+                      {isAnnual ? tier.annualPrice : tier.monthlyPrice}
+                    </span>
                     <span className="text-light-muted">{tier.period}</span>
                   </div>
+                  {isAnnual && tier.annualTotal !== 'Custom' && (
+                    <p className="text-sm text-gold mt-1">Billed {tier.annualTotal}/year</p>
+                  )}
                 </div>
                 <p className="text-light-muted">{tier.description}</p>
+                <p className="text-xs text-teal/70 mt-1">{tier.perRep}</p>
               </div>
 
               <ul className="space-y-3 mb-8">
@@ -172,6 +201,72 @@ const Pricing = () => {
           ))}
         </div>
 
+        {/* ROI Calculator Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16 max-w-5xl mx-auto"
+        >
+          <div className="card bg-gradient-to-br from-navy-light to-navy border-gold/20">
+            <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
+              The Math That Makes This a <span className="text-gold">No-Brainer</span>
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="text-center p-4 bg-navy/50 rounded-xl border border-teal/10">
+                <div className="text-3xl font-bold text-pink mb-2">$80-120K</div>
+                <p className="text-light-muted text-sm">Annual cost of a sales manager</p>
+              </div>
+              <div className="text-center p-4 bg-navy/50 rounded-xl border border-teal/10">
+                <div className="text-3xl font-bold text-light-muted mb-2">6-8 reps</div>
+                <p className="text-light-muted text-sm">Max a manager can effectively coach</p>
+              </div>
+              <div className="text-center p-4 bg-navy/50 rounded-xl border border-teal/10">
+                <div className="text-3xl font-bold text-teal mb-2">15-20 reps</div>
+                <p className="text-light-muted text-sm">Coached effectively with Revenue Factory</p>
+              </div>
+            </div>
+
+            <div className="text-center p-6 bg-gradient-to-r from-teal/10 to-gold/10 rounded-xl border border-teal/20">
+              <p className="text-xl font-bold text-light mb-2">
+                If coaching generates <span className="text-gold">ONE extra deal per quarter</span>...
+              </p>
+              <p className="text-3xl font-bold text-teal">ROI is 10x+</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Expected Sales Lift Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 max-w-5xl mx-auto"
+        >
+          <div className="card bg-navy-light/50 border-teal/20">
+            <h3 className="text-xl font-bold text-center mb-6">
+              Expected Results <span className="text-teal">(Based on Industry Data)</span>
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-teal mb-2">15-30%</div>
+                <p className="text-light-muted text-sm">Improvement in close rates with consistent methodology coaching</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-teal mb-2">20%+</div>
+                <p className="text-light-muted text-sm">Reduction in pipeline slippage through behavioral accountability</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-teal mb-2">3x</div>
+                <p className="text-light-muted text-sm">More methodology behaviors retained with same-day feedback</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Money-Back Guarantee */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

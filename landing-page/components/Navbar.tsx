@@ -46,6 +46,12 @@ const Navbar = () => {
               >
                 Blog
               </Link>
+              <Link
+                href="/about"
+                className="text-light-muted hover:text-teal transition-colors px-3 py-2 rounded-md text-sm font-medium"
+              >
+                About
+              </Link>
             </div>
           </div>
 
@@ -113,6 +119,13 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               Blog
+            </Link>
+            <Link
+              href="/about"
+              className="text-light-muted hover:text-teal block px-3 py-2 rounded-md text-base font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About
             </Link>
             <a
               href="https://daily-tracker-xi.vercel.app/"
