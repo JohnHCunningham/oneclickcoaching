@@ -24,6 +24,183 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'why-200k-sales-training-disappears-day-60',
+    title: 'Why Your $200K Sales Training Program Disappears by Day 60',
+    excerpt: 'Sales training programs fail not because of content quality—but feedback speed. Learn why the "mirror gap" causes training drift and how to fix it.',
+    content: `
+The training was excellent.
+
+The facilitator knew their stuff. The reps were engaged. The role-plays got uncomfortable in all the right ways. By the end of day two, your team was asking better discovery questions than they had in years.
+
+Week one back in the field? Electric. You heard reps using the new framework on calls. Close rates ticked up. Your VP started asking what you did differently.
+
+Then came day 47.
+
+The Slack messages about wins got quieter. CRM notes got shorter. The questions your reps were asking—the good ones, the ones that made prospects lean in—started disappearing from call recordings.
+
+By day 60, you pulled up the dashboard and saw what you didn't want to see: the numbers sliding back to baseline.
+
+Not crashing. Drifting.
+
+You've just witnessed the most expensive leak in B2B sales: **training decay**.
+
+## The $4.2 Billion Problem Nobody Talks About
+
+Companies spend an estimated $4.2 billion annually on sales training programs. Yet research consistently shows that reps forget 84% of training content within 90 days.
+
+Read that again. Eighty-four percent.
+
+Your team isn't forgetting because the training was bad. They're forgetting because of how human memory actually works—and most sales organizations are designed to accelerate that forgetting.
+
+Here's the pattern:
+
+1. **Days 1-30**: High motivation, conscious application of new skills
+2. **Days 31-60**: Old habits resurface under pressure; no one notices
+3. **Days 61-90**: New skills feel like "that training we did," not "how we sell"
+
+The problem isn't knowledge. Your reps can probably still recite the framework if you ask them.
+
+The problem is **application under pressure**—and the gap between what they think they're doing and what they're actually doing.
+
+## The Mirror Gap
+
+Most sales leaders assume training failure is a knowledge gap. It's not.
+
+It's a mirror gap.
+
+Your reps don't have visibility into their own behavior in the moment. They finish a call thinking they nailed the discovery process. They didn't. They skipped the budget question. They forgot to quantify the pain. They rushed past the decision-process mapping because the prospect seemed eager.
+
+They don't know what they don't know.
+
+And by the time you review that call in next week's 1:1—if you review it at all—the bad habit has already calcified. They've run fifteen more calls the same way. The neural pathway is paved.
+
+Weekly coaching sessions can't fix this. Neither can quarterly reviews or call libraries that sit unwatched. The feedback is too slow.
+
+**The speed of feedback determines the permanence of change.**
+
+Consider how this works in other high-performance fields:
+
+- Athletes watch film between plays, not between seasons
+- Surgeons get real-time feedback from monitors, not monthly reviews
+- Pilots have dashboards showing performance in the moment, not quarterly scorecards
+
+Yet we expect sales reps to change behavior with feedback that arrives days or weeks after the moment that mattered.
+
+## What Fast Feedback Actually Looks Like
+
+The sales organizations that maintain training gains share one thing: they've compressed the feedback loop from days to minutes.
+
+Here's what that looks like in practice:
+
+A rep finishes a discovery call. Within 60 seconds, they see a simple scorecard. Not a 47-point rubric. Three to five key behaviors from the methodology they learned:
+
+- Did you uncover the business pain? ✓
+- Did you quantify the impact? ✗
+- Did you map the decision process? ✗
+
+No manager involvement. No waiting for the weekly 1:1. Just a mirror—showing them what happened versus what should have happened—while the call is still fresh.
+
+The rep sees immediately: "I skipped the impact question again."
+
+They don't need a coaching session to tell them. They already know. They can adjust on the very next call.
+
+**This is how training becomes permanent: not through repetition of content, but through immediate visibility into application.**
+
+---
+
+*The fastest-growing sales teams we work with have one thing in common: they've stopped hoping training sticks and started building systems that make drift impossible to ignore. If you're seeing the Day 60 slide in your own numbers, [let's diagnose where the leaks are](https://tidycal.com/aiautomations/30-minute-meeting).*
+
+---
+
+## The Unexpected Side Effect
+
+When we first implemented real-time feedback systems with clients, we expected performance to improve. It did—typically 25-40% lift in key metrics within 90 days.
+
+What we didn't expect was what happened to coaching sessions.
+
+Reps stopped dreading them.
+
+One sales manager told us: "My 1:1s used to be me telling them what they did wrong last week. Now they already know. They've already fixed it. We actually talk about strategy now—about the deals that matter."
+
+The reps weren't being coached less. They were being coached differently. The tedious behavior correction was handled by the system. The manager could focus on judgment, deal strategy, and career development.
+
+This is the counterintuitive truth: **giving reps a mirror doesn't replace coaching. It elevates it.**
+
+## The Real ROI Question
+
+Most sales leaders evaluate training programs by asking: "Did our numbers improve?"
+
+That's the wrong question. Numbers always improve right after training. The sugar high is real.
+
+The right question is: **"Did our numbers improve and stay improved 90 days later?"**
+
+If the answer is no, you don't have a training problem. You have a feedback architecture problem.
+
+The training content might be excellent. The facilitator might be world-class. But without a system to show reps their own behavior in real-time, you're essentially paying for a gym membership and hoping the equipment uses itself.
+
+## Three Questions to Audit Your Feedback Loop
+
+Before your next training investment, ask yourself:
+
+**1. How long after a call does a rep learn what they did wrong?**
+If the answer is "at the next 1:1" or "when I review recordings," you have a mirror gap. Behavior change requires feedback within minutes, not days.
+
+**2. Does the rep see their performance before their manager does?**
+Self-correction is faster and stickier than manager correction. The best systems give reps visibility first, so coaching becomes collaborative instead of corrective.
+
+**3. What percentage of calls actually get reviewed?**
+Be honest. If it's under 20%, your reps are flying blind 80% of the time. No amount of training content survives that.
+
+## The Difference Between Investment and Expense
+
+The gap between a training investment and a training expense is simple:
+
+**One has a feedback mechanism. The other has hope.**
+
+Hope that reps will remember. Hope that managers will catch the drift. Hope that the numbers will stick.
+
+Hope is not a strategy.
+
+The organizations winning in B2B sales right now aren't necessarily buying better training. They're building faster mirrors.
+
+They're compressing the gap between action and awareness until drift becomes impossible.
+
+And they're discovering something surprising in the process: their reps don't want to be micromanaged. They want to see themselves clearly. Given the right mirror, they'll coach themselves.
+
+---
+
+## Ready to Find Your Mirror Gap?
+
+If you're investing in sales training programs but seeing the Day 60 slide, the problem isn't your training—it's your feedback architecture.
+
+**Book a free 30-minute Sales Process Diagnostic.** We'll look at:
+
+- Where training is leaking in your current process
+- How long your reps go between action and feedback
+- What a compressed feedback loop could look like for your team
+
+No pitch. No pressure. Just clarity on where the drift is happening and what to do about it.
+
+**[Book Your Diagnostic →](https://tidycal.com/aiautomations/30-minute-meeting)**
+    `,
+    author: {
+      name: 'John Cunningham',
+      avatar: '/images/john-founder.jpg',
+      title: 'Founder, Revenue Factory'
+    },
+    publishedAt: '2026-02-06',
+    category: 'Sales Process',
+    tags: ['Sales Training', 'Training ROI', 'Feedback Loops', 'Sales Coaching', 'Methodology Execution'],
+    coverImage: '/blog/training-drift-day-60.png',
+    readingTime: '7 min read',
+    seo: {
+      metaTitle: 'Why Your $200K Sales Training Program Disappears by Day 60 | Revenue Factory',
+      metaDescription: 'Sales training programs fail not because of content quality—but feedback speed. Learn why the "mirror gap" causes training drift and how to fix it.',
+      keywords: ['sales training programs', 'sales coaching', 'training ROI', 'sales methodology', 'feedback loops', 'sales process'],
+      ogImage: '/blog/training-drift-day-60.png'
+    }
+  },
+  {
     slug: 'sales-methodology-under-pressure-30-percent-increase',
     title: 'Why Following Your Sales Methodology Under Pressure Can Increase Close Rates by 30%',
     excerpt: 'When pressure hits, most reps abandon their training. The data shows that\'s exactly backwards. Here\'s what happens when you execute methodology when it matters most.',
