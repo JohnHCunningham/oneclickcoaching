@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Terms of Service | Daily Tracker',
-  description: 'Terms of Service for Daily Tracker - AI-powered sales coaching platform',
+  title: 'Terms of Service | One Click Coaching',
+  description: 'Terms of Service for One Click Coaching - AI-powered sales coaching platform',
 }
 
 export default function TermsPage() {
@@ -20,7 +20,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-aqua mb-4">1. Agreement to Terms</h2>
             <p className="text-light-muted leading-relaxed mb-4">
-              These Terms of Service ("Terms") constitute a legally binding agreement between you ("User," "you," or "your") and AI Advantage Solutions ("Company," "we," "us," or "our") regarding your use of the Daily Tracker platform (the "Service").
+              These Terms of Service ("Terms") constitute a legally binding agreement between you ("User," "you," or "your") and AI Advantage Solutions ("Company," "we," "us," or "our") regarding your use of the One Click Coaching platform (the "Service").
             </p>
             <p className="text-light-muted leading-relaxed">
               By accessing or using the Service, you agree to be bound by these Terms. If you do not agree to these Terms, you may not access or use the Service.
@@ -30,7 +30,7 @@ export default function TermsPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-aqua mb-4">2. Description of Service</h2>
             <p className="text-light-muted leading-relaxed mb-4">
-              Daily Tracker is an AI-powered sales coaching platform that provides:
+              One Click Coaching is an AI-powered sales coaching platform that provides:
             </p>
             <ul className="list-disc list-inside text-light-muted mb-4 space-y-2">
               <li>Conversation analysis and AI coaching for sales calls</li>

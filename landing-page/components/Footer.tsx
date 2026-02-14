@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <Link href="/" className="font-bold text-xl text-light mb-4 block">
-              SalesAI<span className="text-teal">.coach</span>
+              One Click<span className="text-teal"> Coaching</span>
             </Link>
             <p className="text-light-muted mb-4">
               AI-powered sales coaching that helps teams execute their methodology with precision.
@@ -37,7 +37,7 @@ const Footer = () => {
             <h4 className="font-bold text-light mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link href="#features" className="text-light-muted hover:text-teal transition-colors">Features</Link></li>
-              <li><Link href="#methodologies" className="text-light-muted hover:text-teal transition-colors">Methodologies</Link></li>
+              <li><Link href="#integrations" className="text-light-muted hover:text-teal transition-colors">Integrations</Link></li>
               <li><Link href="#pricing" className="text-light-muted hover:text-teal transition-colors">Pricing</Link></li>
               <li><Link href="#" className="text-light-muted hover:text-teal transition-colors">Resources</Link></li>
               <li><Link href="#" className="text-light-muted hover:text-teal transition-colors">Contact</Link></li>
@@ -85,7 +85,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-navy-light flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-light-muted text-sm">
-            © {currentYear} SalesAI.coach. All rights reserved.
+            © {currentYear} One Click Coaching. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <Link href="/security" className="text-light-muted hover:text-teal transition-colors">Security</Link>

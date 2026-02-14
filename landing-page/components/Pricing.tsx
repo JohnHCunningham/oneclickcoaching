@@ -224,7 +224,7 @@ const Pricing = () => {
               </div>
               <div className="text-center p-4 bg-navy/50 rounded-xl border border-teal/10">
                 <div className="text-3xl font-bold text-teal mb-2">15-20 reps</div>
-                <p className="text-light-muted text-sm">Coached effectively with Revenue Factory</p>
+                <p className="text-light-muted text-sm">Coached effectively with One Click Coaching</p>
               </div>
             </div>
 

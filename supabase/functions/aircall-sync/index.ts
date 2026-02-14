@@ -9,7 +9,6 @@ const corsHeaders = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const AIRCALL_API_BASE = "https://api.aircall.io/v1";
-const DEFAULT_ACCOUNT_ID = "b33d88bb-4517-46bf-8c5b-7ae10529ebd2";
 
 interface AircallCall {
   id: number;
@@ -42,11 +41,11 @@ interface AircallCall {
 }
 
 // Get Aircall credentials from database
-async function getAircallCredentials(supabase: any): Promise<{ apiId: string; apiToken: string } | null> {
+async function getAircallCredentials(supabase: any, account_id: string): Promise<{ apiId: string; apiToken: string } | null> {
   const { data, error } = await supabase
     .from("API_Connections")
     .select("api_key, api_secret, connection_status")
-    .eq("account_id", DEFAULT_ACCOUNT_ID)
+    .eq("account_id", account_id)
     .eq("provider", "aircall")
     .eq("connection_status", "active")
     .single();
@@ -102,7 +101,8 @@ async function fetchAircallCalls(apiId: string, apiToken: string): Promise<Airca
 // Sync calls to Supabase
 async function syncCalls(
   supabase: any,
-  calls: AircallCall[]
+  calls: AircallCall[],
+  account_id: string
 ): Promise<{ synced: number; withRecordings: number }> {
   if (calls.length === 0) return { synced: 0, withRecordings: 0 };
 
@@ -121,7 +121,7 @@ async function syncCalls(
     if (call.contact?.phone_number) participants.push(call.contact.phone_number);
 
     return {
-      account_id: DEFAULT_ACCOUNT_ID,
+      account_id: account_id,
       rep_email: call.user?.email || "unknown@example.com",
       call_date: new Date(call.started_at * 1000).toISOString(),
       duration_minutes: durationMinutes,
@@ -149,19 +149,19 @@ async function syncCalls(
 }
 
 // Update sync status
-async function updateSyncStatus(supabase: any, callsSynced: number) {
+async function updateSyncStatus(supabase: any, callsSynced: number, account_id: string) {
   await supabase
     .from("API_Connections")
     .update({
       last_successful_sync: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })
-    .eq("account_id", DEFAULT_ACCOUNT_ID)
+    .eq("account_id", account_id)
     .eq("provider", "aircall");
 
   // Log the sync
   await supabase.from("Integration_Sync_Log").insert({
-    account_id: DEFAULT_ACCOUNT_ID,
+    account_id: account_id,
     provider: "aircall",
     sync_status: "completed",
     conversations_synced: callsSynced,
@@ -176,10 +176,19 @@ serve(async (req) => {
   }
 
   try {
+    const { account_id } = await req.json();
+
+    if (!account_id) {
+      return new Response(
+        JSON.stringify({ error: "account_id is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Get Aircall credentials
-    const credentials = await getAircallCredentials(supabase);
+    const credentials = await getAircallCredentials(supabase, account_id);
     if (!credentials) {
       return new Response(
         JSON.stringify({ error: "No active Aircall connection found" }),
@@ -189,10 +198,10 @@ serve(async (req) => {
 
     // Fetch and sync calls
     const calls = await fetchAircallCalls(credentials.apiId, credentials.apiToken);
-    const { synced, withRecordings } = await syncCalls(supabase, calls);
+    const { synced, withRecordings } = await syncCalls(supabase, calls, account_id);
 
     // Update sync status
-    await updateSyncStatus(supabase, synced);
+    await updateSyncStatus(supabase, synced, account_id);
 
     return new Response(
       JSON.stringify({

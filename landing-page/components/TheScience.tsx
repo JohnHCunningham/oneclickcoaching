@@ -18,12 +18,12 @@ const scientificPrinciples = [
   {
     icon: HiRefresh,
     title: 'Cognitive Load Reduction',
-    description: 'Reps fail when they have to think about "How to sell" while selling. The Factory automates the tracking so the brain can focus on the human in front of them.'
+    description: 'Reps fail when they have to think about "How to sell" while selling. One Click Coaching automates the tracking so the brain can focus on the human in front of them.'
   },
   {
     icon: HiTrendingUp,
     title: 'Pattern Interruption',
-    description: 'The Revenue Factory identifies "Revenue Leaking Habits" and interrupts the loop immediately—the only proven way to untangle deeply rooted behavior.'
+    description: 'One Click Coaching identifies "Revenue Leaking Habits" and interrupts the loop immediately—the only proven way to untangle deeply rooted behavior.'
   }
 ]
 
@@ -60,7 +60,7 @@ const comparison = [
     color: 'text-light-muted'
   },
   {
-    category: 'The Revenue Factory',
+    category: 'One Click Coaching',
     items: [
       'Instant feedback (30 seconds)',
       'Full visibility on what happened',

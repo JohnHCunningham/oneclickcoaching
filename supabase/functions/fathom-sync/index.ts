@@ -9,7 +9,6 @@ const corsHeaders = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const FATHOM_API_BASE = "https://api.fathom.ai/external/v1";
-const DEFAULT_ACCOUNT_ID = "b33d88bb-4517-46bf-8c5b-7ae10529ebd2";
 
 interface FathomMeeting {
   recording_id: number;
@@ -27,11 +26,11 @@ interface FathomMeeting {
 }
 
 // Get Fathom API key from database
-async function getFathomApiKey(supabase: any): Promise<string | null> {
+async function getFathomApiKey(supabase: any, account_id: string): Promise<string | null> {
   const { data, error } = await supabase
     .from("API_Connections")
     .select("api_key, connection_status")
-    .eq("account_id", DEFAULT_ACCOUNT_ID)
+    .eq("account_id", account_id)
     .eq("provider", "fathom")
     .eq("connection_status", "active")
     .single();
@@ -73,7 +72,8 @@ async function fetchFathomMeetings(apiKey: string): Promise<FathomMeeting[]> {
 // Sync meetings to Supabase
 async function syncMeetings(
   supabase: any,
-  meetings: FathomMeeting[]
+  meetings: FathomMeeting[],
+  account_id: string
 ): Promise<number> {
   if (meetings.length === 0) return 0;
 
@@ -90,7 +90,7 @@ async function syncMeetings(
     const participants = meeting.calendar_invitees?.map(p => p.email) || [];
 
     return {
-      account_id: DEFAULT_ACCOUNT_ID,
+      account_id: account_id,
       rep_email: meeting.recorded_by?.email || "unknown@example.com",
       call_date: meeting.created_at,
       duration_minutes: durationMinutes,
@@ -118,19 +118,19 @@ async function syncMeetings(
 }
 
 // Update sync status
-async function updateSyncStatus(supabase: any, conversationsSynced: number) {
+async function updateSyncStatus(supabase: any, conversationsSynced: number, account_id: string) {
   await supabase
     .from("API_Connections")
     .update({
       last_successful_sync: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })
-    .eq("account_id", DEFAULT_ACCOUNT_ID)
+    .eq("account_id", account_id)
     .eq("provider", "fathom");
 
   // Log the sync
   await supabase.from("Integration_Sync_Log").insert({
-    account_id: DEFAULT_ACCOUNT_ID,
+    account_id: account_id,
     provider: "fathom",
     sync_status: "completed",
     conversations_synced: conversationsSynced,
@@ -145,10 +145,19 @@ serve(async (req) => {
   }
 
   try {
+    const { account_id } = await req.json();
+
+    if (!account_id) {
+      return new Response(
+        JSON.stringify({ error: "account_id is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Get Fathom API key
-    const apiKey = await getFathomApiKey(supabase);
+    const apiKey = await getFathomApiKey(supabase, account_id);
     if (!apiKey) {
       return new Response(
         JSON.stringify({ error: "No active Fathom connection found" }),
@@ -158,10 +167,10 @@ serve(async (req) => {
 
     // Fetch and sync meetings
     const meetings = await fetchFathomMeetings(apiKey);
-    const syncedCount = await syncMeetings(supabase, meetings);
+    const syncedCount = await syncMeetings(supabase, meetings, account_id);
 
     // Update sync status
-    await updateSyncStatus(supabase, syncedCount);
+    await updateSyncStatus(supabase, syncedCount, account_id);
 
     return new Response(
       JSON.stringify({

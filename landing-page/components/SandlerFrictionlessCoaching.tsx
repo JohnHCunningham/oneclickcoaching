@@ -23,7 +23,7 @@ const SandlerFrictionlessCoaching = () => {
                             Coaching only works when it fits the rep’s real workflow.
                         </h3>
                         <p className="text-lg text-light-muted mb-12 leading-relaxed">
-                            That’s why <span className="text-teal font-bold uppercase tracking-wider">The Revenue Factory</span> integrates directly with the tools your team already uses — so **Sandler coaching** happens automatically, not manually.
+                            That’s why <span className="text-teal font-bold uppercase tracking-wider">One Click Coaching</span> integrates directly with the tools your team already uses — so **Sandler coaching** happens automatically, not manually.
                         </p>
 
                         <div className="space-y-8 mb-12">
@@ -147,7 +147,7 @@ const SandlerFrictionlessCoaching = () => {
                             <p className="text-sm text-pink font-black mt-6 tracking-tight">HABITS LOSE THE BATTLE.</p>
                         </div>
                         <div className="space-y-6">
-                            <h4 className="text-teal font-bold uppercase tracking-widest text-sm border-b border-teal/10 pb-2">The Factory Advantage:</h4>
+                            <h4 className="text-teal font-bold uppercase tracking-widest text-sm border-b border-teal/10 pb-2">The One Click Advantage:</h4>
                             <p className="text-light leading-relaxed font-bold">
                                 Frictionless data flow enables immediate reinforcement.
                             </p>
@@ -159,7 +159,7 @@ const SandlerFrictionlessCoaching = () => {
                     </div>
 
                     <div className="mt-16 pt-8 border-t border-teal/10 flex flex-col items-center">
-                        <p className="text-light-muted mb-6 text-sm">The Revenue Factory doesn’t ask reps to work differently.</p>
+                        <p className="text-light-muted mb-6 text-sm">One Click Coaching doesn’t ask reps to work differently.</p>
                         <div className="text-2xl font-bold text-light">It simply makes <span className="text-gold italic underline underline-offset-4">their existing work coachable.</span></div>
                     </div>
                 </motion.div>

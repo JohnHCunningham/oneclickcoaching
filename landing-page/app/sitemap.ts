@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/blog'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://salesai.coach'
+  const baseUrl = 'https://oneclickcoaching.com'
 
   // Get all blog posts for dynamic sitemap entries
   const blogPosts = getBlogPosts()

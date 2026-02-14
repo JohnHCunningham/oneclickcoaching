@@ -8,7 +8,6 @@ const corsHeaders = {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const DEFAULT_ACCOUNT_ID = "b33d88bb-4517-46bf-8c5b-7ae10529ebd2";
 
 interface HubSpotActivity {
   id: string;
@@ -24,11 +23,11 @@ interface HubSpotActivity {
 }
 
 // Get HubSpot access token from database
-async function getHubSpotToken(supabase: any): Promise<string | null> {
+async function getHubSpotToken(supabase: any, account_id: string): Promise<string | null> {
   const { data, error } = await supabase
     .from("API_Connections")
     .select("access_token, token_expires_at")
-    .eq("account_id", DEFAULT_ACCOUNT_ID)
+    .eq("account_id", account_id)
     .eq("provider", "hubspot")
     .eq("connection_status", "active")
     .single();
@@ -94,7 +93,8 @@ async function syncActivities(
   supabase: any,
   activities: HubSpotActivity[],
   activityType: string,
-  accessToken: string
+  accessToken: string,
+  account_id: string
 ): Promise<number> {
   if (activities.length === 0) return 0;
 
@@ -117,7 +117,7 @@ async function syncActivities(
     }
 
     records.push({
-      account_id: DEFAULT_ACCOUNT_ID,
+      account_id: account_id,
       rep_email: repEmail,
       activity_date: activity.properties.hs_timestamp?.split("T")[0] || new Date().toISOString().split("T")[0],
       activity_type: activityType,
@@ -142,19 +142,19 @@ async function syncActivities(
 }
 
 // Update last sync time
-async function updateSyncStatus(supabase: any, activitiesSynced: number) {
+async function updateSyncStatus(supabase: any, activitiesSynced: number, account_id: string) {
   await supabase
     .from("API_Connections")
     .update({
       last_successful_sync: new Date().toISOString(),
       updated_at: new Date().toISOString()
     })
-    .eq("account_id", DEFAULT_ACCOUNT_ID)
+    .eq("account_id", account_id)
     .eq("provider", "hubspot");
 
   // Log the sync
   await supabase.from("Integration_Sync_Log").insert({
-    account_id: DEFAULT_ACCOUNT_ID,
+    account_id: account_id,
     provider: "hubspot",
     sync_status: "completed",
     activities_synced: activitiesSynced,
@@ -169,10 +169,19 @@ serve(async (req) => {
   }
 
   try {
+    const { account_id } = await req.json();
+
+    if (!account_id) {
+      return new Response(
+        JSON.stringify({ error: "account_id is required" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Get HubSpot token
-    const accessToken = await getHubSpotToken(supabase);
+    const accessToken = await getHubSpotToken(supabase, account_id);
     if (!accessToken) {
       return new Response(
         JSON.stringify({ error: "No active HubSpot connection found" }),
@@ -190,28 +199,28 @@ serve(async (req) => {
     // Sync calls
     const calls = await fetchHubSpotActivities(accessToken, "calls");
     results.calls.fetched = calls.length;
-    results.calls.synced = await syncActivities(supabase, calls, "call", accessToken);
+    results.calls.synced = await syncActivities(supabase, calls, "call", accessToken, account_id);
 
     // Sync emails
     const emails = await fetchHubSpotActivities(accessToken, "emails");
     results.emails.fetched = emails.length;
-    results.emails.synced = await syncActivities(supabase, emails, "email", accessToken);
+    results.emails.synced = await syncActivities(supabase, emails, "email", accessToken, account_id);
 
     // Sync meetings
     const meetings = await fetchHubSpotActivities(accessToken, "meetings");
     results.meetings.fetched = meetings.length;
-    results.meetings.synced = await syncActivities(supabase, meetings, "meeting", accessToken);
+    results.meetings.synced = await syncActivities(supabase, meetings, "meeting", accessToken, account_id);
 
     // Sync tasks
     const tasks = await fetchHubSpotActivities(accessToken, "tasks");
     results.tasks.fetched = tasks.length;
-    results.tasks.synced = await syncActivities(supabase, tasks, "task", accessToken);
+    results.tasks.synced = await syncActivities(supabase, tasks, "task", accessToken, account_id);
 
     const totalSynced = results.calls.synced + results.emails.synced +
                         results.meetings.synced + results.tasks.synced;
 
     // Update sync status
-    await updateSyncStatus(supabase, totalSynced);
+    await updateSyncStatus(supabase, totalSynced, account_id);
 
     return new Response(
       JSON.stringify({

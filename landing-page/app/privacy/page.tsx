@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Privacy Policy | Daily Tracker',
-  description: 'Privacy Policy for Daily Tracker - AI-powered sales coaching platform',
+  title: 'Privacy Policy | One Click Coaching',
+  description: 'Privacy Policy for One Click Coaching - AI-powered sales coaching platform',
 }
 
 export default function PrivacyPage() {
@@ -20,10 +20,10 @@ export default function PrivacyPage() {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-aqua mb-4">1. Introduction</h2>
             <p className="text-light-muted leading-relaxed mb-4">
-              AI Advantage Solutions ("we," "our," or "us") operates Daily Tracker, an AI-powered sales coaching platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information in compliance with Canada's Personal Information Protection and Electronic Documents Act (PIPEDA) and other applicable privacy laws.
+              AI Advantage Solutions ("we," "our," or "us") operates One Click Coaching, an AI-powered sales coaching platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information in compliance with Canada's Personal Information Protection and Electronic Documents Act (PIPEDA) and other applicable privacy laws.
             </p>
             <p className="text-light-muted leading-relaxed">
-              By using Daily Tracker, you consent to the collection, use, and disclosure of your personal information as described in this Privacy Policy.
+              By using One Click Coaching, you consent to the collection, use, and disclosure of your personal information as described in this Privacy Policy.
             </p>
           </section>
 
@@ -205,7 +205,7 @@ export default function PrivacyPage() {
               <li>Sending you an email notification (for significant changes)</li>
             </ul>
             <p className="text-light-muted leading-relaxed">
-              Your continued use of Daily Tracker after changes take effect constitutes acceptance of the updated Privacy Policy.
+              Your continued use of One Click Coaching after changes take effect constitutes acceptance of the updated Privacy Policy.
             </p>
           </section>
 

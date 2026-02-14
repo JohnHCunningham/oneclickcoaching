@@ -15,7 +15,7 @@ const Navbar = () => {
           {/* Logo Area */}
           <div className="flex-shrink-0">
             <Link href="/" className="font-bold text-xl text-light">
-              SalesAI<span className="text-teal">.coach</span>
+              One Click<span className="text-teal"> Coaching</span>
             </Link>
           </div>
 
@@ -27,12 +27,6 @@ const Navbar = () => {
                 className="text-light-muted hover:text-teal transition-colors px-3 py-2 rounded-md text-sm font-medium"
               >
                 Features
-              </Link>
-              <Link
-                href="#methodologies"
-                className="text-light-muted hover:text-teal transition-colors px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Methodologies
               </Link>
               <Link
                 href="#pricing"
@@ -57,18 +51,18 @@ const Navbar = () => {
 
           {/* Right Side CTAs */}
           <div className="hidden md:flex items-center space-x-4">
-            <a
-              href="https://daily-tracker-xi.vercel.app/"
+            <Link
+              href="/login"
               className="text-light hover:text-teal px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Login
-            </a>
-            <a
-              href="https://tidycal.com/aiautomations/sales-coach"
+            </Link>
+            <Link
+              href="/signup"
               className="bg-gradient-to-r from-gold to-gold-bright hover:from-gold-bright hover:to-gold text-navy font-bold py-2 px-6 rounded-lg transition-all duration-200 shadow-lg shadow-gold/20 hover:-translate-y-0.5"
             >
               Start Free Trial
-            </a>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -100,13 +94,6 @@ const Navbar = () => {
               Features
             </Link>
             <Link
-              href="#methodologies"
-              className="text-light-muted hover:text-teal block px-3 py-2 rounded-md text-base font-medium"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Methodologies
-            </Link>
-            <Link
               href="#pricing"
               className="text-light-muted hover:text-teal block px-3 py-2 rounded-md text-base font-medium"
               onClick={() => setMobileMenuOpen(false)}
@@ -127,18 +114,18 @@ const Navbar = () => {
             >
               About
             </Link>
-            <a
-              href="https://daily-tracker-xi.vercel.app/"
+            <Link
+              href="/login"
               className="text-light-muted hover:text-teal block px-3 py-2 rounded-md text-base font-medium"
             >
               Login
-            </a>
-            <a
-              href="https://tidycal.com/aiautomations/sales-coach"
+            </Link>
+            <Link
+              href="/signup"
               className="bg-gradient-gold text-navy font-bold block px-3 py-2 rounded-md text-base text-center mt-2"
             >
               Start Free Trial
-            </a>
+            </Link>
           </div>
         </motion.div>
       )}

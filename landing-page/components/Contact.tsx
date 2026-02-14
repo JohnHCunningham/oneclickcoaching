@@ -72,7 +72,7 @@ const Contact = () => {
             Get in <span className="text-teal">Touch</span>
           </h2>
           <p className="text-xl text-light-muted max-w-3xl mx-auto">
-            Ready to transform your sales team? Let's talk about how Daily Tracker can help you execute your methodology with precision.
+            Ready to transform your sales team? Let's talk about how One Click Coaching can help you execute your methodology with precision.
           </p>
         </motion.div>
 

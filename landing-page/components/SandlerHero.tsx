@@ -68,7 +68,7 @@ const SandlerHero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
                         >
-                            The Revenue Factory is the behavioral infrastructure that makes the Sandler Selling System impossible to ignore. capture real-time visibility into upfront contracts, pain funnel depth, and budget discussions.
+                            One Click Coaching is the behavioral infrastructure that makes the Sandler Selling System impossible to ignore. capture real-time visibility into upfront contracts, pain funnel depth, and budget discussions.
                         </motion.p>
 
                         <motion.div

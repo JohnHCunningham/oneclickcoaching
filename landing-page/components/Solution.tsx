@@ -31,7 +31,7 @@ const Solution = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            The Revenue Factory is the{' '}
+            One Click Coaching is the{' '}
             <span className="bg-gradient-to-r from-teal to-aqua bg-clip-text text-transparent">
               Execution Layer
             </span>

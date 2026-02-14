@@ -1,7 +1,7 @@
-# Revenue Factory Landing Page - Project Instructions
+# One Click Coaching Landing Page - Project Instructions
 
 ## Project Overview
-This is the landing page for Revenue Factory (salesai.coach), an AI-powered sales coaching platform that reinforces methodology training (Sandler, MEDDIC, Challenger, SPIN, Gap Selling).
+This is the landing page for One Click Coaching (oneclickcoaching.com), an AI-powered sales coaching platform that reinforces methodology training (Sandler, MEDDIC, Challenger, SPIN, Gap Selling).
 
 ## Brand Voice
 - Calm, confident, experienced

@@ -826,6 +826,39 @@
             </div>
         </div>
 
+        <!-- Recent Calls for AI Analysis -->
+        <div class="recent-calls" id="recent-calls" style="display: none; background: linear-gradient(135deg, #1a2a3a, #102030); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(59, 130, 246, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #3B82F6; margin: 0;">🎙️ Recent Calls - AI Analysis</h3>
+                <button onclick="refreshRecentCalls()" id="calls-refresh-btn" style="padding: 8px 15px; background: rgba(59, 130, 246, 0.2); border: 1px solid #3B82F6; color: #3B82F6; border-radius: 8px; cursor: pointer;">🔄 Refresh</button>
+            </div>
+            <div id="recent-calls-list" style="max-height: 350px; overflow-y: auto;">
+                <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                    Loading recent calls...
+                </div>
+            </div>
+        </div>
+
+        <!-- Coaching Inbox -->
+        <div class="coaching-inbox" id="coaching-inbox" style="display: none; background: linear-gradient(135deg, #2a1a3a, #1a1030); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(230, 69, 99, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #E64563; margin: 0;">
+                    <span id="inbox-icon">📬</span> Coaching Inbox
+                    <span id="unread-badge" style="display: none; background: #E64563; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px; margin-left: 8px;">0</span>
+                </h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span id="inbox-stats" style="font-size: 12px; color: rgba(255,255,255,0.6);"></span>
+                    <button onclick="refreshCoachingInbox()" id="inbox-refresh-btn" style="padding: 8px 15px; background: rgba(230, 69, 99, 0.2); border: 1px solid #E64563; color: #E64563; border-radius: 8px; cursor: pointer;">🔄 Refresh</button>
+                </div>
+            </div>
+            <div id="coaching-inbox-list" style="max-height: 400px; overflow-y: auto;">
+                <!-- Coaching messages will be loaded here -->
+                <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                    Loading coaching messages...
+                </div>
+            </div>
+        </div>
+
         <!-- Card View Container -->
         <div class="view-container active" id="card-view">
             <div class="rep-grid" id="rep-grid"></div>
@@ -895,6 +928,100 @@
             <div class="celebration-description" id="modal-description"></div>
             <div class="celebration-details" id="modal-details"></div>
             <button class="celebration-close" onclick="closeCelebrationModal()">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Coaching Editor Modal -->
+    <div class="coaching-modal" id="coaching-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1001; align-items: center; justify-content: center;">
+        <div style="background: var(--card-bg); border-radius: 20px; max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto; border: 2px solid var(--brand-teal); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, var(--brand-teal), var(--brand-aqua)); padding: 25px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="color: white; margin: 0; font-size: 1.4rem;" id="coaching-modal-title">Edit Coaching Message</h2>
+                    <p style="color: rgba(255,255,255,0.9); margin: 5px 0 0; font-size: 0.9rem;" id="coaching-modal-subtitle">Review and edit before sending</p>
+                </div>
+                <button onclick="closeCoachingModal()" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer;">×</button>
+            </div>
+
+            <!-- Form -->
+            <div style="padding: 25px;">
+                <input type="hidden" id="coaching-rep-id">
+                <input type="hidden" id="coaching-message-id">
+
+                <!-- Recipient Info -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label style="display: block; color: var(--brand-aqua); font-weight: 600; margin-bottom: 8px;">To:</label>
+                        <input type="text" id="coaching-recipient" readonly style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--light-text); padding: 12px; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="display: block; color: var(--brand-aqua); font-weight: 600; margin-bottom: 8px;">Methodology:</label>
+                        <input type="text" id="coaching-methodology" readonly style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--brand-gold); padding: 12px; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <!-- Subject -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: var(--brand-aqua); font-weight: 600; margin-bottom: 8px;">Subject:</label>
+                    <input type="text" id="coaching-subject" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--light-text); padding: 12px; border-radius: 8px;" placeholder="Coaching Feedback: Performance Review">
+                </div>
+
+                <!-- Priority -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: var(--brand-aqua); font-weight: 600; margin-bottom: 8px;">Priority:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 8px 15px; background: rgba(16,195,176,0.1); border: 1px solid rgba(16,195,176,0.3); border-radius: 20px;">
+                            <input type="radio" name="coaching-priority" value="low"> <span style="color: #10C3B0;">🟢 Low</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 8px 15px; background: rgba(249,200,99,0.1); border: 1px solid rgba(249,200,99,0.3); border-radius: 20px;">
+                            <input type="radio" name="coaching-priority" value="medium" checked> <span style="color: #F9C863;">🟡 Medium</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 8px 15px; background: rgba(230,69,99,0.1); border: 1px solid rgba(230,69,99,0.3); border-radius: 20px;">
+                            <input type="radio" name="coaching-priority" value="high"> <span style="color: #E64563;">🔴 High</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Coaching Content -->
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: var(--brand-aqua); font-weight: 600; margin-bottom: 8px;">Coaching Message (Editable):</label>
+                    <textarea id="coaching-content" style="width: 100%; min-height: 300px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--light-text); padding: 15px; border-radius: 10px; font-family: inherit; font-size: 14px; line-height: 1.7; resize: vertical;"></textarea>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 8px;">You can edit this AI-generated message before sending. The rep will receive this via email and can reply directly.</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                    <button onclick="closeCoachingModal()" style="padding: 12px 25px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--light-text); border-radius: 25px; cursor: pointer; font-weight: 600;">Cancel</button>
+                    <button onclick="saveDraftCoaching()" style="padding: 12px 25px; background: rgba(244,176,58,0.2); border: 1px solid var(--brand-gold); color: var(--brand-gold); border-radius: 25px; cursor: pointer; font-weight: 600;">💾 Save Draft</button>
+                    <button onclick="sendCoachingEmail()" id="send-coaching-btn" style="padding: 12px 30px; background: linear-gradient(135deg, var(--brand-teal), var(--brand-aqua)); border: none; color: white; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 15px;">📧 Send to Rep</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Reply Modal -->
+    <div class="reply-modal" id="reply-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1001; align-items: center; justify-content: center;">
+        <div style="background: var(--card-bg); border-radius: 20px; max-width: 700px; width: 95%; max-height: 85vh; overflow-y: auto; border: 2px solid var(--brand-gold); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+            <div style="background: linear-gradient(135deg, var(--brand-gold), #F9C863); padding: 25px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 style="color: var(--brand-navy); margin: 0; font-size: 1.4rem;">💬 Rep Reply</h2>
+                    <p style="color: rgba(12,16,48,0.8); margin: 5px 0 0; font-size: 0.9rem;" id="reply-from-info"></p>
+                </div>
+                <button onclick="closeReplyModal()" style="background: rgba(12,16,48,0.2); border: none; color: var(--brand-navy); width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer;">×</button>
+            </div>
+            <div style="padding: 25px;">
+                <div style="background: rgba(255,255,255,0.05); border-left: 4px solid var(--brand-teal); padding: 15px; border-radius: 0 10px 10px 0; margin-bottom: 20px;">
+                    <h4 style="color: var(--brand-teal); margin: 0 0 10px; font-size: 13px;">Original Coaching (Sent <span id="reply-sent-date"></span>)</h4>
+                    <p id="reply-original-content" style="color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.6; max-height: 150px; overflow-y: auto; white-space: pre-wrap;"></p>
+                </div>
+                <div style="background: rgba(244,176,58,0.1); border-left: 4px solid var(--brand-gold); padding: 15px; border-radius: 0 10px 10px 0;">
+                    <h4 style="color: var(--brand-gold); margin: 0 0 10px; font-size: 13px;">Rep's Response (<span id="reply-date"></span>)</h4>
+                    <p id="reply-content" style="color: var(--light-text); font-size: 15px; line-height: 1.7; white-space: pre-wrap;"></p>
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 25px; justify-content: flex-end;">
+                    <button onclick="acknowledgeReply()" id="acknowledge-btn" style="padding: 12px 30px; background: linear-gradient(135deg, var(--brand-teal), var(--brand-aqua)); border: none; color: white; border-radius: 25px; cursor: pointer; font-weight: 700;">✓ Mark as Reviewed</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1554,6 +1681,14 @@
                 return;
             }
 
+            // Option to view their dashboard
+            const viewDashboard = confirm(`View ${rep.name}'s personal dashboard?\n\nClick OK to open their view, or Cancel to see details here.`);
+            if (viewDashboard) {
+                const email = rep.email || `${rep.name.toLowerCase().replace(' ', '.')}@company.com`;
+                window.open(`user-performance-dashboard.html?email=${encodeURIComponent(email)}`, '_blank');
+                return;
+            }
+
             const status = getRepStatus(rep);
             const convRate = rep.dials > 0 ? Math.round((rep.conversations / rep.dials) * 100) : 0;
             const meetingRate = rep.conversations > 0 ? Math.round((rep.meetings / rep.conversations) * 100) : 0;
@@ -1968,6 +2103,701 @@ Need help? Your manager is here to support you.`,
         }
 
         // ============================================
+        // RECENT CALLS & AI ANALYSIS
+        // ============================================
+
+        async function loadRecentCalls() {
+            const callsList = document.getElementById('recent-calls-list');
+            const callsSection = document.getElementById('recent-calls');
+
+            try {
+                // Get synced conversations from Fathom and Aircall
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Synced_Conversations?order=call_date.desc&limit=15`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Synced_Conversations API error:', response.status, errorText);
+
+                    // Check if table doesn't exist (404 or specific error)
+                    if (response.status === 404 || errorText.includes('does not exist')) {
+                        callsList.innerHTML = `
+                            <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                                <div style="font-size: 2rem; margin-bottom: 15px;">⚠️</div>
+                                <p style="color: #F4B03A;">Synced_Conversations table not found.</p>
+                                <p style="font-size: 13px; margin-top: 10px;">Run the database migration to create it.</p>
+                            </div>
+                        `;
+                        callsSection.style.display = 'block';
+                        return;
+                    }
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const calls = await response.json();
+
+                if (calls.length === 0) {
+                    callsList.innerHTML = `
+                        <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">📞</div>
+                            <p>No recorded calls yet.</p>
+                            <p style="font-size: 13px; margin-top: 10px;">Sync Fathom or Aircall to see calls here.</p>
+                        </div>
+                    `;
+                } else {
+                    callsList.innerHTML = calls.map(call => renderCallItem(call)).join('');
+                }
+
+                callsSection.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading recent calls:', error);
+                callsList.innerHTML = `
+                    <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                        <p>Could not load recent calls.</p>
+                        <p style="font-size: 11px; margin-top: 5px; color: #E64563;">${error.message}</p>
+                    </div>
+                `;
+                callsSection.style.display = 'block';
+            }
+        }
+
+        function renderCallItem(call) {
+            const callDate = new Date(call.call_date).toLocaleDateString();
+            const callTime = new Date(call.call_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const repName = call.rep_email ? call.rep_email.split('@')[0].replace(/[._]/g, ' ') : 'Unknown';
+            const hasTranscript = !!call.transcript;
+            const hasSummary = !!call.ai_summary;
+            // Check for valid methodology_scores with components array
+            const hasScore = call.methodology_scores &&
+                             call.methodology_scores.overall !== undefined &&
+                             Array.isArray(call.methodology_scores.components);
+            const duration = call.duration_minutes ? `${call.duration_minutes} min` : 'N/A';
+
+            const sourceIcon = call.source_provider === 'fathom' ? '🎥' : call.source_provider === 'aircall' ? '📞' : '📱';
+            const sourceColor = call.source_provider === 'fathom' ? '#9333EA' : '#22C55E';
+
+            // Score badge styling
+            let scoreBadge = '';
+            if (hasScore) {
+                const score = call.methodology_scores.overall;
+                const grade = call.methodology_scores.grade || 'N/A';
+                const scoreColor = score >= 8 ? '#10C3B0' : score >= 6 ? '#F4B03A' : '#E64563';
+                scoreBadge = `<span style="background: ${scoreColor}22; color: ${scoreColor}; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700;">🎯 ${score}/10 (${grade})</span>`;
+            }
+
+            return `
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px; flex-wrap: wrap;">
+                                <span style="font-weight: 600; color: var(--brand-aqua);">${repName}</span>
+                                ${scoreBadge}
+                                <span style="background: ${sourceColor}22; color: ${sourceColor}; padding: 2px 8px; border-radius: 10px; font-size: 11px;">${sourceIcon} ${call.source_provider}</span>
+                                ${hasTranscript ? '<span style="background: rgba(16,195,176,0.2); color: #10C3B0; padding: 2px 8px; border-radius: 10px; font-size: 11px;">📝 Transcript</span>' : ''}
+                            </div>
+                            <div style="color: rgba(255,255,255,0.6); font-size: 13px;">
+                                ${callDate} at ${callTime} • ${duration}
+                                ${call.participants && call.participants.length > 0 ? ` • ${call.participants.length} participants` : ''}
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            ${call.recording_url ? `<a href="${call.recording_url}" target="_blank" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; text-decoration: none; font-size: 12px;">▶️ Play</a>` : ''}
+                            <button onclick="analyzeCallWithAI('${call.id}')" style="padding: 6px 12px; background: linear-gradient(135deg, #3B82F6, #60A5FA); border: none; color: white; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">${hasScore ? '🔄 Re-Analyze' : '🤖 Analyze'}</button>
+                        </div>
+                    </div>
+                    ${hasScore ? `
+                        <div style="background: rgba(59,130,246,0.1); border-left: 3px solid #3B82F6; padding: 10px; border-radius: 0 8px 8px 0; margin-top: 10px;">
+                            <div style="color: #3B82F6; font-size: 11px; font-weight: 600; margin-bottom: 8px;">Sandler Component Scores:</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                ${call.methodology_scores.components.map(c => {
+                                    const cColor = c.score >= 8 ? '#10C3B0' : c.score >= 6 ? '#F4B03A' : '#E64563';
+                                    return `<span style="background: ${cColor}15; color: ${cColor}; padding: 3px 8px; border-radius: 6px; font-size: 11px;">${c.name}: ${c.score}</span>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    ` : hasSummary ? `
+                        <div style="background: rgba(244,176,58,0.1); border-left: 3px solid #F4B03A; padding: 10px; border-radius: 0 8px 8px 0; margin-top: 10px;">
+                            <div style="color: #F4B03A; font-size: 11px; font-weight: 600; margin-bottom: 5px;">AI Summary:</div>
+                            <div style="color: rgba(255,255,255,0.8); font-size: 13px; line-height: 1.5;">${call.ai_summary.substring(0, 200)}${call.ai_summary.length > 200 ? '...' : ''}</div>
+                        </div>
+                    ` : hasTranscript ? `
+                        <div style="background: rgba(59,130,246,0.1); border-left: 3px solid #3B82F6; padding: 10px; border-radius: 0 8px 8px 0; margin-top: 10px;">
+                            <div style="color: #3B82F6; font-size: 11px; font-weight: 600; margin-bottom: 5px;">Transcript Preview:</div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.4; font-style: italic;">"${call.transcript.substring(0, 150)}${call.transcript.length > 150 ? '...' : ''}"</div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        async function refreshRecentCalls() {
+            const btn = document.getElementById('calls-refresh-btn');
+            btn.textContent = '⏳ Loading...';
+            btn.disabled = true;
+            await loadRecentCalls();
+            btn.textContent = '🔄 Refresh';
+            btn.disabled = false;
+        }
+
+        // AI Analysis function
+        async function analyzeCallWithAI(callId) {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Analyzing...';
+            btn.disabled = true;
+
+            try {
+                // Call the Edge Function for Sandler methodology analysis
+                const response = await fetch(
+                    `${SUPABASE_URL}/functions/v1/analyze-call`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        },
+                        body: JSON.stringify({ call_id: callId })
+                    }
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Analysis failed');
+                }
+
+                // Fetch the call details for email
+                const callResponse = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Synced_Conversations?id=eq.${callId}`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+                const [call] = await callResponse.json();
+                const repEmail = call?.rep_email || 'unknown@example.com';
+                const callDate = call ? new Date(call.call_date).toLocaleDateString() : 'Unknown';
+
+                // Open the coaching modal with the AI-generated analysis
+                const modal = document.getElementById('coaching-modal');
+                modal.style.display = 'flex';
+
+                document.getElementById('coaching-message-id').value = '';
+                document.getElementById('coaching-rep-id').value = '';
+                document.getElementById('coaching-recipient').value = repEmail;
+                document.getElementById('coaching-methodology').value = 'Sandler';
+                document.getElementById('coaching-subject').value = `Sandler Analysis: ${callDate} (Score: ${result.analysis.overallScore}/10)`;
+                document.getElementById('coaching-content').value = result.coaching;
+
+                // Set priority based on score
+                const score = result.analysis.overallScore;
+                const priority = score < 5 ? 'high' : score < 7 ? 'medium' : 'low';
+                document.querySelector(`input[name="coaching-priority"][value="${priority}"]`).checked = true;
+
+                currentCoachingMessage = {
+                    call_id: callId,
+                    rep_email: repEmail,
+                    is_new: true,
+                    based_on_call: true,
+                    analysis: result.analysis
+                };
+
+                triggerConfetti(1);
+
+                // Reload calls to show updated scores
+                loadRecentCalls();
+
+            } catch (error) {
+                console.error('Error analyzing call:', error);
+                alert('Failed to analyze call: ' + error.message);
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // COACHING INBOX & EMAIL SYSTEM
+        // ============================================
+
+        const MANAGER_EMAIL = 'john@aiadvantagesolutions.ca'; // Default manager email
+
+        let currentCoachingMessage = null;
+
+        // Load coaching inbox
+        async function loadCoachingInbox() {
+            const inboxList = document.getElementById('coaching-inbox-list');
+            const inboxSection = document.getElementById('coaching-inbox');
+
+            try {
+                // Get coaching messages from database
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Coaching_Messages?manager_email=eq.${encodeURIComponent(MANAGER_EMAIL)}&order=generated_at.desc&limit=20`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to fetch coaching inbox');
+
+                const messages = await response.json();
+
+                // Count stats
+                const unreadReplies = messages.filter(m => m.rep_response && !m.acknowledged_at).length;
+                const sentMessages = messages.filter(m => m.status === 'sent');
+                const unreadByRep = sentMessages.filter(m => !m.read_at && !m.is_read).length;
+                const readByRep = sentMessages.filter(m => m.read_at || m.is_read).length;
+                const drafts = messages.filter(m => m.status === 'draft').length;
+
+                const unreadBadge = document.getElementById('unread-badge');
+                const inboxStats = document.getElementById('inbox-stats');
+
+                // Show stats summary
+                let statsText = [];
+                if (unreadByRep > 0) statsText.push(`${unreadByRep} unread`);
+                if (readByRep > 0) statsText.push(`${readByRep} read`);
+                if (drafts > 0) statsText.push(`${drafts} drafts`);
+                inboxStats.textContent = statsText.join(' • ');
+
+                if (unreadReplies > 0) {
+                    unreadBadge.textContent = unreadReplies;
+                    unreadBadge.style.display = 'inline-block';
+                    document.getElementById('inbox-icon').textContent = '📫';
+                } else {
+                    unreadBadge.style.display = 'none';
+                    document.getElementById('inbox-icon').textContent = '📬';
+                }
+
+                if (messages.length === 0) {
+                    inboxList.innerHTML = `
+                        <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">📭</div>
+                            <p>No coaching messages yet.</p>
+                            <p style="font-size: 13px; margin-top: 10px;">Click "Coach" on any rep card to generate AI coaching.</p>
+                        </div>
+                    `;
+                } else {
+                    inboxList.innerHTML = messages.map(msg => renderCoachingInboxItem(msg)).join('');
+                }
+
+                inboxSection.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading coaching inbox:', error);
+                inboxList.innerHTML = `
+                    <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px;">
+                        <div style="font-size: 2rem; margin-bottom: 15px;">⚠️</div>
+                        <p>Coaching inbox not available yet.</p>
+                        <p style="font-size: 12px; margin-top: 10px; opacity: 0.7;">Run the SQL migration: coaching-email-schema.sql</p>
+                        <p style="font-size: 13px; margin-top: 15px;">You can still click "Coach" on rep cards to generate coaching.</p>
+                    </div>
+                `;
+                inboxSection.style.display = 'block';
+            }
+        }
+
+        function renderCoachingInboxItem(msg) {
+            const hasReply = !!msg.rep_response;
+            const isUnreadReply = hasReply && !msg.acknowledged_at;
+            const isDraft = msg.status === 'draft';
+            const isSent = msg.status === 'sent';
+
+            let statusBadge = '';
+            let bgColor = 'rgba(255,255,255,0.03)';
+            let borderColor = 'rgba(255,255,255,0.1)';
+
+            const isRead = !!msg.read_at;
+            const isOpened = !!msg.is_read;
+            const repHasRead = isRead || isOpened;
+
+            if (isUnreadReply) {
+                statusBadge = '<span style="background: #F4B03A; color: #0C1030; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">💬 NEW REPLY</span>';
+                bgColor = 'rgba(244,176,58,0.1)';
+                borderColor = '#F4B03A';
+            } else if (isDraft) {
+                statusBadge = '<span style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 10px; font-size: 11px;">📝 Draft</span>';
+            } else if (isSent && !hasReply && repHasRead) {
+                statusBadge = '<span style="background: rgba(16,195,176,0.2); color: #10C3B0; padding: 2px 8px; border-radius: 10px; font-size: 11px;">👁️ Read</span>';
+            } else if (isSent && !hasReply && !repHasRead) {
+                statusBadge = '<span style="background: rgba(230,69,99,0.2); color: #E64563; padding: 2px 8px; border-radius: 10px; font-size: 11px;">📤 Unread</span>';
+            } else if (hasReply && msg.acknowledged_at) {
+                statusBadge = '<span style="background: rgba(16,195,176,0.2); color: #10C3B0; padding: 2px 8px; border-radius: 10px; font-size: 11px;">✅ Reviewed</span>';
+            }
+
+            const sentDate = msg.sent_at ? new Date(msg.sent_at).toLocaleDateString() : '';
+            const repName = msg.rep_email.split('@')[0].replace(/[._]/g, ' ');
+
+            return `
+                <div onclick="${isUnreadReply ? `viewReply('${msg.id}')` : isDraft ? `openCoachingEditor('${msg.id}')` : ''}"
+                     style="background: ${bgColor}; border: 1px solid ${borderColor}; border-radius: 10px; padding: 15px; margin-bottom: 10px; cursor: ${isUnreadReply || isDraft ? 'pointer' : 'default'}; transition: all 0.2s ease;"
+                     onmouseover="this.style.background='rgba(255,255,255,0.08)'"
+                     onmouseout="this.style.background='${bgColor}'">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-weight: 600; color: var(--brand-aqua);">${repName}</span>
+                            ${msg.methodology ? `<span style="background: rgba(244,176,58,0.2); color: var(--brand-gold); padding: 2px 8px; border-radius: 10px; font-size: 11px;">${msg.methodology}</span>` : ''}
+                            ${statusBadge}
+                        </div>
+                        <span style="color: rgba(255,255,255,0.5); font-size: 12px;">${sentDate || 'Not sent'}</span>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.5; max-height: 40px; overflow: hidden; text-overflow: ellipsis; margin: 0;">
+                        ${(msg.message_body || msg.coaching_content || '').substring(0, 150)}${(msg.message_body || msg.coaching_content || '').length > 150 ? '...' : ''}
+                    </p>
+                    ${isUnreadReply ? `
+                        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(244,176,58,0.3);">
+                            <span style="color: var(--brand-gold); font-size: 13px;">Reply: "${msg.rep_response.substring(0, 80)}${msg.rep_response.length > 80 ? '...' : ''}"</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        async function refreshCoachingInbox() {
+            const btn = document.getElementById('inbox-refresh-btn');
+            btn.textContent = '⏳ Loading...';
+            btn.disabled = true;
+            await loadCoachingInbox();
+            btn.textContent = '🔄 Refresh';
+            btn.disabled = false;
+        }
+
+        // Open coaching editor modal (for new or existing message)
+        function openCoachingEditor(messageId = null) {
+            const modal = document.getElementById('coaching-modal');
+            modal.style.display = 'flex';
+
+            if (messageId) {
+                // Load existing message
+                loadCoachingMessage(messageId);
+            }
+        }
+
+        async function loadCoachingMessage(messageId) {
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Coaching_Messages?id=eq.${messageId}`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to load message');
+
+                const [message] = await response.json();
+                if (!message) throw new Error('Message not found');
+
+                currentCoachingMessage = message;
+
+                document.getElementById('coaching-message-id').value = message.id;
+                document.getElementById('coaching-recipient').value = message.rep_email;
+                document.getElementById('coaching-methodology').value = message.methodology || '';
+                document.getElementById('coaching-subject').value = message.subject || `Coaching Feedback: ${message.methodology || 'Performance'}`;
+                document.getElementById('coaching-content').value = message.message_body || message.coaching_content || '';
+
+                if (message.priority) {
+                    document.querySelector(`input[name="coaching-priority"][value="${message.priority}"]`).checked = true;
+                }
+
+            } catch (error) {
+                console.error('Error loading coaching message:', error);
+                alert('Failed to load coaching message');
+            }
+        }
+
+        function closeCoachingModal() {
+            document.getElementById('coaching-modal').style.display = 'none';
+            currentCoachingMessage = null;
+        }
+
+        // Generate coaching for a rep (called from Coach button)
+        async function openCoachingForRep(rep, status) {
+            const modal = document.getElementById('coaching-modal');
+            modal.style.display = 'flex';
+
+            // Generate AI coaching content
+            const coachingMessage = generateCoachingMessage(rep, status);
+
+            // Pre-fill the form
+            document.getElementById('coaching-message-id').value = '';
+            document.getElementById('coaching-rep-id').value = rep.id;
+            document.getElementById('coaching-recipient').value = rep.email || `${rep.name.toLowerCase().replace(' ', '.')}@company.com`;
+            document.getElementById('coaching-methodology').value = rep.methodology;
+            document.getElementById('coaching-subject').value = `Coaching Feedback: ${rep.methodology} Performance`;
+            document.getElementById('coaching-content').value = coachingMessage.details;
+
+            // Set priority based on status
+            if (status.status === 'critical') {
+                document.querySelector('input[name="coaching-priority"][value="high"]').checked = true;
+            } else if (status.status === 'watch') {
+                document.querySelector('input[name="coaching-priority"][value="medium"]').checked = true;
+            } else {
+                document.querySelector('input[name="coaching-priority"][value="low"]').checked = true;
+            }
+
+            currentCoachingMessage = {
+                rep_id: rep.id,
+                rep_name: rep.name,
+                rep_email: document.getElementById('coaching-recipient').value,
+                methodology: rep.methodology,
+                is_new: true
+            };
+        }
+
+        // Save coaching as draft
+        async function saveDraftCoaching() {
+            const content = document.getElementById('coaching-content').value;
+            const subject = document.getElementById('coaching-subject').value;
+            const priority = document.querySelector('input[name="coaching-priority"]:checked')?.value || 'medium';
+            const messageId = document.getElementById('coaching-message-id').value;
+
+            if (!content.trim()) {
+                alert('Please enter coaching content');
+                return;
+            }
+
+            try {
+                if (messageId) {
+                    // Update existing
+                    const response = await fetch(
+                        `${SUPABASE_URL}/rest/v1/Coaching_Messages?id=eq.${messageId}`,
+                        {
+                            method: 'PATCH',
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'return=minimal'
+                            },
+                            body: JSON.stringify({
+                                message_body: content,
+                                subject: subject || 'Coaching Feedback',
+                                priority: priority
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Supabase error:', errorText);
+                        throw new Error('Failed to save draft: ' + errorText);
+                    }
+                } else {
+                    // Create new
+                    const repEmail = document.getElementById('coaching-recipient').value;
+                    const methodology = document.getElementById('coaching-methodology').value;
+
+                    const response = await fetch(
+                        `${SUPABASE_URL}/rest/v1/Coaching_Messages`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'Content-Type': 'application/json',
+                                'Prefer': 'return=representation'
+                            },
+                            body: JSON.stringify({
+                                rep_email: repEmail,
+                                manager_email: MANAGER_EMAIL,
+                                message_body: content,
+                                subject: subject || 'Coaching Feedback',
+                                priority: priority,
+                                status: 'draft',
+                                generated_at: new Date().toISOString()
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Supabase error:', errorText);
+                        throw new Error('Failed to create draft: ' + errorText);
+                    }
+                    const [newMsg] = await response.json();
+                    document.getElementById('coaching-message-id').value = newMsg.id;
+                }
+
+                alert('Draft saved successfully!');
+                await loadCoachingInbox();
+
+            } catch (error) {
+                console.error('Error saving draft:', error);
+                alert('Failed to save draft: ' + error.message);
+            }
+        }
+
+        // Send coaching email
+        async function sendCoachingEmail() {
+            const btn = document.getElementById('send-coaching-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending...';
+
+            try {
+                // First save/create the message
+                await saveDraftCoaching();
+
+                const messageId = document.getElementById('coaching-message-id').value;
+                const repEmail = document.getElementById('coaching-recipient').value;
+                const content = document.getElementById('coaching-content').value;
+                const subject = document.getElementById('coaching-subject').value;
+                const methodology = document.getElementById('coaching-methodology').value;
+
+                if (!messageId) {
+                    throw new Error('Please save the message first');
+                }
+
+                // Call the send email edge function
+                const response = await fetch(
+                    `${SUPABASE_URL}/functions/v1/send-coaching-email`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            coaching_message_id: messageId,
+                            to_email: repEmail,
+                            rep_name: repEmail.split('@')[0].replace(/[._]/g, ' '),
+                            subject: subject,
+                            coaching_content: content,
+                            manager_name: 'Your Manager',
+                            manager_email: MANAGER_EMAIL,
+                            methodology: methodology
+                        })
+                    }
+                );
+
+                const result = await response.json();
+
+                if (result.success) {
+                    triggerConfetti(1);
+                    alert('Coaching email sent successfully! The rep will receive a notification.');
+                    closeCoachingModal();
+                    await loadCoachingInbox();
+                } else {
+                    throw new Error(result.error || 'Failed to send email');
+                }
+
+            } catch (error) {
+                console.error('Error sending coaching email:', error);
+                alert('Failed to send email: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '📧 Send to Rep';
+            }
+        }
+
+        // View reply
+        let currentReplyMessageId = null;
+
+        async function viewReply(messageId) {
+            currentReplyMessageId = messageId;
+
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Coaching_Messages?id=eq.${messageId}`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+
+                const [message] = await response.json();
+                if (!message) throw new Error('Message not found');
+
+                document.getElementById('reply-from-info').textContent = `From: ${message.rep_email}`;
+                document.getElementById('reply-sent-date').textContent = new Date(message.sent_at).toLocaleDateString();
+                document.getElementById('reply-original-content').textContent = message.message_body || message.coaching_content || '';
+                document.getElementById('reply-date').textContent = new Date(message.responded_at).toLocaleDateString();
+                document.getElementById('reply-content').textContent = message.rep_response;
+
+                const ackBtn = document.getElementById('acknowledge-btn');
+                if (message.acknowledged_at) {
+                    ackBtn.textContent = '✓ Already Reviewed';
+                    ackBtn.disabled = true;
+                    ackBtn.style.opacity = '0.6';
+                } else {
+                    ackBtn.textContent = '✓ Mark as Reviewed';
+                    ackBtn.disabled = false;
+                    ackBtn.style.opacity = '1';
+                }
+
+                document.getElementById('reply-modal').style.display = 'flex';
+
+            } catch (error) {
+                console.error('Error loading reply:', error);
+                alert('Failed to load reply');
+            }
+        }
+
+        function closeReplyModal() {
+            document.getElementById('reply-modal').style.display = 'none';
+            currentReplyMessageId = null;
+        }
+
+        async function acknowledgeReply() {
+            if (!currentReplyMessageId) return;
+
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Coaching_Messages?id=eq.${currentReplyMessageId}`,
+                    {
+                        method: 'PATCH',
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=minimal'
+                        },
+                        body: JSON.stringify({
+                            acknowledged_at: new Date().toISOString()
+                        })
+                    }
+                );
+
+                if (!response.ok) throw new Error('Failed to acknowledge');
+
+                closeReplyModal();
+                await loadCoachingInbox();
+                alert('Reply marked as reviewed!');
+
+            } catch (error) {
+                console.error('Error acknowledging reply:', error);
+                alert('Failed to acknowledge reply');
+            }
+        }
+
+        // Override the coach button handler to open the editor
+        function handleCoachClick(rep, status) {
+            // Trigger confetti
+            triggerConfetti(status.status === 'critical' ? 2 : 1);
+
+            // Open the coaching editor instead of showing modal
+            setTimeout(() => {
+                openCoachingForRep(rep, status);
+            }, 500);
+        }
+
+        // ============================================
         // INITIALIZATION
         // ============================================
 
@@ -1978,6 +2808,8 @@ Need help? Your manager is here to support you.`,
             loadHubSpotStats(); // Load HubSpot data
             loadFathomStats(); // Load Fathom data
             loadAircallStats(); // Load Aircall data
+            loadRecentCalls(); // Load recent calls for AI analysis
+            loadCoachingInbox(); // Load coaching inbox
         });
 
     </script>

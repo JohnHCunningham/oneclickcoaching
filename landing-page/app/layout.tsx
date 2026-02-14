@@ -6,26 +6,22 @@ import Analytics from '@/components/Analytics'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const baseUrl = 'https://salesai.coach'
+const baseUrl = 'https://oneclickcoaching.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'AI Sales Coaching - Turn Every Call Into a Coaching Opportunity | Revenue Factory',
-    template: '%s | Revenue Factory AI Sales Coaching',
+    default: 'One Click Coaching - AI-Powered Sandler Sales Coaching',
+    template: '%s | One Click Coaching',
   },
-  description: 'AI-powered sales coaching that reinforces your methodology training. Get instant feedback on every call with MEDDIC, Sandler, Challenger, SPIN, or Gap Selling frameworks. Scale coaching without scaling headcount.',
+  description: 'AI-powered Sandler sales coaching that reinforces your methodology training. Get instant feedback on every call. Scale coaching without scaling headcount.',
   keywords: [
     'AI sales coaching',
-    'sales methodology training',
-    'MEDDIC coaching',
     'Sandler training reinforcement',
-    'Challenger Sale coaching',
-    'SPIN Selling AI',
-    'Gap Selling methodology',
+    'Sandler selling system',
+    'sales methodology training',
     'sales conversation analysis',
     'sales team coaching software',
-    'revenue operations',
     'sales training ROI',
     'sales manager tools',
     'call coaching software',
@@ -37,9 +33,9 @@ export const metadata: Metadata = {
     'sales enablement platform',
     'conversation intelligence'
   ],
-  authors: [{ name: 'Revenue Factory' }],
-  creator: 'Revenue Factory',
-  publisher: 'Revenue Factory',
+  authors: [{ name: 'One Click Coaching' }],
+  creator: 'One Click Coaching',
+  publisher: 'One Click Coaching',
   robots: {
     index: true,
     follow: true,
@@ -55,24 +51,24 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: baseUrl,
-    siteName: 'Revenue Factory - AI Sales Coaching',
-    title: 'AI Sales Coaching - Finally Get ROI From Your Sales Training',
-    description: 'AI coaching that reinforces what your trainers taught. Same-day feedback, every call, every rep. Scale coaching without scaling headcount.',
+    siteName: 'One Click Coaching',
+    title: 'One Click Coaching - AI-Powered Sandler Sales Coaching',
+    description: 'AI coaching that reinforces what your Sandler trainers taught. Same-day feedback, every call, every rep. Scale coaching without scaling headcount.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Revenue Factory AI Sales Coaching Platform - Transform Your Sales Training ROI',
+        alt: 'One Click Coaching - AI-Powered Sandler Sales Coaching Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Sales Coaching - Finally Get ROI From Your Sales Training',
-    description: 'AI coaching that reinforces what your trainers taught. Same-day feedback, every call, every rep.',
+    title: 'One Click Coaching - AI-Powered Sandler Sales Coaching',
+    description: 'AI coaching that reinforces what your Sandler trainers taught. Same-day feedback, every call, every rep.',
     images: ['/og-image.jpg'],
-    creator: '@revenuefactory',
+    creator: '@oneclickcoaching',
   },
   alternates: {
     canonical: baseUrl,

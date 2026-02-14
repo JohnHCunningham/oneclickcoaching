@@ -28,7 +28,7 @@ const Qualification = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Is SalesAI.Coach{' '}
+            Is One Click Coaching{' '}
             <span className="text-teal">Right for You?</span>
           </h2>
           <p className="text-xl text-light-muted max-w-3xl mx-auto">
@@ -110,7 +110,7 @@ const Qualification = () => {
             Still not sure if this is for you?
           </p>
           <p className="text-light-muted">
-            Book a 15-minute call. We'll tell you honestly if SalesAI.Coach is a fit—and if it's not, we'll point you in the right direction.
+            Book a 15-minute call. We'll tell you honestly if One Click Coaching is a fit—and if it's not, we'll point you in the right direction.
           </p>
           <a
             href="https://tidycal.com/aiautomations/sales-coach"

@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { HiShieldCheck, HiLockClosed, HiCloud, HiDocumentText, HiKey, HiUserGroup } from 'react-icons/hi'
 
 export const metadata: Metadata = {
-  title: 'Security & Data Privacy | SalesAI.Coach',
-  description: 'Learn how SalesAI.Coach protects your data with enterprise-grade security, encryption, and compliance standards.',
+  title: 'Security & Data Privacy | One Click Coaching',
+  description: 'Learn how One Click Coaching protects your data with enterprise-grade security, encryption, and compliance standards.',
   keywords: ['security', 'data privacy', 'encryption', 'SOC 2', 'compliance', 'GDPR', 'data ownership'],
 }
 
@@ -113,7 +113,7 @@ export default function SecurityPage() {
                 <h2 className="text-3xl font-bold text-light mb-4">Infrastructure & Hosting</h2>
                 <div className="space-y-4 text-light-muted">
                   <p>
-                    SalesAI.Coach is built on enterprise-grade infrastructure with 99.9% uptime SLA.
+                    One Click Coaching is built on enterprise-grade infrastructure with 99.9% uptime SLA.
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li><strong className="text-light">Database:</strong> Supabase (PostgreSQL) with Row Level Security (RLS)</li>

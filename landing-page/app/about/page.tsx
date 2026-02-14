@@ -4,11 +4,11 @@ import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'About - 40 Years of Sales Leadership',
-  description: 'The story behind Revenue Factory: 40 years of sales experience, from Xerox and Sandler training to building AI-powered coaching that creates permanent behavior change.',
+  description: 'The story behind One Click Coaching: 40 years of sales experience, from Xerox and Sandler training to building AI-powered coaching that creates permanent behavior change.',
   keywords: ['sales leadership', 'sales training experience', 'Sandler certified', 'Xerox selling systems', 'sales coaching founder'],
   openGraph: {
-    title: 'About Revenue Factory - 40 Years of Sales Leadership',
-    description: 'The story behind Revenue Factory: why training alone isn\'t enough, and how permanent behavior change actually happens.',
+    title: 'About One Click Coaching - 40 Years of Sales Leadership',
+    description: 'The story behind One Click Coaching: why training alone isn\'t enough, and how permanent behavior change actually happens.',
     type: 'website',
   },
 }
@@ -28,7 +28,7 @@ export default function AboutPage() {
             <div className="flex-shrink-0">
               <Image
                 src="/images/john-founder.jpg"
-                alt="John Cunningham - Founder of Revenue Factory, 40+ years of sales leadership experience"
+                alt="John Cunningham - Founder of One Click Coaching"
                 width={200}
                 height={200}
                 className="rounded-2xl border-2 border-teal/30 shadow-lg shadow-teal/20"
@@ -108,7 +108,7 @@ export default function AboutPage() {
             </p>
 
             <p className="text-light-muted leading-relaxed mb-8">
-              That thinking is what led to <strong className="text-gold">The Revenue Factory</strong>.
+              That thinking is what led to <strong className="text-gold">The One Click Coaching</strong>.
             </p>
 
             <p className="text-light-muted leading-relaxed mb-8">

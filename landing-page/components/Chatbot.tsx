@@ -24,7 +24,7 @@ const Chatbot = () => {
       setHasGreeted(true)
       const greeting: Message = {
         role: 'assistant',
-        content: "Hi! 👋 I'm here to help you understand how SalesAI.Coach can help your sales team execute their methodology with discipline.\n\nWhat brings you here today?",
+        content: "Hi! 👋 I'm here to help you understand how One Click Coaching can help your sales team execute their methodology with discipline.\n\nWhat brings you here today?",
         timestamp: new Date()
       }
       setMessages([greeting])
@@ -142,7 +142,7 @@ const Chatbot = () => {
                   <span className="text-2xl">🤖</span>
                 </div>
                 <div>
-                  <h3 className="text-white font-bold">SalesAI Assistant</h3>
+                  <h3 className="text-white font-bold">Coaching Assistant</h3>
                   <p className="text-white/80 text-xs">Typically replies instantly</p>
                 </div>
               </div>

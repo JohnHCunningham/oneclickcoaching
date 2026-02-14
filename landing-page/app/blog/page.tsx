@@ -4,18 +4,18 @@ import { getBlogPosts, getAllCategories } from '@/lib/blog'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Sales Coaching Blog - AI-Powered Sales Insights | Daily Tracker',
+  title: 'Sales Coaching Blog - AI-Powered Sales Insights | One Click Coaching',
   description: 'Expert insights on sales methodologies, AI coaching, MEDDIC, Sandler, and proven techniques to improve your team\'s sales performance.',
   keywords: ['sales blog', 'sales coaching', 'MEDDIC', 'Sandler', 'sales methodology', 'AI sales', 'sales training'],
   openGraph: {
-    title: 'Sales Coaching Blog | Daily Tracker',
+    title: 'Sales Coaching Blog | One Click Coaching',
     description: 'Expert insights on sales methodologies and AI-powered coaching',
     type: 'website',
-    url: 'https://dailytracker.com/blog',
+    url: 'https://oneclickcoaching.com/blog',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sales Coaching Blog | Daily Tracker',
+    title: 'Sales Coaching Blog | One Click Coaching',
     description: 'Expert insights on sales methodologies and AI-powered coaching',
   },
 }

@@ -15,7 +15,7 @@ const problems = [
   },
   {
     title: 'You Track Results. Not Behavior.',
-    description: 'Most tools show you what already went wrong (lost deals, low close rates). SalesAI.Coach shows you WHY—which behaviors are breaking down before revenue drops.',
+    description: 'Most tools show you what already went wrong (lost deals, low close rates). One Click Coaching shows you WHY—which behaviors are breaking down before revenue drops.',
     icon: '🎯'
   }
 ]

@@ -90,7 +90,7 @@ const FrictionlessCoaching = () => {
                             Coaching only works when it fits the rep’s real workflow.
                         </p>
                         <p className="text-lg text-light-muted mb-12 leading-relaxed text-gray-300">
-                            That’s why <span className="text-teal font-bold">The Revenue Factory</span> integrates directly with the tools your team already uses — so coaching happens automatically, not manually.
+                            That’s why <span className="text-teal font-bold">One Click Coaching</span> integrates directly with the tools your team already uses — so coaching happens automatically, not manually.
                         </p>
 
                         <div className="space-y-8 mb-12">
@@ -211,7 +211,7 @@ const FrictionlessCoaching = () => {
                             <p className="text-xs text-pink font-bold mt-4 uppercase">Result: Habits don't change.</p>
                         </div>
                         <div className="space-y-4">
-                            <h4 className="text-gold font-bold uppercase tracking-wider text-sm">The Factory Advantage:</h4>
+                            <h4 className="text-gold font-bold uppercase tracking-wider text-sm">The One Click Advantage:</h4>
                             <p className="text-light-muted leading-relaxed">
                                 <span className="text-white font-bold">Frictionless data flow enables immediate reinforcement.</span>
                             </p>

@@ -409,7 +409,7 @@ Not when it's easy. When it matters.
     author: {
       name: 'John Cunningham',
       avatar: '/images/john-founder.jpg',
-      title: 'Founder, Revenue Factory'
+      title: 'Founder, One Click Coaching'
     },
     publishedAt: '2026-01-26',
     category: 'Sales Methodology',
@@ -502,7 +502,7 @@ The choice is yours. But remember: **training teaches knowledge, coaching builds
     coverImage: '/blog/sandler-execution-gap.jpg',
     readingTime: '5 min read',
     seo: {
-      metaTitle: 'The Sandler Execution Gap: Why Training Alone Isn\'t Enough | Daily Tracker Blog',
+      metaTitle: 'The Sandler Execution Gap: Why Training Alone Isn\'t Enough | One Click Coaching Blog',
       metaDescription: 'Your team completed Sandler training but aren\'t using it in real calls. Learn why knowledge doesn\'t equal execution and how AI coaching closes the gap.',
       keywords: ['Sandler training', 'sales methodology', 'AI sales coaching', 'sales execution', 'Sandler selling system'],
       ogImage: '/blog/sandler-execution-gap.jpg'
@@ -631,7 +631,7 @@ If not, you're flying blind.
     coverImage: '/blog/meddic-qualification-ai.jpg',
     readingTime: '6 min read',
     seo: {
-      metaTitle: 'MEDDIC Qualification: How AI Ensures You Never Miss a Key Question | Daily Tracker',
+      metaTitle: 'MEDDIC Qualification: How AI Ensures You Never Miss a Key Question | One Click Coaching',
       metaDescription: 'Learn how AI analysis identifies gaps in your MEDDIC qualification process and provides specific scripts to improve win rates and forecast accuracy.',
       keywords: ['MEDDIC', 'sales qualification', 'B2B sales', 'MEDDIC methodology', 'AI sales coaching'],
       ogImage: '/blog/meddic-qualification-ai.jpg'
@@ -795,7 +795,7 @@ If you're over 40%, you're talking too much. Use the "Tell me more" framework an
     coverImage: '/blog/talk-ratio-killer.jpg',
     readingTime: '5 min read',
     seo: {
-      metaTitle: 'Your Talk Ratio is Killing Your Sales (Data from 10,000+ Calls) | Daily Tracker',
+      metaTitle: 'Your Talk Ratio is Killing Your Sales (Data from 10,000+ Calls) | One Click Coaching',
       metaDescription: 'Analysis of 10,000+ sales calls reveals the perfect talk-to-listen ratio. Learn why talking too much costs you deals and how to fix it.',
       keywords: ['talk ratio', 'sales discovery', 'active listening', 'sales skills', 'close rate improvement'],
       ogImage: '/blog/talk-ratio-killer.jpg'
@@ -978,7 +978,7 @@ You've made the investment. The only question is whether you'll protect it.
     author: {
       name: 'John Cunningham',
       avatar: '/images/john-founder.jpg',
-      title: 'Founder, Revenue Factory'
+      title: 'Founder, One Click Coaching'
     },
     publishedAt: '2026-01-28',
     category: 'Sales Training',
@@ -986,7 +986,7 @@ You've made the investment. The only question is whether you'll protect it.
     coverImage: '/blog/87-percent-problem.jpg',
     readingTime: '7 min read',
     seo: {
-      metaTitle: 'The 87% Problem: Why Sales Training Disappears in 30 Days | Revenue Factory',
+      metaTitle: 'The 87% Problem: Why Sales Training Disappears in 30 Days | One Click Coaching',
       metaDescription: 'Research shows 87% of sales training is forgotten within 30 days. Learn why the forgetting curve devastates your training ROI and how reinforcement changes everything.',
       keywords: ['sales training retention', 'forgetting curve', 'sales training ROI', 'Sandler training', 'sales methodology reinforcement', 'training effectiveness'],
       ogImage: '/blog/87-percent-problem.jpg'
@@ -1166,7 +1166,7 @@ The data is clear. The choice is yours.
     author: {
       name: 'John Cunningham',
       avatar: '/images/john-founder.jpg',
-      title: 'Founder, Revenue Factory'
+      title: 'Founder, One Click Coaching'
     },
     publishedAt: '2026-01-30',
     category: 'Sales Coaching',
@@ -1174,7 +1174,7 @@ The data is clear. The choice is yours.
     coverImage: '/blog/same-day-coaching.jpg',
     readingTime: '7 min read',
     seo: {
-      metaTitle: 'Same-Day Coaching vs. Weekly 1:1s: What the Data Shows | Revenue Factory',
+      metaTitle: 'Same-Day Coaching vs. Weekly 1:1s: What the Data Shows | One Click Coaching',
       metaDescription: 'Research shows same-day feedback creates 73% behavior change vs 23% for weekly coaching. Learn why timing matters more than technique in sales coaching.',
       keywords: ['sales coaching timing', 'same-day feedback', 'weekly 1:1 meetings', 'sales management', 'behavior change', 'coaching effectiveness'],
       ogImage: '/blog/same-day-coaching.jpg'
@@ -1394,7 +1394,7 @@ That gap has a number. And it's worth finding.
     author: {
       name: 'John Cunningham',
       avatar: '/images/john-founder.jpg',
-      title: 'Founder, Revenue Factory'
+      title: 'Founder, One Click Coaching'
     },
     publishedAt: '2026-02-04',
     category: 'Sales Process',
@@ -1402,7 +1402,7 @@ That gap has a number. And it's worth finding.
     coverImage: '/blog/cost-of-winging-it.jpg',
     readingTime: '8 min read',
     seo: {
-      metaTitle: 'The Real Cost of Winging It: When Reps Abandon Sales Process | Revenue Factory',
+      metaTitle: 'The Real Cost of Winging It: When Reps Abandon Sales Process | One Click Coaching',
       metaDescription: 'Calculate the true cost of process abandonment in your sales team. Data shows methodology discipline can add 7 points to close rates.',
       keywords: ['sales process', 'methodology execution', 'pipeline leakage', 'sales discipline', 'close rate improvement', 'revenue operations'],
       ogImage: '/blog/cost-of-winging-it.jpg'
@@ -1648,7 +1648,7 @@ Build on that, and you build something that lasts.
     author: {
       name: 'John Cunningham',
       avatar: '/images/john-founder.jpg',
-      title: 'Founder, Revenue Factory'
+      title: 'Founder, One Click Coaching'
     },
     publishedAt: '2026-02-06',
     category: 'Sales Leadership',
@@ -1656,7 +1656,7 @@ Build on that, and you build something that lasts.
     coverImage: '/blog/best-rep-worst-hire.jpg',
     readingTime: '9 min read',
     seo: {
-      metaTitle: 'Why Your Best Rep Might Be Your Worst Hire | Revenue Factory',
+      metaTitle: 'Why Your Best Rep Might Be Your Worst Hire | One Click Coaching',
       metaDescription: 'Natural sellers close deals but cannot teach, refuse to follow process, and create dependency. Learn why coachability beats capability when building sales teams.',
       keywords: ['sales hiring', 'coachable reps', 'natural seller', 'sales team building', 'sales leadership', 'methodology adoption'],
       ogImage: '/blog/best-rep-worst-hire.jpg'

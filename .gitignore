@@ -5,6 +5,7 @@
 
 # Supabase local development
 .supabase/
+supabase/.temp/
 
 # API keys (if you created a config file)
 config.local.js

@@ -31,7 +31,7 @@ const faqs = [
   },
   {
     question: 'Does this integrate with my CRM (Salesforce, HubSpot, etc.)?',
-    answer: 'SalesAI.Coach complements your CRM, it doesn\'t replace it. We track behavior execution (did they follow your methodology?), while your CRM tracks results (did the deal close?). Currently, you can export coaching summaries to paste into your CRM. Native API integrations with Salesforce and HubSpot are coming in Q2 2025. No double data entry - we push insights to your CRM automatically.'
+    answer: 'One Click Coaching complements your CRM, it doesn\'t replace it. We track behavior execution (did they follow your methodology?), while your CRM tracks results (did the deal close?). Currently, you can export coaching summaries to paste into your CRM. Native API integrations with Salesforce and HubSpot are coming in Q2 2025. No double data entry - we push insights to your CRM automatically.'
   },
   {
     question: 'Can managers see their team\'s performance?',
@@ -43,7 +43,7 @@ const faqs = [
   },
   {
     question: 'Do you offer on-premise deployment?',
-    answer: 'Not yet. Currently, SalesAI.Coach is cloud-hosted for security and performance. On-premise deployment is on our roadmap for Q4 2025 for enterprise customers with strict data residency requirements. Contact us if this is a requirement for your organization.'
+    answer: 'Not yet. Currently, One Click Coaching is cloud-hosted for security and performance. On-premise deployment is on our roadmap for Q4 2025 for enterprise customers with strict data residency requirements. Contact us if this is a requirement for your organization.'
   },
   {
     question: 'Can I cancel anytime?',
