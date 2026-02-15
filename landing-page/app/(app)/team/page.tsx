@@ -144,7 +144,7 @@ export default function TeamPage() {
         {members.map((member) => (
           <Link
             key={member.id}
-            href={`/app/team/${member.id}`}
+            href={`/team/${member.id}`}
             className="flex items-center gap-4 p-4 bg-navy-light rounded-xl border border-teal/10 hover:border-teal/30 transition-colors"
           >
             <div className="w-12 h-12 bg-teal/20 rounded-full flex items-center justify-center">

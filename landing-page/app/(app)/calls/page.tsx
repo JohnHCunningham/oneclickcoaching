@@ -86,7 +86,7 @@ export default function CallsPage() {
             Connect an integration to start syncing your sales calls.
           </p>
           <Link
-            href="/app/integrations"
+            href="/integrations"
             className="inline-block bg-teal text-navy font-bold py-2.5 px-6 rounded-lg hover:bg-aqua transition-colors"
           >
             Set Up Integrations
@@ -99,7 +99,7 @@ export default function CallsPage() {
             return (
               <Link
                 key={call.id}
-                href={`/app/calls/${call.id}`}
+                href={`/calls/${call.id}`}
                 className="flex items-center gap-4 p-4 bg-navy-light rounded-xl border border-teal/10 hover:border-teal/30 transition-colors"
               >
                 <div className="w-12 h-12 bg-teal/20 rounded-lg flex items-center justify-center">

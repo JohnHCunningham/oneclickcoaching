@@ -127,7 +127,7 @@ export default function HubSpotPage() {
   return (
     <div>
       <Link
-        href="/app/integrations"
+        href="/integrations"
         className="flex items-center gap-2 text-teal hover:text-aqua mb-6 text-sm"
       >
         <HiArrowLeft /> Back to Integrations

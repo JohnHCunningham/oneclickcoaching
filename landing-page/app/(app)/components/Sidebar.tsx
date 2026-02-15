@@ -21,14 +21,14 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: '/app/dashboard', label: 'Dashboard', icon: HiHome },
-  { href: '/app/team', label: 'Team', icon: HiUserGroup, roles: ['admin', 'manager'] },
-  { href: '/app/calls', label: 'Calls', icon: HiPhone },
-  { href: '/app/coaching', label: 'Coaching', icon: HiAcademicCap },
-  { href: '/app/integrations', label: 'Integrations', icon: HiPuzzle, roles: ['admin', 'manager'] },
-  { href: '/app/goals', label: 'Goals', icon: HiChartBar },
-  { href: '/app/celebrations', label: 'Celebrations', icon: HiSparkles },
-  { href: '/app/settings', label: 'Settings', icon: HiCog, roles: ['admin'] },
+  { href: '/dashboard', label: 'Dashboard', icon: HiHome },
+  { href: '/team', label: 'Team', icon: HiUserGroup, roles: ['admin', 'manager'] },
+  { href: '/calls', label: 'Calls', icon: HiPhone },
+  { href: '/coaching', label: 'Coaching', icon: HiAcademicCap },
+  { href: '/integrations', label: 'Integrations', icon: HiPuzzle, roles: ['admin', 'manager'] },
+  { href: '/goals', label: 'Goals', icon: HiChartBar },
+  { href: '/celebrations', label: 'Celebrations', icon: HiSparkles },
+  { href: '/settings', label: 'Settings', icon: HiCog, roles: ['admin'] },
 ]
 
 export default function Sidebar({ userRole }: { userRole: string }) {
@@ -41,7 +41,7 @@ export default function Sidebar({ userRole }: { userRole: string }) {
   return (
     <aside className="w-64 bg-navy-dark border-r border-navy-light flex flex-col">
       <div className="p-6">
-        <Link href="/app/dashboard" className="font-bold text-xl text-light">
+        <Link href="/dashboard" className="font-bold text-xl text-light">
           One Click<span className="text-teal"> Coaching</span>
         </Link>
       </div>

@@ -91,7 +91,7 @@ export default function CallDetailPage({ params }: { params: { callId: string } 
   return (
     <div>
       <Link
-        href="/app/calls"
+        href="/calls"
         className="flex items-center gap-2 text-teal hover:text-aqua mb-6 text-sm"
       >
         <HiArrowLeft /> Back to Calls

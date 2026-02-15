@@ -133,7 +133,7 @@ export default function MemberDetailPage({ params }: { params: { memberId: strin
   return (
     <div>
       <Link
-        href="/app/team"
+        href="/team"
         className="flex items-center gap-2 text-teal hover:text-aqua mb-6 text-sm"
       >
         <HiArrowLeft /> Back to Team

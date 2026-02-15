@@ -109,7 +109,7 @@ function AcceptInviteForm() {
       }
     }
 
-    router.push('/app/dashboard')
+    router.push('/dashboard')
   }
 
   if (verifying) {

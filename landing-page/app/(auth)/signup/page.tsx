@@ -55,7 +55,7 @@ export default function SignupPage() {
       }
     }
 
-    router.push('/app/dashboard')
+    router.push('/dashboard')
   }
 
   return (

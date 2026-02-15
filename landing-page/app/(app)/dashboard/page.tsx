@@ -296,19 +296,19 @@ export default function DashboardPage() {
               <h2 className="text-xl font-bold text-light mb-4">Quick Actions</h2>
               <div className="space-y-3">
                 <Link
-                  href="/app/team"
+                  href="/team"
                   className="flex items-center gap-2 w-full bg-teal/10 text-teal border border-teal/20 px-4 py-3 rounded-lg hover:bg-teal/20 transition-colors text-sm font-medium"
                 >
                   <HiUserGroup /> Manage Team
                 </Link>
                 <Link
-                  href="/app/calls"
+                  href="/calls"
                   className="flex items-center gap-2 w-full bg-teal/10 text-teal border border-teal/20 px-4 py-3 rounded-lg hover:bg-teal/20 transition-colors text-sm font-medium"
                 >
                   <HiPhone /> View Calls
                 </Link>
                 <Link
-                  href="/app/integrations"
+                  href="/integrations"
                   className="flex items-center gap-2 w-full bg-teal/10 text-teal border border-teal/20 px-4 py-3 rounded-lg hover:bg-teal/20 transition-colors text-sm font-medium"
                 >
                   <HiChartBar /> Integrations
@@ -394,7 +394,7 @@ export default function DashboardPage() {
                 Coaching messages from your manager will appear here.
               </p>
               <Link
-                href="/app/coaching"
+                href="/coaching"
                 className="inline-block mt-4 text-teal hover:text-aqua text-sm font-medium"
               >
                 View All Coaching
@@ -409,7 +409,7 @@ export default function DashboardPage() {
                   : 'Your analyzed calls will appear here once integrations are configured.'}
               </p>
               <Link
-                href="/app/calls"
+                href="/calls"
                 className="inline-block mt-4 text-teal hover:text-aqua text-sm font-medium"
               >
                 View All Calls
