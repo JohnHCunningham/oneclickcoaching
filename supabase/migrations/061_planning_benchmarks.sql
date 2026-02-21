@@ -18,10 +18,12 @@ CREATE TABLE IF NOT EXISTS "Benchmarks" (
 -- RLS
 ALTER TABLE "Benchmarks" ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view benchmarks in their account" ON "Benchmarks";
 CREATE POLICY "Users can view benchmarks in their account"
   ON "Benchmarks" FOR SELECT
   USING (account_id IN (SELECT account_id FROM "Users" WHERE auth_id = auth.uid()));
 
+DROP POLICY IF EXISTS "Leaders can manage benchmarks" ON "Benchmarks";
 CREATE POLICY "Leaders can manage benchmarks"
   ON "Benchmarks" FOR ALL
   USING (account_id IN (
