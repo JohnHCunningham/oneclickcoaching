@@ -59,7 +59,7 @@ export default function CallDetailPage({ params }: { params: { callId: string } 
     setAnalyzing(true)
     setMessage(null)
 
-    const { error } = await supabase.functions.invoke('analyze-conversation', {
+    const { error } = await supabase.functions.invoke('analyze-call', {
       body: { conversation_id: call.id },
     })
 
